@@ -23,7 +23,7 @@
 </head>
 
     <body>
-        <div class="container-full">
+        <div class="container-full @yield('pageClass')">
             @yield('content')
         </div>
     </body>
