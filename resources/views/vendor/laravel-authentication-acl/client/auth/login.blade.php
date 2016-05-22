@@ -1,57 +1,59 @@
 @extends('laravel-authentication-acl::client.layouts.base')
-@section('title')
-User login
-@stop
+@section('title', 'Вход в систему')
+@section('pageClass', 'login')
+
 @section('content')
-<div class="row centered-form">
-    <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title bariol-thin">Login to {!! Config::get('acl_base.app_name') !!}</h3>
-            </div>
+<div class='wrapper'>
+      <div class='row'>
+        <div class='col-lg-12'>
+          <div class='brand text-center'>
+            <h1>
+              <div class='logo-icon'>                
+              </div>
+              {!! Config::get('acl_base.app_name') !!}
+            </h1>
+          </div>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-lg-12'>
+          {!! Form::open(array('url' => URL::route("user.login"), 'method' => 'post') ) !!}
             <?php $message = Session::get('message'); ?>
-            @if( isset($message) )
-            <div class="alert alert-success">{!! $message !!}</div>
+            @if( isset($message) )                
+                <div class="alert alert-success">{!! $message !!}</div>
             @endif
             @if($errors && ! $errors->isEmpty() )
-            @foreach($errors->all() as $error)
-            <div class="alert alert-danger">{!! $error !!}</div>
-            @endforeach
+                @foreach($errors->all() as $error)
+                    <div class="alert alert-danger">{!! $error !!}</div>
+                @endforeach
             @endif
-            <div class="panel-body">
-                {!! Form::open(array('url' => URL::route("user.login"), 'method' => 'post') ) !!}
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                {!! Form::email('email', '', ['id' => 'email', 'class' => 'form-control', 'placeholder' => 'Email address', 'required', 'autocomplete' => 'off']) !!}
-                            </div>
-                        </div>
+            <fieldset class='text-center'>
+              <legend>Вход в систему</legend>
+              <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                        {!! Form::email('email', '', ['id' => 'email', 'class' => 'form-control', 'placeholder' => 'Электронная почта (Логин)', 'required', 'autocomplete' => 'off']) !!}
                     </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                    {!! Form::password('password', ['id' => 'password', 'class' => 'form-control', 'placeholder' => 'Пароль', 'required', 'autocomplete' => 'off']) !!}
                 </div>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                {!! Form::password('password', ['id' => 'password', 'class' => 'form-control', 'placeholder' => 'Password', 'required', 'autocomplete' => 'off']) !!}
-                            </div>
-                        </div>
-                    </div>
+              </div>
+              <div class='text-center'>
+                <div>
+                    {!! Form::checkbox('remember')!!}
+                    {!! Form::label('remember','Запомнить меня') !!}
+                
                 </div>
-                {!! Form::label('remember','Remember me') !!}
-                {!! Form::checkbox('remember')!!}
-                <input type="submit" value="Login" class="btn btn-info btn-block">
-                {!! Form::close() !!}
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 margin-top-10">
-        {!! link_to_route('user.recovery-password','Forgot password?') !!}
-        or <a href="{!! URL::route('user.signup') !!}"><i class="fa fa-sign-in"></i> Signup here</a>
-            </div>
+                <input type="submit" value="Войти" class="btn btn-info btn-block">
+                <br>
+                {!! link_to_route('user.recovery-password','Забыли пароль?') !!}
+              </div>
+            </fieldset>
+          {!! Form::close() !!}
         </div>
-            </div>
-        </div>
+      </div>
     </div>
-</div>
 @stop

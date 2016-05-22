@@ -8,11 +8,15 @@
     <meta name="author" content="">
 
 
-    {!! HTML::style('packages/jacopo/laravel-authentication-acl/css/bootstrap.min.css') !!}
+    <link rel="stylesheet" href="{!! asset('css/hierapolis_theme_full.css') !!}">  
+    <link rel="stylesheet" href="{!! asset('bower_components/font-awesome/css/font-awesome.min.css') !!}">    
     {!! HTML::style('packages/jacopo/laravel-authentication-acl/css/style.css') !!}
     {!! HTML::style('packages/jacopo/laravel-authentication-acl/css/baselayout.css') !!}
-    {!! HTML::style('packages/jacopo/laravel-authentication-acl/css/fonts.css') !!}
-    {!! HTML::style('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css') !!}
+    {!! HTML::style('packages/jacopo/laravel-authentication-acl/css/fonts.css') !!}   
+    
+    <link rel="stylesheet" href="{!! asset('css/custom.css') !!}">  
+     
+    
 
     @yield('head_css')
     {{-- End head css --}}
@@ -24,7 +28,7 @@
     <![endif]-->
 </head>
 
-    <body>
+    <body class="@yield('pageClass')">
         <div class="container">
             @yield('content')
         </div>

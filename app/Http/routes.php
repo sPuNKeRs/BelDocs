@@ -11,6 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [
+	'as' => 'mainpage',
+	'uses' => 'PagesController@mainpage',
+	'middleware' => ['logged']	
+]);
+
+
+
+Route::group(['middleware' => ['logged']], function (){
+
 });
