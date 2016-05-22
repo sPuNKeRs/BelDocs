@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
-@section('title', 'Главная страница')
+@section('title', 'Приказы')
 @section('description', '')
 @section('keywords', '')
 
-@section('pageClass', 'main page')
+@section('pageClass', '')
 
 @section('content')
   @include('partials.navbar')
@@ -16,10 +16,9 @@
         <div class='panel panel-default'>
           <div class='panel-heading'>
             <i class='fa fa-wpforms fa-lg'></i>
-            Сводная информация            
+            Приказы          
           </div>
-          <div class='panel-body'>
-            
+          <div class='panel-body'>            
           </div>
         </div>
       </div>
