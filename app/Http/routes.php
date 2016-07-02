@@ -11,16 +11,91 @@
 |
 */
 
-Route::get('/', [
-	'as' => 'mainpage',
-	'uses' => 'PagesController@mainpage',
-	'middleware' => ['logged']	
-]);
-
-
+// Общая группа
 Route::group(['middleware' => ['logged']], function (){
-	Route::get('/orders', [
-		'as' => 'orders.all',
-		'uses' => 'PagesController@orders_all'
-	]);
+    Route::get('/', [
+        'as' => 'mainpage',
+        'uses' => 'PagesController@mainpage',
+    ]);    
+});
+
+// Группа для работы с приказами
+Route::group(['middleware' => []], function (){
+    // Страница с приказами
+    Route::get('/orders', [
+        'as' => 'orders.index',
+        'uses' => 'OrdersController@index'
+    ]);
+
+    // Страница с входящими приказами
+    Route::get('/orders/inbox', [
+        'as' => 'orders.inbox',
+        'uses' => 'OrdersController@inbox'
+    ]);
+
+    // Страница с входящими приказами
+    Route::get('/orders/outbox', [
+        'as' => 'orders.outbox',
+        'uses' => 'OrdersController@outbox'
+    ]);
+});
+
+// Группа для работы с документами
+Route::group(['middleware' => []], function (){
+    // Страница с приказами
+    Route::get('/documents', [
+        'as' => 'documents.index',
+        'uses' => 'DocumentsController@index'
+    ]);
+
+    // Страница с входящими приказами
+    Route::get('/documents/inbox', [
+        'as' => 'documents.inbox',
+        'uses' => 'DocumentsController@inbox'
+    ]);
+
+    // Страница с входящими приказами
+    Route::get('/documents/outbox', [
+        'as' => 'documents.outbox',
+        'uses' => 'DocumentsController@outbox'
+    ]);
+});
+
+// Группа для работы с ДСП
+Route::group(['middleware' => []], function (){
+    // Страница с приказами
+    Route::get('/dsp', [
+        'as' => 'dsp.index',
+        'uses' => 'DspsController@index'
+    ]);
+
+    // Страница с входящими приказами
+    Route::get('/dsp/inbox', [
+        'as' => 'dsp.inbox',
+        'uses' => 'DspsController@inbox'
+    ]);
+
+    // Страница с входящими приказами
+    Route::get('/dsp/outbox', [
+        'as' => 'dsp.outbox',
+        'uses' => 'DspsController@outbox'
+    ]);
+});
+
+// Группа для работы с отчетами
+Route::group(['middleware' => []], function (){
+    // Страница с отчетами
+    Route::get('/reports', [
+        'as' => 'reports.index',
+        'uses' => 'ReportsController@index'
+    ]);   
+});
+
+// Группа для работы с отчетами
+Route::group(['middleware' => []], function (){
+    // Страница с отчетами
+    Route::get('/search', [
+        'as' => 'search.index',
+        'uses' => 'SearchController@index'
+    ]);   
 });
