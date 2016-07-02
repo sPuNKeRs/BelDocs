@@ -18,7 +18,9 @@ Route::get('/', [
 ]);
 
 
-
 Route::group(['middleware' => ['logged']], function (){
-
+	Route::get('/orders', [
+		'as' => 'orders.all',
+		'uses' => 'PagesController@orders_all'
+	]);
 });

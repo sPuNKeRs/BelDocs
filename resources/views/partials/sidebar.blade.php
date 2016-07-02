@@ -8,7 +8,7 @@
           </li>
           <li class='launcher dropdown hover'>
             <i class='fa fa-file-text-o'></i>
-            <a href="#">Приказы</a>            
+            <a href="/orders">Приказы</a>            
             <ul class='dropdown-menu'>              
               <li>
                 <a href='#'>Входящие</a>
