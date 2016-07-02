@@ -1,7 +1,7 @@
 @extends('laravel-authentication-acl::admin.layouts.base-2cols')
 
 @section('title')
-    Admin area: Groups list
+    Панель управелния: Список групп
 @stop
 
 @section('content')
@@ -22,7 +22,7 @@
             @endif
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3 class="panel-title bariol-thin"><i class="fa fa-group"></i> {!! $request->all() ? 'Search results:' : 'Groups' !!}</h3>
+                    <h3 class="panel-title bariol-thin"><i class="fa fa-group"></i> {!! $request->all() ? 'Результат поиска:' : 'Группы' !!}</h3>
                 </div>
                 <div class="panel-body">
                     @include('laravel-authentication-acl::admin.group.groups-table')
@@ -39,7 +39,7 @@
 @section('footer_scripts')
     <script>
         $(".delete").click(function(){
-            return confirm("Are you sure to delete this item?");
+            return confirm("Вы действительно хотите удалить этот элемент?");
         });
     </script>
 @stop

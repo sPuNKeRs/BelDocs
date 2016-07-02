@@ -6,8 +6,8 @@
 
 @section('pageClass', 'main page')
 
-@section('content')
-  @include('partials.navbar')
+@include('partials.navbar')
+@section('content')  
     <div id='wrapper'>
       @include('partials.sidebar')
       @include('partials.tools')

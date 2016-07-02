@@ -1,14 +1,14 @@
 <div class="row margin-bottom-12">
     <div class="col-md-12">
-        <a href="{!! URL::route('groups.edit') !!}" class="btn btn-info pull-right"><i class="fa fa-plus"></i> Add New</a>
+        <a href="{!! URL::route('groups.edit') !!}" class="btn btn-info pull-right"><i class="fa fa-plus"></i> Добавить</a>
     </div>
 </div>
 @if( ! $groups->isEmpty() )
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>Group name</th>
-            <th>Operations</th>
+            <th>Имя группы</th>
+            <th>Действия</th>
         </tr>
     </thead>
     <tbody>
@@ -30,7 +30,7 @@
     </tbody>
 </table>
 @else
-<span class="text-warning"><h5>No results found.</h5></span>
+<span class="text-warning"><h5>Результатов не найдено.</h5></span>
 @endif
 <div class="paginator">
     {!! $groups->appends($request->except(['page']) )->render() !!}

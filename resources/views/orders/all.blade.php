@@ -4,10 +4,10 @@
 @section('description', '')
 @section('keywords', '')
 
-@section('pageClass', '')
-
+@section('pageClass', 'main page')
+@include('partials.navbar')  
 @section('content')
-  @include('partials.navbar')
+    
     <div id='wrapper'>
       @include('partials.sidebar')
       @include('partials.tools')

@@ -11,7 +11,7 @@
     </div>
     <div class="form-group">
         @if(! $group->exists)
-        <span class="text-danger"><h5>You need to create a group first.</h5></span>
+        <span class="text-danger"><h5>Вам нужно сначала создать группу.</h5></span>
         @endif
     </div>
 {!! Form::close() !!}
@@ -32,7 +32,7 @@
     {!! Form::close() !!}
 @endforeach
 @elseif($group->exists)
-<span class="text-warning"><h5>There is no permission associated to the group.</h5></span>
+<span class="text-warning"><h5>Нет разрешений связанных с группой.</h5></span>
 @endif
 
 @section('footer_scripts')
