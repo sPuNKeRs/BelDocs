@@ -5,7 +5,16 @@
 @section('keywords', '')
 
 @section('pageClass', 'main page')
-@include('partials.navbar')  
+
+@section('toolsbar')    
+    <a class='btn' data-toggle='toolbar-tooltip' href='{{ route('orders.inbox.create')}}' title='Создать приказ'>
+      <i class='fa fa-plus-circle'></i>
+      
+    </a>
+@stop
+
+@include('partials.navbar')
+
 @section('content')
     
     <div id='wrapper'>

@@ -23,6 +23,16 @@ class OrdersController extends Controller
    {
         return view('orders.inbox');
    }
+
+   /*
+    * Форма создания входящего приказа
+    */
+   public function inboxCreate()
+   {
+      return view('orders.inbox-create');
+   }
+
+
    /*
    * Вывод страницы с исходящими приказами
    */

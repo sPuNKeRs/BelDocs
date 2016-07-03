@@ -31,8 +31,8 @@ class CreateGroupsTable extends Migration {
      * @return void
      */
     public function down()
-    {
-
+    {        
+            
     }
 
 }

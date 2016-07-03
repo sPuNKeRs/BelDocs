@@ -33,7 +33,13 @@ Route::group(['middleware' => []], function (){
         'uses' => 'OrdersController@inbox'
     ]);
 
-    // Страница с входящими приказами
+    // Страница создания входящего приказа
+    Route::get('/orders/inbox/create', [
+        'as' => 'orders.inbox.create',
+        'uses' => 'OrdersController@inboxCreate'
+    ]);
+
+    // Страница с исходящими приказами
     Route::get('/orders/outbox', [
         'as' => 'orders.outbox',
         'uses' => 'OrdersController@outbox'
@@ -48,13 +54,13 @@ Route::group(['middleware' => []], function (){
         'uses' => 'DocumentsController@index'
     ]);
 
-    // Страница с входящими приказами
+    // Страница с входящими документами
     Route::get('/documents/inbox', [
         'as' => 'documents.inbox',
         'uses' => 'DocumentsController@inbox'
     ]);
 
-    // Страница с входящими приказами
+    // Страница с  исходящими документами
     Route::get('/documents/outbox', [
         'as' => 'documents.outbox',
         'uses' => 'DocumentsController@outbox'
@@ -63,19 +69,20 @@ Route::group(['middleware' => []], function (){
 
 // Группа для работы с ДСП
 Route::group(['middleware' => []], function (){
-    // Страница с приказами
+    // Страница с ДСП
     Route::get('/dsp', [
         'as' => 'dsp.index',
+        'middleware' => 'has_perm:_dsp.index',
         'uses' => 'DspsController@index'
     ]);
 
-    // Страница с входящими приказами
+    // Страница с входящими ДСП
     Route::get('/dsp/inbox', [
         'as' => 'dsp.inbox',
         'uses' => 'DspsController@inbox'
     ]);
 
-    // Страница с входящими приказами
+    // Страница с Исходящими ДСП
     Route::get('/dsp/outbox', [
         'as' => 'dsp.outbox',
         'uses' => 'DspsController@outbox'
@@ -99,3 +106,5 @@ Route::group(['middleware' => []], function (){
         'uses' => 'SearchController@index'
     ]);   
 });
+
+
