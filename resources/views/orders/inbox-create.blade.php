@@ -32,6 +32,8 @@
               @include('widgets.form._formitem_textarea', ['name' => 'description', 'title' => 'Описание', 'row' => 4])
               @include('widgets.form._formitem_text_with_help', ['name' => 'input_help', 'title' => 'Поле с помощью', 'placeholder' => 'Тут ваш текст', 'help' => 'Тект подсказки'])
               @include('widgets.form._formitem_tooltip_text_field', ['name' => 'tooltip_inp', 'title' => 'Всплывающая подсказка', 'tooltip' => 'Это подсказка', 'placeholder' => 'Тут ваш текст' ])
+              @include('widgets.form._formitem_fileinput', ['name' => 'fileuploads', 'title' => 'Загрузка файла', 'multiple' => true])
+
             {!! Form::close()!!}
           </div>
         </div>
