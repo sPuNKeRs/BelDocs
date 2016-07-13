@@ -10,4 +10,4 @@ $(document).ready(function() {
         }), $("[data-toggle=toolbar-tooltip]").tooltip({
             placement: "bottom"
         }), $(".knob").knob()
-    })
+});

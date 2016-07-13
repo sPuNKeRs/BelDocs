@@ -8,6 +8,7 @@
     <meta content='@yield('description')' name='description'>
     <meta content='@yield('keywords')' name='keywords'>
     <link rel="stylesheet" href="{!! asset('bower_components/font-awesome/css/font-awesome.min.css') !!}">
+    <link rel="stylesheet" href="{!! asset('bower_components/jquery-ui/themes/base/jquery-ui.css') !!}">
     <link rel="stylesheet" href="{!! asset('css/hierapolis_theme_full.css') !!}">
     <link rel="stylesheet" href="{!! asset('css/custom.css') !!}">
   </head>
@@ -18,9 +19,11 @@
     <!-- Footer -->
     <!-- Javascripts -->
     {{HTML::script('bower_components/jquery/dist/jquery.min.js')}}
+    {{HTML::script('bower_components/moment/min/moment.min.js')}}
     {{HTML::script('bower_components/jquery-ui/jquery-ui.min.js')}}
     {{HTML::script('bower_components/bootstrap/dist/js/bootstrap.min.js')}}
     {{HTML::script('vendor/jquery.knob.min.js')}}
     {{HTML::script('js/application.js')}}
+    @yield('custom_js')
   </body>
 </html>

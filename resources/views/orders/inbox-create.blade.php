@@ -24,16 +24,51 @@
             <i class='fa fa-pencil-square-o fa-lg'></i>
             Форма создание входящего приказа
           </div>
-          <div class='panel-body'>   
-            {!! Form::open()!!}
-              @include('widgets.form._formitem_text', ['name' => 'email', 'title' => 'Email', 'placeholder' => 'Ваш Email' ])
-              @include('widgets.form._formitem_btn_submit', ['title' => 'Создать'])
-              @include('widgets.form._formitem_password', ['name' => 'password', 'title' => 'Пароль', 'placeholder' => 'Ваш пароль'])
-              @include('widgets.form._formitem_textarea', ['name' => 'description', 'title' => 'Описание', 'row' => 4])
-              @include('widgets.form._formitem_text_with_help', ['name' => 'input_help', 'title' => 'Поле с помощью', 'placeholder' => 'Тут ваш текст', 'help' => 'Тект подсказки'])
-              @include('widgets.form._formitem_tooltip_text_field', ['name' => 'tooltip_inp', 'title' => 'Всплывающая подсказка', 'tooltip' => 'Это подсказка', 'placeholder' => 'Тут ваш текст' ])
-              @include('widgets.form._formitem_fileinput', ['name' => 'fileuploads', 'title' => 'Загрузка файла', 'multiple' => true])
+          <div class='panel-body'>
+              {{--@include('errors.errmsg')--}}
 
+
+            {!! Form::open()!!}
+              <div class="row">
+                  <div class="col-md-3">
+                      @include('widgets.form._formitem_text', ['name' => 'order_id', 'title' => 'Номер', 'placeholder' => 'Порядковый номер' ])
+                  </div>
+                  <div class="col-md-3">
+                      @include('widgets.form._formitem_text', ['name' => 'item_number', 'title' => ' Номенклатурный номер', 'placeholder' => 'Номенклатурный номер' ])
+                  </div>
+                  <div class="col-md-3">
+                      @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' ])
+                  </div>
+                  <div class="col-md-3 text-right">
+                      @include('widgets.form._formitem_checkbox', ['name'=>'status',
+                                                                    'title'=> 'Статус',
+                                                                    'value'=> '1',
+                                                                    'id' => 'status',
+                                                                    'class' => 'custom checkbox',
+                                                                     'left' => null])
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-6">
+                      @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа' ])
+                  </div>
+                  <div class="col-md-3">
+                      @include('widgets.form._formitem_text', ['name' => 'create_date', 'title' => 'Дата создания', 'placeholder' => '02.07.2016', 'describedby' => 'basic-addon1' ])
+                  </div>
+                  <div class="col-md-3">
+                      @include('widgets.form._formitem_text', ['name' => 'execute_date', 'title' => 'Дата исполнения', 'placeholder' => '22.07.2016', 'describedby' => 'basic-addon1' ])
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      @include('widgets.form._formitem_textarea', ['name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
+                  </div>
+              </div>
+              <div class="form-actions">
+                  @include('widgets.form._formitem_btn_submit',['title' => 'Сохранить', 'class' => 'btn btn-default'])
+                  <a class="btn" href="{{ route('orders.inbox') }}">Отмена</a>
+              </div>
+              {{--{!! Form::token() !!}--}}
             {!! Form::close()!!}
           </div>
         </div>
@@ -41,3 +76,11 @@
     </div>
 @stop
 
+@section('custom_js')
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#create_date').datepicker();
+            $('#execute_date').datepicker();
+        });
+    </script>
+@stop

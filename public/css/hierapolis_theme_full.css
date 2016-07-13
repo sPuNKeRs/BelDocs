@@ -7446,7 +7446,8 @@ body.main {
 
 form .form-actions {
     background-color: #f5f7f7;
-    margin: 15px -15px -15px;
+    /*margin: 15px -15px -15px;*/
+    margin: 15px -15px -29px;
     padding: 15px;
     -moz-border-radius-bottomleft: 4px;
     -webkit-border-bottom-left-radius: 4px;
