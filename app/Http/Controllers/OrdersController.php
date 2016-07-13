@@ -31,7 +31,8 @@ class OrdersController extends Controller
     */
    public function inboxCreate()
    {
-      return view('orders.inbox-create');
+      $lastId = Order::latest()->first()->id;
+      return view('orders.inbox-create', compact('lastId'));
    }
 
    /*
@@ -44,8 +45,8 @@ class OrdersController extends Controller
           'item_number' => $request->item_number,
           'incoming_number' => $request->incoming_number,
           'title' => $request->title,
-          'create_date' => $request->create_date,
-          'execute_date' => $request->execute_date,
+          'create_date' => date($request->create_date),
+          'execute_date' => date($request->execute_date),
           'description' => $request->description,
           'status' => $request->status,
           'slug' => $slug

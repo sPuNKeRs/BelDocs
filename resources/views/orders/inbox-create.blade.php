@@ -31,7 +31,7 @@
             {!! Form::open()!!}
               <div class="row">
                   <div class="col-md-3">
-                      @include('widgets.form._formitem_text', ['name' => 'order_id', 'title' => 'Номер', 'placeholder' => 'Порядковый номер' ])
+                      @include('widgets.form._formitem_text', ['value' => $lastId+1,'name' => 'order_id', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
                   </div>
                   <div class="col-md-3">
                       @include('widgets.form._formitem_text', ['name' => 'item_number', 'title' => ' Номенклатурный номер', 'placeholder' => 'Номенклатурный номер' ])
@@ -53,10 +53,10 @@
                       @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа' ])
                   </div>
                   <div class="col-md-3">
-                      @include('widgets.form._formitem_text', ['name' => 'create_date', 'title' => 'Дата создания', 'placeholder' => '02.07.2016', 'describedby' => 'basic-addon1' ])
+                      @include('widgets.form._formitem_text', ['name' => 'create_date', 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1', 'value' => date('d.m.Y') ])
                   </div>
                   <div class="col-md-3">
-                      @include('widgets.form._formitem_text', ['name' => 'execute_date', 'title' => 'Дата исполнения', 'placeholder' => '22.07.2016', 'describedby' => 'basic-addon1' ])
+                      @include('widgets.form._formitem_text', ['name' => 'execute_date', 'title' => 'Дата исполнения', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1', 'value' => date('d.m.Y') ])
                   </div>
               </div>
               <div class="row">

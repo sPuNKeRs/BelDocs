@@ -21,6 +21,7 @@
     {{HTML::script('bower_components/jquery/dist/jquery.min.js')}}
     {{HTML::script('bower_components/moment/min/moment.min.js')}}
     {{HTML::script('bower_components/jquery-ui/jquery-ui.min.js')}}
+    {{HTML::script('bower_components/jquery-ui/ui/i18n/datepicker-ru.js')}}
     {{HTML::script('bower_components/bootstrap/dist/js/bootstrap.min.js')}}
     {{HTML::script('vendor/jquery.knob.min.js')}}
     {{HTML::script('js/application.js')}}
