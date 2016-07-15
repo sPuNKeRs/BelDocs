@@ -14,18 +14,18 @@
       </a>
       <ul class='dropdown-menu'>
         <li>
-          <a href='/admin/users/profile/self'>Мой профиль</a>
+          <a href="{!! URL::route('users.selfprofile.edit') !!}">Мой профиль</a>
         </li>
         <li class='divider'></li>
         <li>
-          <a href='admin/users/dashboard'>
+          <a href='{{URL::to('admin/users/dashboard')}}'>
             <i class='fa fa-cog'></i>
             Настройки
           </a>
         </li>
         <li class='divider'></li>
         <li>
-          <a href="/user/logout">Выход</a>
+          <a href="{!! URL::route('user.logout') !!}">Выход</a>
         </li>
       </ul>
     </li>

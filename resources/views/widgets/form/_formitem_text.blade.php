@@ -16,8 +16,9 @@
 
 
 
-
+<label class="control-label">{{$title}}</label>
 <div class=" {{ isset($describedby) ? 'input-group' : ''}} {!! $errors->has($name) ? 'has-error' : null !!} ">
+
     {!! Form::text($name, $value, array('placeholder' =>  $placeholder,
                                         'class' => 'form-control',
                                         'id' => $name,
