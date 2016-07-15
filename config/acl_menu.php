@@ -16,6 +16,7 @@ return [
                     "link"        => '/admin/users/dashboard',
                     "permissions" => []
             ],
+
             [
                 /*
                  * the name of the link: you will see it in the admin menu panel.
@@ -62,6 +63,12 @@ return [
                     "permissions" => ["_superadmin", "_permission-editor"]
             ],
             [
+                "name"        => "Справочники",
+                "route"       => "references.index",
+                "link"        => '/admin/references/index',
+                "permissions" => ["_superadmin"]
+            ],
+                [
                 /*
                  * Route to edit the current user profile
                  */
@@ -70,6 +77,7 @@ return [
                 "link"        => '/admin/users/profile/self',
                 "permissions" => []
             ],
+
 
     ]
 ];

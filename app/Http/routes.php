@@ -112,6 +112,16 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'SearchController@index'
         ]);
     });
+
+
+    // Группа для работы со справочниками
+    Route::group(['middleware' => []], function(){
+        // Страница со справочниками
+        Route::get('/admin/references/index', [
+            'as' => 'references.index',
+            'uses' => 'ReferencesController@index'
+        ]);
+    });
 });
 
 Route::get('/test', function(){
