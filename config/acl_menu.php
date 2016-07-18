@@ -64,10 +64,11 @@ return [
             ],
             [
                 "name"        => "Справочники",
-                "route"       => "references.index",
+                "route"       => "references",
                 "link"        => '/admin/references/index',
                 "permissions" => ["_superadmin"]
             ],
+
                 [
                 /*
                  * Route to edit the current user profile

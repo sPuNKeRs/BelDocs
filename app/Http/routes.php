@@ -121,6 +121,25 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'references.index',
             'uses' => 'ReferencesController@index'
         ]);
+
+        // Справочник "Номенклатурный номер"
+        Route::get('/admin/references/itemnumber', [
+            'as' => 'references.itemnumber',
+            'uses' => 'ReferencesController@itemNumbersIndex'
+        ]);
+
+        // Справочник "Номенклатурный номер" - форма добавления
+        Route::get('/admin/references/itemnumber/edit', [
+            'as' => 'references.itemnumber.edit',
+            'uses' => 'ReferencesController@itemNumbersEdit'
+        ]);
+
+
+        // Справочник "Получатели"
+        Route::get('/admin/references/recipients', [
+            'as' => 'references.recipients',
+            'uses' => 'ReferencesController@recipientsIndex'
+        ]);
     });
 });
 

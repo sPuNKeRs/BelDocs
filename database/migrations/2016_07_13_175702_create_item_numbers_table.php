@@ -14,6 +14,8 @@ class CreateItemNumbersTable extends Migration
     {
         Schema::create('item_numbers', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('description');
+            $table->string('item_number');
             $table->timestamps();
         });
     }
