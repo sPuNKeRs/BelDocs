@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\ItemNumber;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -23,7 +24,9 @@ class OrdersController extends Controller
    */
    public function inbox()
    {
-        return view('orders.inbox');
+         $orders = Order::all();
+         
+        return view('orders.inbox', compact('orders'));
    }
 
    /*
@@ -32,7 +35,10 @@ class OrdersController extends Controller
    public function inboxCreate()
    {
       $lastId = Order::latest()->first()->id;
-      return view('orders.inbox-create', compact('lastId'));
+
+      $item_numbers_opt = ItemNumber::getArray();
+
+      return view('orders.inbox-create', compact('lastId' , 'item_numbers_opt'));
    }
 
    /*

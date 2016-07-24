@@ -20,26 +20,26 @@
             @endif
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3 class="panel-title bariol-thin">{!! isset($permission->id) ? '<i class="fa fa-pencil"></i> Редактирование' : '<i class="fa fa-envelope"></i> Добавить ' !!} "Номенклатурный номер"</h3>
+                    <h3 class="panel-title bariol-thin">{!! isset($item_number->id) ? '<i class="fa fa-pencil"></i> Редактирование' : '<i class="fa fa-envelope"></i> Добавить ' !!} "Номенклатурный номер"</h3>
                 </div>
                 <div class="panel-body">
-                {{--{!! Form::model($permission, [ 'url' => [URL::route('permission.edit'), $permission->id], 'method' => 'post'] )  !!}--}}
-                {{--<!-- description text field -->--}}
-                    {{--<div class="form-group">--}}
-                        {{--{!! Form::label('description','Description: *') !!}--}}
-                        {{--{!! Form::text('description', null, ['class' => 'form-control', 'placeholder' => 'permission description', 'id' => 'slugme']) !!}--}}
-                    {{--</div>--}}
-                    {{--<span class="text-danger">{!! $errors->first('description') !!}</span>--}}
-                    {{--<!-- permission text field -->--}}
-                    {{--<div class="form-group">--}}
-                        {{--{!! Form::label('permission','Permission: *') !!}--}}
-                        {{--{!! Form::text('permission', null, ['class' => 'form-control', 'placeholder' => 'permission description', 'id' => 'slug']) !!}--}}
-                    {{--</div>--}}
-                    {{--<span class="text-danger">{!! $errors->first('permission') !!}</span>--}}
-                    {{--{!! Form::hidden('id') !!}--}}
-                    {{--<a href="{!! URL::route('permission.delete',['id' => $permission->id, '_token' => csrf_token()]) !!}" class="btn btn-danger pull-right margin-left-5 delete">Delete</a>--}}
-                    {{--{!! Form::submit('Save', array("class"=>"btn btn-info pull-right ")) !!}--}}
-                    {{--{!! Form::close() !!}--}}
+                {!! Form::model($item_number, [ 'url' => [URL::route('references.itemnumber.edit'), $item_number->id], 'method' => 'post'] )  !!}
+                <!-- description text field -->
+                    <div class="form-group">
+                        {!! Form::label('description','Описание: *') !!}
+                        {!! Form::text('description', null, ['class' => 'form-control', 'placeholder' => 'Описание']) !!}
+                    </div>
+                    <span class="text-danger">{!! $errors->first('description') !!}</span>
+                    <!-- item_number text field -->
+                    <div class="form-group">
+                        {!! Form::label('item_number','Номенклатурный номер: *') !!}
+                        {!! Form::text('item_number', null, ['class' => 'form-control', 'placeholder' => 'Номенклатурный номер', 'id' => 'slug']) !!}
+                    </div>
+                    <span class="text-danger">{!! $errors->first('item_number') !!}</span>
+                    {!! Form::hidden('id') !!}
+                    <a href="{!! URL::route('references.itemnumber.delete',['id' => $item_number->id, '_token' => csrf_token()]) !!}" class="btn btn-danger pull-right margin-left-5 delete">Удалить</a>
+                    {!! Form::submit('Сохранить', array("class"=>"btn btn-info pull-right ")) !!}
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>

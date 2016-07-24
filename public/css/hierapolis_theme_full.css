@@ -589,6 +589,10 @@ th {
     content: "\e065"
 }
 
+.glyphicon-edit:before {
+    content: "\e065"
+}
+
 .glyphicon-share:before {
     content: "\e066"
 }

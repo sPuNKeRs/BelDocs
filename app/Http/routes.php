@@ -134,6 +134,19 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'ReferencesController@itemNumbersEdit'
         ]);
 
+        // Справочник "Номенклатурный номер" - сохранение
+        Route::post('/admin/references/itemnumber/edit', [
+            'as' => 'references.itemnumber.edit',
+            'uses' => 'ReferencesController@itemNumbersPost'
+        ]);
+
+        // Справочник "Номенклатурный номер" - сохранение
+        Route::get('/admin/references/itemnumber/delete', [
+            'as' => 'references.itemnumber.delete',
+            'uses' => 'ReferencesController@itemNumberDelete'
+        ]);
+
+
 
         // Справочник "Получатели"
         Route::get('/admin/references/recipients', [
@@ -146,7 +159,3 @@ Route::group(['middleware' => ['logged']], function () {
 Route::get('/test', function(){
     return view('test.test');
 });
-
-
-
-
