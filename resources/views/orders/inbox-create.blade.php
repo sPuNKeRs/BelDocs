@@ -28,13 +28,12 @@
               {{--@include('errors.errmsg')--}}
 
 
-            {!! Form::open()!!}
+            {!! Form::open(['route' => 'orders.inbox.create'])!!}
               <div class="row">
                   <div class="col-md-3">
                       @include('widgets.form._formitem_text', ['value' => $lastId+1,'name' => 'order_id', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
                   </div>
                   <div class="col-md-3">
-                      {{--@include('widgets.form._formitem_text', ['name' => 'item_number', 'title' => ' Номенклатурный номер', 'placeholder' => 'Номенклатурный номер' ])--}}
                       @include('widgets.form._formitem_select', ['name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
                   </div>
                   <div class="col-md-3">

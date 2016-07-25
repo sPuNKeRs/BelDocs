@@ -9,5 +9,11 @@ $(document).ready(function() {
             })
         }), $("[data-toggle=toolbar-tooltip]").tooltip({
             placement: "bottom"
-        }), $(".knob").knob()
+        }), $(".knob").knob();
+});
+
+$(document).ready(function(){
+    tinymce.init({
+        selector: 'textarea'
+    });
 });

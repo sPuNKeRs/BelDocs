@@ -28,10 +28,10 @@
                     {{--@include('errors.errmsg')--}}
 
 
-                    {!! Form::open()!!}
+                    {!! Form::model($order, ['route' => ['orders.inbox.update', $order->id]])!!}
                     <div class="row">
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['value' => $lastId+1,'name' => 'order_id', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                            @include('widgets.form._formitem_text', ['name' => 'id', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
                         </div>
                         <div class="col-md-3">
                             {{--@include('widgets.form._formitem_text', ['name' => 'item_number', 'title' => ' Номенклатурный номер', 'placeholder' => 'Номенклатурный номер' ])--}}
@@ -54,10 +54,10 @@
                             @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа' ])
                         </div>
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'create_date', 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1', 'value' => date('d.m.Y') ])
+                            @include('widgets.form._formitem_text', ['name' => 'create_date', 'value' => date('d.m.Y', strtotime($order->create_date)), 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
                         </div>
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'execute_date', 'title' => 'Дата исполнения', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1', 'value' => date('d.m.Y') ])
+                            @include('widgets.form._formitem_text', ['name' => 'execute_date', 'value' => date('d.m.Y', strtotime($order->execute_date)), 'title' => 'Дата исполнения', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
                         </div>
                     </div>
                     <div class="row">

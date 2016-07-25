@@ -6,11 +6,12 @@
 
 @section('pageClass', 'main page')
 
-@section('toolsbar')    
+@section('toolsbar')
+    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-create")))
     <a class='btn' data-toggle='toolbar-tooltip' href='{{ route('orders.inbox.create')}}' title='Создать приказ'>
       <i class='fa fa-plus-circle'></i>
-      
     </a>
+    @endif
 @stop
 
 @include('partials.navbar')
@@ -22,25 +23,26 @@
       @include('partials.tools')
       <!-- Content -->
       <div id='content'>
+          @include('widgets.flash.flash_message')
           <div class="panel panel-default grid">
               <div class="panel-heading">
                   <i class='fa fa-wpforms fa-lg'></i>
                   Входящие приказы
                   <div class="panel-tools">
                       <div class="btn-group">
-                          <a class="btn" href="#">
-                              <i class="fa fa-wrench"></i>
-                              Настройки
-                          </a>
-                          <a class="btn" href="#">
-                              <i class="fa fa-filter"></i>
-                              Фильтры
-                          </a>
-                          <a class="btn" data-toggle="toolbar-tooltip" href="#" title="" data-original-title="Обновить">
-                              <i class="fa fa-refresh"></i>
-                          </a>
+                          {{--<a class="btn" href="#">--}}
+                              {{--<i class="fa fa-wrench"></i>--}}
+                              {{--Настройки--}}
+                          {{--</a>--}}
+                          {{--<a class="btn" href="#">--}}
+                              {{--<i class="fa fa-filter"></i>--}}
+                              {{--Фильтры--}}
+                          {{--</a>--}}
+                          {{--<a class="btn" data-toggle="toolbar-tooltip" href="#" title="" data-original-title="Обновить">--}}
+                              {{--<i class="fa fa-refresh"></i>--}}
+                          {{--</a>--}}
                       </div>
-                      <div class="badge">3 записи</div>
+                      <div class="badge">{{ $count }} записей</div>
                   </div>
               </div>
               <table class="table">
@@ -66,19 +68,24 @@
                       <td>{{$order->item_number}}</td>
                       <td>{{$order->incoming_number}}</td>
                       <td>{{$order->title}}</td>
-                      <td>{{ date('d-m-Y', strtotime($order->create_date)) }}</td>
-                      <td>{{ date('d-m-Y', strtotime($order->execute_date)) }}</td>
+                      <td>{{ date('d.m.Y', strtotime($order->create_date)) }}</td>
+                      <td>{{ date('d.m.Y', strtotime($order->execute_date)) }}</td>
                       <td>{{ isset($order->status) ? 'Исполнен' : 'Не исполнен' }} </td>
                       <td class="action">
-                          <a class="btn btn-success" data-toggle="tooltip" href="#" title="">
-                              <i class="fa fa-search-plus"></i>
-                          </a>
-                          <a class="btn btn-info" href="#">
+                          {{--<a class="btn btn-success" data-toggle="tooltip" href="#" title="">--}}
+                              {{--<i class="fa fa-search-plus"></i>--}}
+                          {{--</a>--}}
+                          @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-edit")))
+                          <a class="btn btn-info" href="{{ route('orders.inbox.edit', $order->id) }}">
                               <i class="fa fa-pencil-square-o"></i>
                           </a>
-                          <a class="btn btn-danger" href="#">
+                          @endif
+
+                          @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-delete")))
+                          <a class="btn btn-danger delete" href="{{ route('orders.inbox.delete', $order->id) }}">
                               <i class="fa fa-trash-o"></i>
                           </a>
+                          @endif
                       </td>
                   </tr>
                   @endforeach
@@ -110,4 +117,10 @@
           </div>
     </div>
 @stop
-
+@section('custom_js')
+  <script>
+      $(".delete").click(function(){
+          return confirm("Вы действительно хотите удалить этот пункт?");
+      });
+  </script>
+@stop

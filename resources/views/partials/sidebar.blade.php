@@ -30,7 +30,8 @@
               </li>              
             </ul>
           </li>
-          @if(App::make('authentication_helper')->hasPermission(array("_dsp.index")))
+
+          @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_dsp-index")))
           <li class='launcher dropdown hover {{ Request::is('dsp/*') || Request::path() == 'dsp' ? 'active' : ''}}'>
             <i class='fa fa-user-secret'></i>
             <a href="{{ route('dsp.index') }}">ДСП</a>
@@ -43,8 +44,7 @@
               </li>              
             </ul>
           </li>   
-          @endif      
-         
+          @endif
 
           <li class='launcher {{ Request::is('reports/*') || Request::path() == 'reports' ? 'active' : ''}}'>
             <i class='fa fa-flag'></i>

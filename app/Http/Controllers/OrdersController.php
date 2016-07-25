@@ -8,12 +8,22 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\SaveOrderRequest;
+use Illuminate\Support\Facades\Session;
+
 
 class OrdersController extends Controller
 {
-   /*
-    * Вывод страница с приказами (Общая)
-    */
+
+    protected $logged_user;
+
+    public function __construct()
+    {
+        $this->logged_user = \App::make('authenticator')->getLoggedUser();
+    }
+
+    /*
+     * Вывод страница с приказами (Общая)
+     */
    public function index()
    {
         return view('orders.index');
@@ -25,8 +35,9 @@ class OrdersController extends Controller
    public function inbox()
    {
          $orders = Order::all();
+         $count = count($orders);
          
-        return view('orders.inbox', compact('orders'));
+        return view('orders.inbox', compact('orders' , 'count'));
    }
 
    /*
@@ -42,10 +53,52 @@ class OrdersController extends Controller
    }
 
    /*
+    * Форма редактирования входящего приказа
+    */
+    public function edit($id)
+    {
+        $order = Order::findOrFail($id);
+        $item_numbers_opt = ItemNumber::getArray();
+
+        return view('orders.inbox-edit', compact('order', 'item_numbers_opt'));
+    }
+
+    /**
+     * Сохранение изменений входящего приказа
+     */
+    public function update(SaveOrderRequest $request)
+    {
+        $order = Order::findOrFail($request->id);
+        $input = $request->all();
+
+        if($order->status != $request->status) $order->status = $request->status;
+
+        $order->fill($input)->save();
+
+        return redirect('/orders/inbox')->with('flash_message', 'Входящий приказ успешно изменен.');
+
+    }
+
+    /**
+     * Удаление входящего приказа
+     */
+    public function delete($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
+
+        Session::flash('flash_message', 'Входящий приказ успешно удален.');
+
+        return redirect('/orders/inbox');
+    }
+
+   /*
     * Сохраняем входящий приказ
     */
    public function inboxSave(SaveOrderRequest $request)
    {
+
+
       $slug = uniqid();
       $order = new Order(array(          
           'item_number' => $request->item_number,
@@ -55,12 +108,13 @@ class OrdersController extends Controller
           'execute_date' => date($request->execute_date),
           'description' => $request->description,
           'status' => $request->status,
+          'author_id' => $this->logged_user->id,
           'slug' => $slug
       ));
 
       $order->save();
 
-      return redirect('/orders/inbox')->with('status', 'Входящий приказ успешно создан.');
+      return redirect('/orders/inbox')->with('flash_message', 'Входящий приказ успешно создан.');
    }
 
 

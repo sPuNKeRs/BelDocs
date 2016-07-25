@@ -29,23 +29,46 @@ Route::group(['middleware' => ['logged']], function () {
         // Страница с входящими приказами
         Route::get('/orders/inbox', [
             'as' => 'orders.inbox',
-            'uses' => 'OrdersController@inbox'
+            'uses' => 'OrdersController@inbox'            
         ]);
 
         // Страница создания входящего приказа
         Route::get('/orders/inbox/create', [
             'as' => 'orders.inbox.create',
-            'uses' => 'OrdersController@inboxCreate'
+            'uses' => 'OrdersController@inboxCreate',
+            'middleware' => 'has_perm:_superadmin,_orders-inbox-create'
         ]);
 
         // Сохранение входящего приказа
         Route::post('/orders/inbox/create', [
-            'uses' => 'OrdersController@inboxSave'
+            'as' => 'orders.inbox.create',
+            'uses' => 'OrdersController@inboxSave',
+            'middleware' => 'has_perm:_superadmin,_orders-inbox-create'
+        ]);
+
+        // Страница редактирования входящего приказа
+        Route::get('/orders/inbox/edit/{id?}', [
+            'as' => 'orders.inbox.edit',
+            'uses' => 'OrdersController@edit',
+            'middleware' => 'has_perm:_superadmin,_orders-inbox-edit'
+        ]);
+
+        // Обновление входящего приказа
+        Route::post('/orders/inbox/update', [
+            'as' => 'orders.inbox.update',
+            'uses' => 'OrdersController@update',
+            'middleware' => 'has_perm:_superadmin,_orders-inbox-edit'
+        ]);
+
+        // Удаление входящего приказа
+        Route::get('/orders/inbox/delete/{id?}',[
+            'as' => 'orders.inbox.delete',
+            'uses' => 'OrdersController@delete',
+            'middleware' => 'has_perm:_superadmin,_orders-inbox-delete'
         ]);
 
 
         // Страница с исходящими приказами
-
         Route::get('/orders/outbox', [
             'as' => 'orders.outbox',
             'uses' => 'OrdersController@outbox'

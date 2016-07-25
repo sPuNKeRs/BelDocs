@@ -24,6 +24,7 @@
     {{HTML::script('bower_components/jquery-ui/ui/i18n/datepicker-ru.js')}}
     {{HTML::script('bower_components/bootstrap/dist/js/bootstrap.min.js')}}
     {{HTML::script('vendor/jquery.knob.min.js')}}
+    {{HTML::script('vendor/tinymce/tinymce.min.js')}}
     {{HTML::script('js/application.js')}}
     @yield('custom_js')
   </body>
