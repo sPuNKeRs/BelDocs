@@ -29,37 +29,20 @@
                   <div class="panel-tools">
                       <div class="btn-group">
                           <a class="btn" href="#">
-                              <i class="icon-wrench"></i>
-                              Settings
+                              <i class="fa fa-wrench"></i>
+                              Настройки
                           </a>
                           <a class="btn" href="#">
-                              <i class="icon-filter"></i>
-                              Filters
+                              <i class="fa fa-filter"></i>
+                              Фильтры
                           </a>
-                          <a class="btn" data-toggle="toolbar-tooltip" href="#" title="" data-original-title="Reload">
-                              <i class="icon-refresh"></i>
+                          <a class="btn" data-toggle="toolbar-tooltip" href="#" title="" data-original-title="Обновить">
+                              <i class="fa fa-refresh"></i>
                           </a>
                       </div>
-                      <div class="badge">3 record</div>
+                      <div class="badge">3 записи</div>
                   </div>
               </div>
-              {{--<div class="panel-body filters">--}}
-                  {{--<div class="row">--}}
-                      {{--<div class="col-md-9">--}}
-                          {{--Add your custom filters here...--}}
-                      {{--</div>--}}
-                      {{--<div class="col-md-3">--}}
-                          {{--<div class="input-group">--}}
-                              {{--<input class="form-control" placeholder="Quick search..." type="text">--}}
-                  {{--<span class="input-group-btn">--}}
-                    {{--<button class="btn" type="button">--}}
-                      {{--<i class="icon-search"></i>--}}
-                    {{--</button>--}}
-                  {{--</span>--}}
-                          {{--</div>--}}
-                      {{--</div>--}}
-                  {{--</div>--}}
-              {{--</div>--}}
               <table class="table">
                   <thead>
                   <tr>
@@ -117,26 +100,11 @@
                           <a href="#">3</a>
                       </li>
                       <li>
-                          <a href="#">4</a>
-                      </li>
-                      <li>
-                          <a href="#">5</a>
-                      </li>
-                      <li>
-                          <a href="#">6</a>
-                      </li>
-                      <li>
-                          <a href="#">7</a>
-                      </li>
-                      <li>
-                          <a href="#">8</a>
-                      </li>
-                      <li>
                           <a href="#">»</a>
                       </li>
                   </ul>
                   <div class="pull-right">
-                      Showing 1 to 10 of 32 entries
+                      Показать с 1 по 10 из 32 записей
                   </div>
               </div>
           </div>
