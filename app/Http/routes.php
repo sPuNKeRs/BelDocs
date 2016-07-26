@@ -75,6 +75,15 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
     });
 
+    // Группа для работы с комментариями
+    Route::group(['middleware' => []],function(){
+        // Сохранить комментарий
+        Route::post('/comments/store', [
+            'as' => 'comments.store',
+            'uses' => 'CommentsController@store'
+        ]);
+    });
+
     // Группа для работы с документами
     Route::group(['middleware' => []], function () {
         // Страница с приказами

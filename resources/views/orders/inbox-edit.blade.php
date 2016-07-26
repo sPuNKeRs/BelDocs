@@ -19,6 +19,7 @@
     @include('partials.tools')
     <!-- Content -->
         <div id='content'>
+            @include('widgets.flash.flash_message')
             <div class='panel panel-default'>
                 <div class='panel-heading'>
                     <i class='fa fa-pencil-square-o fa-lg'></i>
@@ -62,7 +63,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @include('widgets.form._formitem_textarea', ['name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
+                            @include('widgets.form._formitem_textarea', ['id' => 'description', 'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
                         </div>
                     </div>
                     <div class="form-actions">
@@ -73,7 +74,9 @@
                     {!! Form::close()!!}
                 </div>
             </div>
+            @include('partials.comments')
         </div>
+
     </div>
 @stop
 

@@ -61,7 +61,7 @@
               </div>
               <div class="row">
                   <div class="col-md-12">
-                      @include('widgets.form._formitem_textarea', ['name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
+                      @include('widgets.form._formitem_textarea', ['id' => 'description' ,'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
                   </div>
               </div>
               <div class="form-actions">
@@ -70,9 +70,11 @@
               </div>
               {{--{!! Form::token() !!}--}}
             {!! Form::close()!!}
-          </div>
+
+
         </div>
       </div>
+
     </div>
 @stop
 

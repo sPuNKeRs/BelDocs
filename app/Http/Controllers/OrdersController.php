@@ -11,6 +11,7 @@ use App\Http\Requests\SaveOrderRequest;
 use Illuminate\Support\Facades\Session;
 
 
+
 class OrdersController extends Controller
 {
 
@@ -58,9 +59,21 @@ class OrdersController extends Controller
     public function edit($id)
     {
         $order = Order::findOrFail($id);
+        $comments = Order::find($id)->comments;
+
+        foreach ($comments as $comment){
+            $comment->user = $comment->user;
+            $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
+            //dd($comment->user_profile);
+            //dd($comment);
+        }
+
+
+
+        $entity_id = $order->slug;
         $item_numbers_opt = ItemNumber::getArray();
 
-        return view('orders.inbox-edit', compact('order', 'item_numbers_opt'));
+        return view('orders.inbox-edit', compact('order', 'item_numbers_opt', 'entity_id', 'comments'));
     }
 
     /**

@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
 
+    public function comments()
+    {
+        return $this->hasMany('App\Comment','entity_id','slug');
+    }
+
 
     // Заполняемые поля
     protected $fillable = ['item_number',

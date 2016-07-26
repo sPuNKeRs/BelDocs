@@ -14,6 +14,6 @@ $(document).ready(function() {
 
 $(document).ready(function(){
     tinymce.init({
-        selector: 'textarea'
+        selector: '#description'
     });
 });
