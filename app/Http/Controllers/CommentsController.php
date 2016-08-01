@@ -27,5 +27,24 @@ class CommentsController extends Controller
        return back()->with('flash_message', 'Комментарий успешно добавлен.');
     }
 
+    public function delete(Request $request)
+    {
+
+        $id = $request->id;
+
+        $comment = Comment::find($id);
+        if($comment->delete()){
+            if($request->ajax()){
+                return response(['status' => 'true']);
+            }
+            return back();
+        }else{
+            if($request->ajax()){
+                return response(['status' => 'false']);
+            }
+            return back();
+        }
+    }
+
     
 }

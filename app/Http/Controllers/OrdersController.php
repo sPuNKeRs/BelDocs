@@ -33,12 +33,14 @@ class OrdersController extends Controller
    /*
    * Вывод страницы с входящими приказами
    */
-   public function inbox()
+   public function inbox(Order $order)
    {
-         $orders = Order::all();
-         $count = count($orders);
+         //$orders = Order::all();
+
+       $orders = $order->paginate(5);
+       $count = count($orders);
          
-        return view('orders.inbox', compact('orders' , 'count'));
+       return view('orders.inbox', compact('orders' , 'count'));
    }
 
    /*

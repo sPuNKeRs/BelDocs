@@ -147,6 +147,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -165,6 +167,7 @@ return [
          Barryvdh\Debugbar\ServiceProvider::class,
          DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
          Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        'Laravelrus\LocalizedCarbon\LocalizedCarbonServiceProvider',
         
 
     ],
@@ -214,6 +217,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
+        'LocalizedCarbon'   => 'Laravelrus\LocalizedCarbon\LocalizedCarbon',
+        'DiffFormatter'     => 'Laravelrus\LocalizedCarbon\DiffFactoryFacade',
 
     ],
 

@@ -10,6 +10,7 @@
         "jacopo/laravel-authentication-acl": "1.3.*",
         "barryvdh/laravel-debugbar": "^2.2",
         "davejamesmiller/laravel-breadcrumbs": "^3.0",
+        "laravelrus/localized-carbon": "dev-master",
         "barryvdh/laravel-ide-helper": "^2.2"
     },
     "require-dev": {

@@ -82,7 +82,16 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'comments.store',
             'uses' => 'CommentsController@store'
         ]);
+
+        // Удалить комментарий
+        Route::post('/comments/delete/{id?}', [
+            'as' => 'comments.delete',
+            'uses' => 'CommentsController@delete'
+        ]);
     });
+
+
+
 
     // Группа для работы с документами
     Route::group(['middleware' => []], function () {
