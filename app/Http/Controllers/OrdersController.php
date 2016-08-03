@@ -113,6 +113,8 @@ class OrdersController extends Controller
    public function inboxSave(SaveOrderRequest $request)
    {
 
+//       dd($request);
+
 
       $slug = uniqid();
       $order = new Order(array(          

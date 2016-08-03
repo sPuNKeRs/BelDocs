@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableComments extends Migration
+class CreateFileentriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,13 @@ class CreateTableComments extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::table('fileentries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('entity_id'); //здесь будет хранится id 
-            $table->text('content');
+            $table->string('filename');
+            $table->string('mime');
+            $table->string('original_filename');
+            $table->string('entity_id');
             $table->string('author_id');
-            $table->boolean('public')->default(1);
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateTableComments extends Migration
      */
     public function down()
     {
-        Schema::drop('comments');
+        Schema::drop('fileentries');
     }
 }

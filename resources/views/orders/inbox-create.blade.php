@@ -28,7 +28,7 @@
               {{--@include('errors.errmsg')--}}
 
 
-            {!! Form::open(['route' => 'orders.inbox.create'])!!}
+            {!! Form::open(['route' => 'orders.inbox.create' , 'files'=> 'true'])!!}
               <div class="row">
                   <div class="col-md-3">
                       @include('widgets.form._formitem_text', ['value' => $lastId+1,'name' => 'order_id', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
@@ -62,6 +62,11 @@
               <div class="row">
                   <div class="col-md-12">
                       @include('widgets.form._formitem_textarea', ['id' => 'description' ,'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      @include('partials.files_attachments')
                   </div>
               </div>
               <div class="form-actions">
