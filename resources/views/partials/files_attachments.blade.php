@@ -1,6 +1,5 @@
 {{ Form::file('upload_files', ['id'=>'upload_files', 'multiple'=>'true' ]) }}
 
-{{--<input id="upload_files" type="file" name="upload_files" multiple>--}}
 @section('custom_js')
     @parent
     <script>

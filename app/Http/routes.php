@@ -40,9 +40,16 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
 
         // Сохранение входящего приказа
+//        Route::post('/orders/inbox/create', [
+//            'as' => 'orders.inbox.create',
+//            'uses' => 'OrdersController@inboxSave',
+//            'middleware' => 'has_perm:_superadmin,_orders-inbox-create'
+//        ]);
+
+        // Сохранение входящего приказа AJAX
         Route::post('/orders/inbox/create', [
             'as' => 'orders.inbox.create',
-            'uses' => 'OrdersController@inboxSave',
+            'uses' => 'OrdersController@inboxSaveAjax',
             'middleware' => 'has_perm:_superadmin,_orders-inbox-create'
         ]);
 

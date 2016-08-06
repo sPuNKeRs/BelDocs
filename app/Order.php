@@ -15,7 +15,8 @@ class Order extends Model
 
 
     // Заполняемые поля
-    protected $fillable = ['item_number',
+    protected $fillable = ['order_num',
+                           'item_number',
                            'incoming_number',
                            'title',
                            'create_date',

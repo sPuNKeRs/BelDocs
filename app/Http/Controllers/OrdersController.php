@@ -37,7 +37,7 @@ class OrdersController extends Controller
    {
          //$orders = Order::all();
 
-       $orders = $order->paginate(5);
+       $orders = $order->paginate(25);
        $count = count($orders);
          
        return view('orders.inbox', compact('orders' , 'count'));
@@ -48,8 +48,7 @@ class OrdersController extends Controller
     */
    public function inboxCreate()
    {
-      $lastId = Order::latest()->first()->id;
-
+      $lastId = Order::orderBy('order_num', 'DESC')->first()->order_num;
       $item_numbers_opt = ItemNumber::getArray();
 
       return view('orders.inbox-create', compact('lastId' , 'item_numbers_opt'));
@@ -66,11 +65,7 @@ class OrdersController extends Controller
         foreach ($comments as $comment){
             $comment->user = $comment->user;
             $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
-            //dd($comment->user_profile);
-            //dd($comment);
         }
-
-
 
         $entity_id = $order->slug;
         $item_numbers_opt = ItemNumber::getArray();
@@ -91,7 +86,6 @@ class OrdersController extends Controller
         $order->fill($input)->save();
 
         return redirect('/orders/inbox')->with('flash_message', 'Входящий приказ успешно изменен.');
-
     }
 
     /**
@@ -100,6 +94,14 @@ class OrdersController extends Controller
     public function delete($id)
     {
         $order = Order::findOrFail($id);
+
+        //Удаляем комментарии
+        $comments = $order->comments;
+
+        foreach ($comments as $comment){
+            $comment->delete();
+        }
+
         $order->delete();
 
         Session::flash('flash_message', 'Входящий приказ успешно удален.');
@@ -107,17 +109,51 @@ class OrdersController extends Controller
         return redirect('/orders/inbox');
     }
 
+    /*
+     * Сохраняем входящий приказ AJAX
+     */
+    public function inboxSaveAjax(SaveOrderRequest $request)
+    {
+        if($request->order_id > 0)
+        {
+            $order = Order::find($request->order_id);
+
+            $order->update($request->all());
+
+            return response(['status' => true, 'action' => 'update']);
+        }
+
+        $slug = uniqid();
+        $order = new Order(array(
+            'order_num' => $request->order_num,
+            'item_number' => $request->item_number,
+            'incoming_number' => $request->incoming_number,
+            'title' => $request->title,
+            'create_date' => date($request->create_date),
+            'execute_date' => date($request->execute_date),
+            'description' => $request->description,
+            'status' => $request->status,
+            'author_id' => $this->logged_user->id,
+            'slug' => $slug
+        ));
+
+        $order->save();
+
+        return response(['status'=>true,'action' => 'save' ,'order_id'=>$order->id, 'req'=>$request->description]);
+    }
+
    /*
     * Сохраняем входящий приказ
     */
-   public function inboxSave(SaveOrderRequest $request)
+   public function inboxSave(Request $request)
    {
 
 //       dd($request);
 
 
       $slug = uniqid();
-      $order = new Order(array(          
+      $order = new Order(array(
+          'order_num' => $request->order_num,
           'item_number' => $request->item_number,
           'incoming_number' => $request->incoming_number,
           'title' => $request->title,

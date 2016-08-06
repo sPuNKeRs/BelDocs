@@ -13,9 +13,7 @@ $(document).ready(function() {
 });
 
 $(document).ready(function(){
-    tinymce.init({
-        selector: '#description'
-    });
-
-   
+    // tinymce.init({
+    //     selector: '#description'
+    // });
 });

@@ -30,9 +30,10 @@
 
 
                     {!! Form::model($order, ['route' => ['orders.inbox.update', $order->id]])!!}
+                    {!! Form::hidden('id', $order->id) !!}
                     <div class="row">
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'id', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                            @include('widgets.form._formitem_text', ['name' => 'order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
                         </div>
                         <div class="col-md-3">
                             {{--@include('widgets.form._formitem_text', ['name' => 'item_number', 'title' => ' Номенклатурный номер', 'placeholder' => 'Номенклатурный номер' ])--}}
