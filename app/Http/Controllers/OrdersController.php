@@ -48,10 +48,25 @@ class OrdersController extends Controller
     */
    public function inboxCreate()
    {
-      $lastId = Order::orderBy('order_num', 'DESC')->first()->order_num;
+       $slug = uniqid();
+       $last_order_num = Order::orderBy('order_num', 'DESC')->first()->order_num;
+      
+       // Создаем черновик
+      $order = new Order(array(
+          'order_num' => $last_order_num + 1,
+          'author_id' => $this->logged_user->id,
+          'slug' => $slug,
+          'draft' => true
+      ));
+       
+       $order->save();
+       $order_id = $order->id;
+       $draft = $order->draft;
+
+      
       $item_numbers_opt = ItemNumber::getArray();
 
-      return view('orders.inbox-create', compact('lastId' , 'item_numbers_opt'));
+      return view('orders.inbox-create', compact('last_order_num' , 'item_numbers_opt', 'order_id', 'draft'));
    }
 
    /*
@@ -79,7 +94,9 @@ class OrdersController extends Controller
     public function update(SaveOrderRequest $request)
     {
         $order = Order::findOrFail($request->id);
+
         $input = $request->all();
+        $input['draft'] = NULL;
 
         if($order->status != $request->status) $order->status = $request->status;
 
@@ -117,6 +134,7 @@ class OrdersController extends Controller
         if($request->order_id > 0)
         {
             $order = Order::find($request->order_id);
+            //$request->draft = NULL;
 
             $order->update($request->all());
 

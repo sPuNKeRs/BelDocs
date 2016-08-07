@@ -31,10 +31,14 @@
 
 
             {!! Form::open(['route' => 'orders.inbox.create' , 'files'=> 'true', 'id'=>'order_form', 'name'=>'order_form'])!!}
-              {!! Form::hidden('order_id', '', ['id'=>'order_id']) !!}
+              {!! Form::hidden('order_id', $order_id, ['id'=>'order_id']) !!}
+              @if($draft)
+                  {!! Form::hidden('draft', $draft, ['id'=>'draft']) !!}
+              @endif
+
               <div class="row">
                   <div class="col-md-3">
-                      @include('widgets.form._formitem_text', ['value' => $lastId+1,'name' => 'order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                      @include('widgets.form._formitem_text', ['value' => $last_order_num+1,'name' => 'order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
                   </div>
                   <div class="col-md-3">
                       @include('widgets.form._formitem_select', ['name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
@@ -129,6 +133,8 @@
                     success: function (response) {
                         setStateInfo('saved');
 
+                        $('#draft').val('');
+
                         if(response.order_id){
                             $('#order_id').val(response.order_id);
                         }
@@ -189,9 +195,22 @@
                 case 'error':
                     msg = "<i style='color: red;' class='fa fa-exclamation-circle fa-lg'></i> Ошибка при сохранении";
                     break;
+                case 'draft':
+                    msg = "<i class='fa fa-newspaper-o fa-lg'></i> Создан черновик";
+                    break;
             }
 
             $('#stateInfo').html(msg);
+        }
+
+
+        isDraft();
+        // Проверка на черновик
+        function isDraft()
+        {
+            if($('#draft').val() == '1'){
+                setStateInfo('draft');
+            }
         }
 
         // При изменнении значния в поле

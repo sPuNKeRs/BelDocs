@@ -24,7 +24,8 @@ class Order extends Model
                            'description',
                            'status',
                            'author_id',
-                           'slug'];
+                           'slug',
+                           'draft'];
 
 //    protected $dates = ['create_date',
 //                        'execute_date',];
