@@ -111,12 +111,13 @@
             function saveOrder(close)
             {
                 setStateInfo('save');
+                $('#draft').val('');
                 var token = $('input[name=_token]').val();
                 var form = $('#order_form')[0];
                 var formData = new FormData(form);
 
 
-                console.log($('#description').val());
+                //console.log($('#description').val());
 
                 // Display the key/value pairs
                 // for (var pair of formData.entries()) {
@@ -133,14 +134,12 @@
                     success: function (response) {
                         setStateInfo('saved');
 
-                        $('#draft').val('');
-
                         if(response.order_id){
                             $('#order_id').val(response.order_id);
                         }
 
                         if(close){
-                            console.log('close');
+                           // console.log('close');
                             if(confirm('Закрыть приказ?')){
                                 location.href = document.referrer;
                             }

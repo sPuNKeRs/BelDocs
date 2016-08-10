@@ -96,7 +96,7 @@ class OrdersController extends Controller
         $order = Order::findOrFail($request->id);
 
         $input = $request->all();
-        $input['draft'] = NULL;
+        //$input['draft'] = NULL;
 
         if($order->status != $request->status) $order->status = $request->status;
 
@@ -133,10 +133,13 @@ class OrdersController extends Controller
     {
         if($request->order_id > 0)
         {
-            $order = Order::find($request->order_id);
-            //$request->draft = NULL;
 
-            $order->update($request->all());
+            $order = Order::find($request->order_id);
+
+            $input = $request->all();
+
+
+            $order->update($input);
 
             return response(['status' => true, 'action' => 'update']);
         }
