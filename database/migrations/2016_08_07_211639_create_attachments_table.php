@@ -12,8 +12,14 @@ class CreateAttachmentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('attachments', function (Blueprint $table) {
-            //
+        Schema::create('attachments', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title')->nullable();
+            $table->string('type')->nullable();
+            $table->string('size')->nullable();
+            $table->string('entity_id'); //здесь будет хранится id (Приказа...)
+            $table->string('author_id');
+            $table->timestamps();
         });
     }
 
@@ -24,8 +30,6 @@ class CreateAttachmentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('attachments', function (Blueprint $table) {
-            //
-        });
+        Schema::drop('attachments');
     }
 }

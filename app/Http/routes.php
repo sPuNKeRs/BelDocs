@@ -53,6 +53,12 @@ Route::group(['middleware' => ['logged']], function () {
             'middleware' => 'has_perm:_superadmin,_orders-inbox-create'
         ]);
 
+        // Отмена создания приказа
+        Route::get('/orders/inbox/cancel', [
+            'as' => 'orders.inbox.cancel',
+            'uses' => 'OrdersController@orderCancel'
+        ]);
+
         // Страница редактирования входящего приказа
         Route::get('/orders/inbox/edit/{id?}', [
             'as' => 'orders.inbox.edit',
@@ -158,6 +164,14 @@ Route::group(['middleware' => ['logged']], function () {
         Route::get('/search', [
             'as' => 'search.index',
             'uses' => 'SearchController@index'
+        ]);
+    });
+
+    // Группа для работы с вложениями
+    Route::group(['middlewate'=>[]], function(){
+        Route::post('/attachments/store', [
+            'as' => 'attachments.store',
+            'uses' => 'AttachmentsController@store'
         ]);
     });
 

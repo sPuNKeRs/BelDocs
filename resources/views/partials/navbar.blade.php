@@ -1,7 +1,7 @@
 <!-- Navbar -->
 <div class='navbar navbar-default' id='navbar'>
   <a class='navbar-brand' href='/'>
-    <i class='fa fa-beer'></i>
+    <i class='fa fa-book'></i>
     {!!Config::get('acl_base.app_name')!!}
   </a>
   <ul class='nav navbar-nav pull-right'>    

@@ -43,7 +43,7 @@ class SaveOrderRequest extends Request
     public function messages()
     {
         return [
-            'order_id.required' => 'Поле порядковый номер обязательно для заполнения',
+            //'order_id.required' => 'Поле порядковый номер обязательно для заполнения',
             'item_number.required' => 'Поле номенклатурный номер обязательно для заполнения',
             'incoming_number.required' => 'Поле входящий номер обязательно для заполнения',
             'title.required' => 'Поле тема обязательно для заполения',

@@ -31,7 +31,9 @@
 
 
             {!! Form::open(['route' => 'orders.inbox.create' , 'files'=> 'true', 'id'=>'order_form', 'name'=>'order_form'])!!}
-              {!! Form::hidden('order_id', $order_id, ['id'=>'order_id']) !!}
+              {!! Form::hidden('id', $id, ['id'=>'order_id']) !!}
+              {!! Form::hidden('slug', $slug, ['id'=>'slug']) !!}
+              {!! Form::hidden('entity_type', $entity_type) !!}
               @if($draft)
                   {!! Form::hidden('draft', $draft, ['id'=>'draft']) !!}
               @endif
@@ -80,7 +82,7 @@
                   {{--@include('widgets.form._formitem_btn_submit',['title' => 'Сохранить', 'class' => 'btn btn-default'])--}}
                   <button id="save_order" class="btn btn-default">Сохранить</button>
                   <button id="save_close_order" class="btn btn-default">Сохранить и закрыть</button>
-                  <a id='cancelBtn' class="btn" href="{{ route('orders.inbox') }}">Отмена</a>
+                  <a id='cancelBtn' class="btn" href="{{ route('orders.inbox.cancel', ['id'=>$id]) }}">Отмена</a>
               </div>
               {{--{!! Form::token() !!}--}}
             {!! Form::close()!!}
@@ -134,8 +136,9 @@
                     success: function (response) {
                         setStateInfo('saved');
 
-                        if(response.order_id){
-                            $('#order_id').val(response.order_id);
+                        if(response.id){
+                            console.log(response.id);
+                            $('#order_id').val(response.id);
                         }
 
                         if(close){
