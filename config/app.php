@@ -148,6 +148,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        App\Providers\HelperServiceProvider::class,
 
 
         /*
@@ -219,6 +220,8 @@ return [
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
         'LocalizedCarbon'   => 'Laravelrus\LocalizedCarbon\LocalizedCarbon',
         'DiffFormatter'     => 'Laravelrus\LocalizedCarbon\DiffFactoryFacade',
+
+        'InitialPreview' => App\Helpers\InitialPreview::class,
 
     ],
 

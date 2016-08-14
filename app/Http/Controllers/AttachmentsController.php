@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Attachment;
+use App\Helpers\InitialPreview;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -27,16 +28,18 @@ class AttachmentsController extends Controller
      */
     public function store(Request $request)
     {
-
-
-
-
-
         if($request->hasFile('upload_files'))
         {
             $files = $request->file('upload_files');
             $this->path = $request->entity_type.'/'.$request->slug. '/';
-            $i = 0;
+
+            //$initialPreview = InitialPreview::getInitialPreview($files, $this->path);
+
+
+
+            $initialPreview = array();
+            $initialPreviewConfig = array();
+
             foreach ($files as $file)
             {
                 $attachment = new Attachment(array(
@@ -50,20 +53,49 @@ class AttachmentsController extends Controller
                 if(Storage::put($this->path . $file->getClientOriginalName(),  file_get_contents($file->getRealPath())))
                 {
                     $attachment->save();
+                    $type = '';
 
-                    $initialPreview = array(
-                        "<img src='".Storage::url($this->path . $file->getClientOriginalName())."' class='file-preview-image' alt='' title=''>",
-                    );
+                    array_push($initialPreview, asset(Storage::url($this->path . $file->getClientOriginalName())));
 
-                    $link = "<a href='".Storage::url($this->path . $file->getClientOriginalName())."'>Скачать!</a>";
+                    switch ($attachment->type)
+                    {
+                        case 'image/png':
+                            $type = 'image';
+                            break;
+                        case 'image/jpeg':
+                            $type = 'image';
+                            break;
+//                        case 'application/vnd.ms-excel':
+//                            $type = 'other';
+//                            break;
+//
+//                        case 'application/vnd.oasis.opendocument.spreadsheet':
+//                            $t
+                        case 'application/pdf':
+                            $type = 'pdf';
+                            break;
+//                        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+//                            $type = 'other';
+//                            break;
+//                        case 'application/msword':
+//                            $type = 'other';
+//                            break;
+                        default:
+                            $type = 'other';
+                            break;
+                    }
 
+                    $initialPreConfig = ['type' => $type, 'size' => $attachment->size, 'caption' => $attachment->title, 'url' => '#'];
 
-                    //$initialPreviewConfig = array();
+                    array_push($initialPreviewConfig, $initialPreConfig);
+
+                    $append = true;
                 }
-                $i++;
             }
 
-            return response([$initialPreview, $link, $i]);
+            //, 'initialPreviewConfig' => $initialPreviewConfig
+
+            return response(['initialPreview' => $initialPreview , 'initialPreviewConfig' => $initialPreviewConfig, $attachment]);
         }
 
 

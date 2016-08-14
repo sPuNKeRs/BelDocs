@@ -13,6 +13,11 @@ class Order extends Model
         return $this->hasMany('App\Comment','entity_id','slug');
     }
 
+    public function attachments()
+    {
+        return $this->hasMany('App\Attachment', 'entity_id', 'slug');
+    }
+
 
     // Заполняемые поля
     protected $fillable = ['order_num',

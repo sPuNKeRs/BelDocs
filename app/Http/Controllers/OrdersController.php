@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use InitialPreview;
+
 use App\ItemNumber;
 use Illuminate\Http\Request;
 
@@ -81,6 +83,7 @@ class OrdersController extends Controller
      */
     public function edit($id)
     {
+        $entity_type = $this->entity_type;
         $order = Order::findOrFail($id);
         $comments = Order::find($id)->comments;
 
@@ -92,7 +95,25 @@ class OrdersController extends Controller
         $entity_id = $order->slug;
         $item_numbers_opt = ItemNumber::getArray();
 
-        return view('orders.inbox-edit', compact('order', 'item_numbers_opt', 'entity_id', 'comments'));
+        // FILES
+
+        if(count($order->attachments) > 0)
+        {
+            $attachments = $order->attachments;
+            $initialPreview = InitialPreview::getInitialPreview($attachments, 'orders');
+            $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
+            //dd($initialPreviewConfig);
+        }
+
+
+
+        return view('orders.inbox-edit', compact('order',
+                                                'item_numbers_opt',
+                                                'entity_id',
+                                                'comments',
+                                                'initialPreview',
+                                                'initialPreviewConfig',
+                                                'entity_type'));
     }
 
     /**

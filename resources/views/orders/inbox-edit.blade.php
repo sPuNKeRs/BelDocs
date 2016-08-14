@@ -67,6 +67,11 @@
                             @include('widgets.form._formitem_textarea', ['id' => 'description', 'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @include('partials.files_attachments')
+                        </div>
+                    </div>
                     <div class="form-actions">
                         @include('widgets.form._formitem_btn_submit',['title' => 'Сохранить', 'class' => 'btn btn-default'])
                         <a class="btn" href="{{ route('orders.inbox') }}">Отмена</a>
