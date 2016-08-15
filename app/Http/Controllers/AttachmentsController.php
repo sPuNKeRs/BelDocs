@@ -33,6 +33,8 @@ class AttachmentsController extends Controller
             $files = $request->file('upload_files');
             $this->path = $request->entity_type.'/'.$request->slug. '/';
 
+
+
             //$initialPreview = InitialPreview::getInitialPreview($files, $this->path);
 
 
@@ -42,12 +44,14 @@ class AttachmentsController extends Controller
 
             foreach ($files as $file)
             {
+                $url = asset(Storage::url($this->path . $file->getClientOriginalName()));
                 $path = $this->path.$file->getClientOriginalName();
                 $attachment = new Attachment(array(
                     'title' => $file->getClientOriginalName(),
                     'type' => $file->getClientMimeType(),
                     'size' => $file->getClientSize(),
                     'path' => $path,
+                    'url' => $url,
                     'entity_id' => $request->slug,
                     'author_id' => $this->logged_user->id
                 ));
@@ -55,7 +59,7 @@ class AttachmentsController extends Controller
                 if(Storage::put($this->path . $file->getClientOriginalName(),  file_get_contents($file->getRealPath())))
                 {
                     $attachment->save();
-                    array_push($initialPreview, asset(Storage::url($this->path . $file->getClientOriginalName())));
+                    array_push($initialPreview, $url);
 
                     $type = InitialPreview::getTypePreview($attachment->type);
                     $showZoom = false;
@@ -100,8 +104,6 @@ class AttachmentsController extends Controller
     // Получить ссылку для загрузки
     public function getUrl(Request $request)
     {
-        //Attachment::find($request->id)->
-
-        return response($request->id);
+        return response(Attachment::find($request->id)->url);
     }
 }

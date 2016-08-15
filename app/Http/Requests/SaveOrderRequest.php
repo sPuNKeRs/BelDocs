@@ -30,7 +30,7 @@ class SaveOrderRequest extends Request
             'title' => 'required',
             'create_date' => 'required',
             'execute_date' => 'required',
-            'description' => 'max:500',
+            //'description' => 'max:1500',
             
         ];
     }

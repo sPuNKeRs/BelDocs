@@ -26,8 +26,6 @@
                     Форма редактирования входящего приказа
                 </div>
                 <div class='panel-body'>
-                    {{--@include('errors.errmsg')--}}
-
 
                     {!! Form::model($entity, ['route' => ['orders.inbox.update', $entity->id]])!!}
                     {!! Form::hidden('id', $entity->id) !!}
@@ -78,7 +76,9 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        @include('widgets.form._formitem_btn_submit',['title' => 'Сохранить', 'class' => 'btn btn-default'])
+                        @if(App::make('authentication_helper')->hasPermission(array("_superadmin")) || App::make('authenticator')->getLoggedUser()->id == $entity->author_id)
+                            @include('widgets.form._formitem_btn_submit',['title' => 'Сохранить', 'class' => 'btn btn-default'])
+                        @endif
                         <a class="btn" href="{{ route('orders.inbox') }}">Отмена</a>
                     </div>
                     {{--{!! Form::token() !!}--}}
