@@ -29,8 +29,8 @@
                     {{--@include('errors.errmsg')--}}
 
 
-                    {!! Form::model($order, ['route' => ['orders.inbox.update', $order->id]])!!}
-                    {!! Form::hidden('id', $order->id) !!}
+                    {!! Form::model($entity, ['route' => ['orders.inbox.update', $entity->id]])!!}
+                    {!! Form::hidden('id', $entity->id) !!}
                     <div class="row">
                         <div class="col-md-3">
                             @include('widgets.form._formitem_text', ['name' => 'order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
@@ -56,15 +56,20 @@
                             @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа' ])
                         </div>
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'create_date', 'value' => date('d.m.Y', strtotime($order->create_date)), 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
+                            @include('widgets.form._formitem_text', ['name' => 'create_date', 'value' => date('d.m.Y', strtotime($entity->create_date)), 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
                         </div>
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'execute_date', 'value' => date('d.m.Y', strtotime($order->execute_date)), 'title' => 'Дата исполнения', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
+                            @include('widgets.form._formitem_text', ['name' => 'execute_date', 'value' => date('d.m.Y', strtotime($entity->execute_date)), 'title' => 'Дата исполнения', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             @include('widgets.form._formitem_textarea', ['id' => 'description', 'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @include('widgets.form._formitem_textarea', ['name' => 'resolution', 'id' => 'resolution','title' => 'Резолюция', 'rows' => '3', 'placeholder' => 'Резолюция'])
                         </div>
                     </div>
                     <div class="row">

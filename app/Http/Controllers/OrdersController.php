@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use Illuminate\Support\Facades\Storage;
 use InitialPreview;
 
 use App\ItemNumber;
@@ -66,6 +67,7 @@ class OrdersController extends Controller
         $order->save();
         $id = $order->id;
         $draft = $order->draft;
+        $entity = $order;
 
 
         $item_numbers_opt = ItemNumber::getArray();
@@ -75,7 +77,8 @@ class OrdersController extends Controller
                                                     'id',
                                                     'draft',
                                                     'slug',
-                                                    'entity_type'));
+                                                    'entity_type',
+                                                    'entity'));
     }
 
     /*
@@ -85,7 +88,7 @@ class OrdersController extends Controller
     {
         $entity_type = $this->entity_type;
         $order = Order::findOrFail($id);
-        $comments = Order::find($id)->comments;
+        $comments = Order::find($id)->comments()->orderBy('created_at', 'desc')->get();
 
         foreach ($comments as $comment) {
             $comment->user = $comment->user;
@@ -96,23 +99,25 @@ class OrdersController extends Controller
         $item_numbers_opt = ItemNumber::getArray();
 
         // FILES
-
         if(count($order->attachments) > 0)
         {
             $attachments = $order->attachments;
             $initialPreview = InitialPreview::getInitialPreview($attachments, 'orders');
             $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
-            //dd($initialPreviewConfig);
         }
+        $append = true;
 
-
-
-        return view('orders.inbox-edit', compact('order',
+        $entity = $order;
+        
+        //dd($entity);
+        
+        return view('orders.inbox-edit', compact('entity',
                                                 'item_numbers_opt',
                                                 'entity_id',
                                                 'comments',
                                                 'initialPreview',
                                                 'initialPreviewConfig',
+                                                'append',
                                                 'entity_type'));
     }
 
@@ -147,6 +152,16 @@ class OrdersController extends Controller
             $comment->delete();
         }
 
+        // Удаляем вложения
+        $attachments = $order->attachments;
+
+        foreach ($attachments as $attachment)
+        {
+            $attachment->delete();
+        }
+
+        Storage::deleteDirectory('orders/'.$order->slug);
+
         $order->delete();
 
         Session::flash('flash_message', 'Входящий приказ успешно удален.');
@@ -180,6 +195,7 @@ class OrdersController extends Controller
             'create_date' => date($request->create_date),
             'execute_date' => date($request->execute_date),
             'description' => $request->description,
+            'resolution' => $request->resolution,
             'status' => $request->status,
             'author_id' => $this->logged_user->id,
             'slug' => $slug
@@ -195,10 +211,6 @@ class OrdersController extends Controller
      */
     public function inboxSave(Request $request)
     {
-
-//       dd($request);
-
-
         $slug = uniqid();
         $order = new Order(array(
             'order_num' => $request->order_num,
@@ -208,6 +220,7 @@ class OrdersController extends Controller
             'create_date' => date($request->create_date),
             'execute_date' => date($request->execute_date),
             'description' => $request->description,
+            'resolution' => $request->resolution,
             'status' => $request->status,
             'author_id' => $this->logged_user->id,
             'slug' => $slug
@@ -235,7 +248,26 @@ class OrdersController extends Controller
         $order = Order::findOrFail($request->id);
 
         if($order->draft == '1'){
+
+            //Удаляем комментарии
+            $comments = $order->comments;
+
+            foreach ($comments as $comment) {
+                $comment->delete();
+            }
+
+            // Удаляем вложения
+            $attachments = $order->attachments;
+
+            foreach ($attachments as $attachment)
+            {
+                $attachment->delete();
+            }
+
+            Storage::deleteDirectory('orders/'.$order->slug);
+
             $order->delete();
+
             return redirect('/orders/inbox');
         }
         return redirect('/orders/inbox');

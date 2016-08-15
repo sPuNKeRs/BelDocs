@@ -18,8 +18,6 @@ class InitialPreview
             array_push($initialPreview, asset(Storage::url($path . $file->title)));
         }
 
-        //dd($initialPreview);
-
         return $initialPreview;
     }
 
@@ -30,12 +28,32 @@ class InitialPreview
 
         foreach ($files as $file)
         {
-            $config = ['type' => InitialPreview::getTypePreview($file->type), 'size' => $file->size, 'caption' => $file->title, 'url' => '#'];
+            $showDelete = false;
+            if(\App::make('authentication_helper')->hasPermission(array("_superadmin")) || \App::make('authenticator')->getLoggedUser()->id == $file->author_id)
+            {
+                $showDelete = true;
+            }
+
+            $type = InitialPreview::getTypePreview($file->type);
+
+            $showZoom = false;
+            if($type == 'image' || $type == 'pdf')
+            {
+                $showZoom = true;
+            }
+
+            //$otherActionButtons = '<a href="/"><button type="button" class="btn btn-xs btn-default" title="Скачать"><i class="fa fa-download" aria-hidden="true"></i></button></a>';
+
+           // 'layoutTemplates': {actions: "{upload} {delete} {zoom} {other}"},
+            //$actions = ['actions' => '{upload} {delete} {zoom} {other}'];
+
+
+            $config = ['type' => $type, 'size' => $file->size, 'caption' => $file->title, 'url' => route('attachments.destroy'), 'key' => $file->id, 'showDelete' => $showDelete, 'showZoom'=>$showZoom];
+           // dd($config);
 
             array_push($initialPreConfig, $config);
         }
 
-        //dd($initialPreConfig);
         return $initialPreConfig;
     }
 

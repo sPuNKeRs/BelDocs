@@ -42,10 +42,12 @@ class AttachmentsController extends Controller
 
             foreach ($files as $file)
             {
+                $path = $this->path.$file->getClientOriginalName();
                 $attachment = new Attachment(array(
                     'title' => $file->getClientOriginalName(),
                     'type' => $file->getClientMimeType(),
                     'size' => $file->getClientSize(),
+                    'path' => $path,
                     'entity_id' => $request->slug,
                     'author_id' => $this->logged_user->id
                 ));
@@ -53,39 +55,18 @@ class AttachmentsController extends Controller
                 if(Storage::put($this->path . $file->getClientOriginalName(),  file_get_contents($file->getRealPath())))
                 {
                     $attachment->save();
-                    $type = '';
-
                     array_push($initialPreview, asset(Storage::url($this->path . $file->getClientOriginalName())));
 
-                    switch ($attachment->type)
+                    $type = InitialPreview::getTypePreview($attachment->type);
+                    $showZoom = false;
+                    if($type == 'image' || $type == 'pdf')
                     {
-                        case 'image/png':
-                            $type = 'image';
-                            break;
-                        case 'image/jpeg':
-                            $type = 'image';
-                            break;
-//                        case 'application/vnd.ms-excel':
-//                            $type = 'other';
-//                            break;
-//
-//                        case 'application/vnd.oasis.opendocument.spreadsheet':
-//                            $t
-                        case 'application/pdf':
-                            $type = 'pdf';
-                            break;
-//                        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-//                            $type = 'other';
-//                            break;
-//                        case 'application/msword':
-//                            $type = 'other';
-//                            break;
-                        default:
-                            $type = 'other';
-                            break;
+                        $showZoom = true;
                     }
 
-                    $initialPreConfig = ['type' => $type, 'size' => $attachment->size, 'caption' => $attachment->title, 'url' => '#'];
+                    $otherActionButtons = '<a href="/"><button type="button" class="btn btn-xs btn-default" title="Скачать"><i class="fa fa-download" aria-hidden="true"></i></button></a>';
+
+                    $initialPreConfig = ['type' => $type, 'size' => $attachment->size, 'caption' => $attachment->title, 'url' => route('attachments.destroy'), 'key' => $attachment->id, 'showZoom'=>$showZoom, 'dataKey'=>$otherActionButtons];
 
                     array_push($initialPreviewConfig, $initialPreConfig);
 
@@ -93,13 +74,8 @@ class AttachmentsController extends Controller
                 }
             }
 
-            //, 'initialPreviewConfig' => $initialPreviewConfig
-
-            return response(['initialPreview' => $initialPreview , 'initialPreviewConfig' => $initialPreviewConfig, $attachment]);
+            return response(['initialPreview' => $initialPreview , 'initialPreviewConfig' => $initialPreviewConfig, 'append'=>$append]);
         }
-
-
-        //{error: 'You have faced errors in 4 files.', errorkeys: [0, 3, 4, 5]}
 
         $error_msg = 'Ошибка при загрузке файла!';
         return response( ['error' => $error_msg, 'request' => $request->all()] );
@@ -108,19 +84,24 @@ class AttachmentsController extends Controller
     /*
      * Удаление вложений
      */
-    public function destroy()
+    public function destroy(Request $request)
     {
-        return response('Удаляем');
+        Storage::delete(Attachment::find($request->key)->path);
+
+        if(Attachment::destroy($request->key))
+        {
+            return response($request->all());
+        }
+
+        return response($request->all(), 401);
     }
 
-    /*
-     * Получить вложения
-     */
-    public function getAttachments($filename)
+
+    // Получить ссылку для загрузки
+    public function getUrl(Request $request)
     {
-//        $file = Storage::get('uploads/'.$filename);
-//
-//        $url = Storage::url('uploads/'.$filename);
-//        return response($file);
+        //Attachment::find($request->id)->
+
+        return response($request->id);
     }
 }

@@ -22,11 +22,11 @@ class Comment extends Model
         return $this->hasOne('App\User', 'id', 'author_id');
     }
 
-//    function setCreatedAtAttribute($date) {
-//        $this->attributes['created_at'] = new Carbon($date);
-//    }
-//
-//    function setUpdatedAtAttribute($date) {
-//        $this->attributes['updated_at'] = new Carbon($date);
-//    }
+    function setCreatedAtAttribute($date) {
+        $this->attributes['created_at'] = new Carbon($date);
+    }
+
+    function setUpdatedAtAttribute($date) {
+        $this->attributes['updated_at'] = new Carbon($date);
+    }
 }

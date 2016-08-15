@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\CommentRequest;
 
+
+
 class CommentsController extends Controller
 {
     protected $logged_user;
@@ -19,12 +21,26 @@ class CommentsController extends Controller
 
     public function store(CommentRequest $request )
     {
-        $input = $request->all();
-        $input['author_id'] = $this->logged_user->id;
+        if($request->ajax())
+        {
+            $input = $request->all();
+            $input['author_id'] = $this->logged_user->id;
 
-        Comment::create($input);
+            $comment = Comment::create($input);
+            //$comment->user = $comment->user;
+            $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
 
-       return back()->with('flash_message', 'Комментарий успешно добавлен.');
+            $view = view('partials.comment', compact('comment'));
+
+            return response($view, 200);
+        }
+        else
+        {
+            $input = $request->all();
+            $input['author_id'] = $this->logged_user->id;
+            Comment::create($input);
+            return back()->with('flash_message', 'Комментарий успешно добавлен.');
+        }
     }
 
     public function delete(Request $request)

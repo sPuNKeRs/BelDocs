@@ -5,6 +5,7 @@
     <script>
         $(document).ready(function(){
             var token = $('input[name=_token]').val();
+
             // with plugin options
             $("#upload_files").fileinput({'showUpload':true,
                                           'uploadUrl': '{{ route('attachments.store') }}',
@@ -24,10 +25,14 @@
                                           'showBrowse': true,
                                           'browseOnZoneClick': false,
                                           'autoReplace': false,
-                                            'purifyHtml': true,
+                                          'purifyHtml': true,
+                                          //'layoutTemplates': {actions: "{upload} {delete} {zoom} {other}"},
                                           //'captionClass': '',
                                           //'previewClass': '',
                                           //'mainClass': '',
+                                            'fileActionSettings':{
+                                                'showRemove': false
+                                            },
                                          'previewSettings':{
                                              image: {width: "100px", height: "100px"},
                                              html: {width: "100px", height: "100px"},
@@ -54,10 +59,13 @@
                                           'ajaxSettings':{
                                               headers: {'X-CSRF-TOKEN': token}
                                           },
-                                          'uploadExtraData': function(){
+                                          'ajaxDeleteSettings':{
+                                              headers: {'X-CSRF-TOKEN': token}
+                                          },
+                                          'uploadExtraData': function(previewId, index){
                                               return {
-                                                        'id':'{{$order->id}}',
-                                                        'slug': '{{$order->slug}}',
+                                                        'id':'{{$entity->id}}',
+                                                        'slug': '{{$entity->slug}}',
                                                         'entity_type': '{{$entity_type}}'
                                               };
                                           },
@@ -72,28 +80,39 @@
                                             @if(isset($initialPreviewConfig))
                                             'initialPreviewConfig': {!! $initialPreviewConfig !!},
                                             @endif
-                                        
-//                                        'initialPreview': [
-//                                            'http://kartik-v.github.io/bootstrap-fileinput-samples/samples/pdf-sample.pdf',
-//                                        ],
+                                            otherActionButtons: '<a style="z-index: 99999;" class="kv-file-download btn btn-xs btn-default" title="Скачать" {dataKey}><i class="fa fa-download" aria-hidden="true"></i></a>'
 
-//
-//                                        'initialPreviewConfig': [
-//                                            {type: "pdf", size: 8000, caption: "PDF-Sample.pdf", url: "/file-upload-batch/2", key: 10},
-//                                        ]
             });
-        });
 
 
+            $('.file-preview').on('click', '.kv-file-download', function(e){
+                var id = $(this).data('key');
+                console.log(id);
+                var url = ' {{route('attachments.geturl') }}';
 
-        $('#upload_files').on('fileselect', function(event, numFiles, label) {
+                var data = {'id': id};
 
-            //$('#upload_files').fileinput('upload');
+                // get download url
+                $.ajax({
+                    url: url,
+                    headers: {'X-CSRF-TOKEN': token},
+                    data: data,
+                    type: 'POST',
+                    success: function (response) {
+                        console.log('success');
+                        console.log(response);
+                    },
+                    error: function(errors){
+                        console.log('errors');
+                        console.log(errors);
+                        //var err = JSON.parse(errors.responseText);
+                    }
+                });
+            });
 
-        });
-
-        $('#upload_files').on('filebatchselected', function(event, files) {
-            $('#upload_files').fileinput('upload');
+            $('#upload_files').on('filebatchselected', function(event, files) {
+                $('#upload_files').fileinput('upload');
+            });
         });
     </script>
 @endsection

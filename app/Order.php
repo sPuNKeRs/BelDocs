@@ -27,6 +27,7 @@ class Order extends Model
                            'create_date',
                            'execute_date',
                            'description',
+                           'resolution',
                            'status',
                            'author_id',
                            'slug',

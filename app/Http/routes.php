@@ -173,6 +173,16 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'attachments.store',
             'uses' => 'AttachmentsController@store'
         ]);
+
+        Route::post('/attachments/destroy',[
+            'as' => 'attachments.destroy',
+            'uses' => 'AttachmentsController@destroy'
+        ]);
+
+        Route::post('/attachments/geturl', [
+            'as' => 'attachments.geturl',
+            'uses' => 'AttachmentsController@getUrl'
+        ]);
     });
 
 

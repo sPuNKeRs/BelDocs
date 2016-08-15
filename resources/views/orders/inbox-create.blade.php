@@ -75,6 +75,11 @@
               </div>
               <div class="row">
                   <div class="col-md-12">
+                      @include('widgets.form._formitem_textarea', ['name' => 'resolution', 'value'=>'' , 'id' => 'resolution','title' => 'Резолюция', 'rows' => '3', 'placeholder' => 'Резолюция'])
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
                       @include('partials.files_attachments')
                   </div>
               </div>
@@ -88,7 +93,9 @@
             {!! Form::close()!!}
 
         </div>
+
       </div>
+          @include('partials.comments')
 
     </div>
 @stop
