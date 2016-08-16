@@ -33,12 +33,6 @@ class AttachmentsController extends Controller
             $files = $request->file('upload_files');
             $this->path = $request->entity_type.'/'.$request->slug. '/';
 
-
-
-            //$initialPreview = InitialPreview::getInitialPreview($files, $this->path);
-
-
-
             $initialPreview = array();
             $initialPreviewConfig = array();
 

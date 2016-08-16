@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use InitialPreview;
 
@@ -39,9 +40,13 @@ class OrdersController extends Controller
     */
     public function inbox(Order $order)
     {
-        //$orders = Order::all();
+        $my_orders = collect(Order::where('author_id', '=', $this->logged_user->id)->get());
+        $charged_orders = collect(Order::find([]));
 
-        $orders = $order->paginate(25);
+        $orders = $my_orders->merge($charged_orders)->sortBy('order_num');
+
+
+        // $orders = $order->paginate(25);
         $count = count($orders);
 
         return view('orders.inbox', compact('orders', 'count'));

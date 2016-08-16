@@ -95,25 +95,7 @@
 
               <div class="panel-footer">
 
-                  {{ $orders->render() }}
-
-                  {{--<ul class="pagination pagination-sm">--}}
-                      {{--<li>--}}
-                          {{--<a href="#">«</a>--}}
-                      {{--</li>--}}
-                      {{--<li class="active">--}}
-                          {{--<a href="#">1</a>--}}
-                      {{--</li>--}}
-                      {{--<li>--}}
-                          {{--<a href="#">2</a>--}}
-                      {{--</li>--}}
-                      {{--<li>--}}
-                          {{--<a href="#">3</a>--}}
-                      {{--</li>--}}
-                      {{--<li>--}}
-                          {{--<a href="#">»</a>--}}
-                      {{--</li>--}}
-                  {{--</ul>--}}
+                  {{--{{ $orders->render() }}--}}
 
                   {{--<div class="pull-right">--}}
                       {{--Показать с 1 по 10 из 32 записей--}}
