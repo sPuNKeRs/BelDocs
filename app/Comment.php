@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     protected $table = 'comments';
-    protected $fillable = ['entity_id', 'author_id', 'content'];
+    protected $fillable = ['entity_id', 'entity_type', 'author_id', 'content'];
     protected $dates = ['created_at', 'updated_at'];
 
-    public function orders()
+
+    public function Entity()
     {
-        return $this->belongsTo('App\Order','entity_id','slug');
+        return $this->morphTo();
     }
 
     public function user()

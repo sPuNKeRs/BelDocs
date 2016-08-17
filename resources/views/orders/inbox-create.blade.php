@@ -31,9 +31,10 @@
 
 
             {!! Form::open(['route' => 'orders.inbox.create' , 'files'=> 'true', 'id'=>'order_form', 'name'=>'order_form'])!!}
-              {!! Form::hidden('id', $id, ['id'=>'order_id']) !!}
+              {!! Form::hidden('id', $id, ['id'=>'entity_id']) !!}
               {!! Form::hidden('slug', $slug, ['id'=>'slug']) !!}
-              {!! Form::hidden('entity_type', $entity_type) !!}
+              {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
+
               @if($draft)
                   {!! Form::hidden('draft', $draft, ['id'=>'draft']) !!}
               @endif
@@ -145,7 +146,7 @@
 
                         if(response.id){
                             console.log(response.id);
-                            $('#order_id').val(response.id);
+                            $('#entity_id').val(response.id);
                         }
 
                         if(close){

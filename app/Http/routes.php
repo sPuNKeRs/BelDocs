@@ -185,6 +185,18 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
     });
 
+    // TEST
+    Route::get('/morph', function(){
+        $orders = \App\Order::find(2);
+
+        dd(get_class($orders));
+        $comments = $orders->comments;
+
+        dd($comments);
+
+
+    });
+
 
     // Группа для работы со справочниками
     Route::group(['middleware' => []], function(){

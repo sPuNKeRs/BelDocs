@@ -28,7 +28,8 @@
                 <div class='panel-body'>
 
                     {!! Form::model($entity, ['route' => ['orders.inbox.update', $entity->id]])!!}
-                    {!! Form::hidden('id', $entity->id) !!}
+                    {!! Form::hidden('id', $entity->id, ['id'=>'entity_id']) !!}
+                    {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
                     <div class="row">
                         <div class="col-md-3">
                             @include('widgets.form._formitem_text', ['name' => 'order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])

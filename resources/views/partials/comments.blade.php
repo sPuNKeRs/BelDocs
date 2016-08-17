@@ -38,7 +38,8 @@
         <div class="form-actions">
             @include('widgets.form._formitem_btn_submit',['title' => 'Отправить', 'class' => 'btn btn-default', 'id' => 'post_comment'])
         </div>
-        {{ Form::hidden('entity_id', $entity->slug) }}
+        {{ Form::hidden('entity_id', $entity->id) }}
+        {{ Form::hidden('entity_type', get_class($entity)) }}
         {!! Form::token() !!}
         {!! Form::close()!!}
 

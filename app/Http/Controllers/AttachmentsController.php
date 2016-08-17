@@ -30,8 +30,15 @@ class AttachmentsController extends Controller
     {
         if($request->hasFile('upload_files'))
         {
+            switch ($request->entity_type)
+            {
+                case 'App\Order':
+                    $entity_folder = 'orders';
+                    break;
+            }
+
             $files = $request->file('upload_files');
-            $this->path = $request->entity_type.'/'.$request->slug. '/';
+            $this->path = $entity_folder.'/'.$request->slug. '/';
 
             $initialPreview = array();
             $initialPreviewConfig = array();
@@ -46,7 +53,8 @@ class AttachmentsController extends Controller
                     'size' => $file->getClientSize(),
                     'path' => $path,
                     'url' => $url,
-                    'entity_id' => $request->slug,
+                    'entity_id' => $request->entity_id,
+                    'entity_type' => $request->entity_type,
                     'author_id' => $this->logged_user->id
                 ));
 

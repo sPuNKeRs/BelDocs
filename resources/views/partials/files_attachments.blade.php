@@ -63,8 +63,8 @@
                 'uploadExtraData': function (previewId, index) {
                     return {
                         'id': '{{$entity->id}}',
-                        'slug': '{{$entity->slug}}',
-                        'entity_type': '{{$entity_type}}'
+                        'entity_id': '{{$entity->id}}',
+                        'entity_type': $('#entity_type').val()
                     };
                 },
                 @if(isset($initialPreview))

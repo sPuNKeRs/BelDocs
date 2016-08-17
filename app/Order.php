@@ -10,14 +10,13 @@ class Order extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Comment','entity_id','slug');
+        return $this->morphMany('App\Comment', 'entity');
     }
 
     public function attachments()
     {
-        return $this->hasMany('App\Attachment', 'entity_id', 'slug');
+        return $this->morphMany('App\Attachment', 'entity');
     }
-
 
     // Заполняемые поля
     protected $fillable = ['order_num',
@@ -33,8 +32,6 @@ class Order extends Model
                            'slug',
                            'draft'];
 
-//    protected $dates = ['create_date',
-//                        'execute_date',];
 
     public function setCreateDateAttribute($date)
     {
@@ -45,6 +42,4 @@ class Order extends Model
     {
         $this->attributes['execute_date'] = Carbon::createFromFormat('d.m.Y',$date);
     }
-
-    
 }

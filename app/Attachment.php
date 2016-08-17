@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Attachment extends Model
 {
     protected $table = 'attachments';
-    protected $fillable = ['title', 'type', 'size', 'path', 'url','entity_id', 'author_id'];
+    protected $fillable = ['title', 'type', 'size', 'path', 'url','entity_id', 'entity_type','author_id'];
     protected $dates = ['created_at', 'updated_at'];
-
-    public function orders()
+    
+    public function Entity()
     {
-        return $this->belongsTo('App\Order','entity_id','slug');
+        return $this->morphTo();
     }
 
     public function user()

@@ -15,7 +15,6 @@ class CreateResponsibleTable extends Migration
         Schema::create('responsible', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('entity_id');
-            $table->string('entity_slug');
             $table->string('entity_type');
             $table->integer('user_id');
             $table->date('executed_at');
