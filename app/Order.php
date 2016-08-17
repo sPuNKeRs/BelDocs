@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    
+    
+
+    public function responsibles()
+    {
+        return $this->morphMany('App\Responsible', 'entity');
+    }
 
     public function comments()
     {

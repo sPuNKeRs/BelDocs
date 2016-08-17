@@ -185,16 +185,9 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
     });
 
-    // TEST
-    Route::get('/morph', function(){
-        $orders = \App\Order::find(2);
-
-        dd(get_class($orders));
-        $comments = $orders->comments;
-
-        dd($comments);
-
-
+    // Группа для работы с ответственными лицами
+    Route::group(['middleware' => []], function(){
+        Route::get('/responsible/store', 'ResponsibleController@store');
     });
 
 

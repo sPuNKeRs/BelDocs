@@ -28,4 +28,20 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Comment','author_id','id');
     }
+
+    public function responsibles()
+    {
+        return $this->hasMany('App\Responsible', 'user_id', 'id');
+    }
+
+    public function orders_responsible()
+    {
+        return $this->belongsToMany('App\Order', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\Order');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany('App\Order', 'author_id', 'id');
+    }
+
 }

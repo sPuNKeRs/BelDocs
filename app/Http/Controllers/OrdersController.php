@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use InitialPreview;
 
 use App\ItemNumber;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -20,10 +21,12 @@ class OrdersController extends Controller
 
     protected $logged_user;
     protected $entity_type;
+    protected $wall;
 
     public function __construct()
     {
         $this->logged_user = \App::make('authenticator')->getLoggedUser();
+        $this->wall = \App::make('authentication_helper');
         $this->entity_type = 'orders';
     }
 
@@ -40,11 +43,14 @@ class OrdersController extends Controller
     */
     public function inbox(Order $order)
     {
-        $my_orders = collect(Order::where('author_id', '=', $this->logged_user->id)->get());
-        $charged_orders = collect(Order::find([]));
-
-        $orders = $my_orders->merge($charged_orders)->sortBy('order_num');
-
+        if($this->wall->hasPermission(['_superadmin']))
+        {
+            $orders = Order::all();
+        }
+        else
+        {
+            $orders = User::find($this->logged_user->id)->orders_responsible;
+        }
 
         // $orders = $order->paginate(25);
         $count = count($orders);

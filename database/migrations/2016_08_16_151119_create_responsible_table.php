@@ -12,7 +12,7 @@ class CreateResponsibleTable extends Migration
      */
     public function up()
     {
-        Schema::create('responsible', function (Blueprint $table) {
+        Schema::create('responsibles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('entity_id');
             $table->string('entity_type');
@@ -30,6 +30,6 @@ class CreateResponsibleTable extends Migration
      */
     public function down()
     {
-        Schema::drop('responsible');
+        Schema::drop('responsibles');
     }
 }
