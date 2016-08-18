@@ -133,3 +133,34 @@
 p.has-error {
     color: #a94442;
 }
+
+.responsibles-table {
+
+}
+
+.responsibles-table .radio, .responsibles-table .checkbox {
+    margin-top: 10px;
+}
+
+.responsibles-table .list-group-item {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.responsibles-table .input-group {
+    margin-top: 3px;
+}
+
+.responsibles-table .fa {
+    vertical-align: middle;
+}
+
+.responsibles-table .bootstrap-select {
+    margin-top: 3px;
+}
+
+
+/*.responsibles-table .execute_at {*/
+    /*display: inline;*/
+    /*width: 150px;*/
+/*}*/

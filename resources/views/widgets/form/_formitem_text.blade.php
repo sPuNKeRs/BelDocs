@@ -1,8 +1,10 @@
 <?php
     if(! isset($value)) $value = null;
+    if(! isset($title)) $title = null;
     if(! isset($describedby)) $describedby = null;
     if(! isset($fa_icon)) $fa_icon = 'fa-calendar';
     if(! isset($readonly)) $readonly = null;
+    if(! isset($class)) $class = 'form-control';
 
 ?>
 {{--<div class="{!! $errors->has($name) ? 'has-error' : null !!}">--}}
@@ -15,12 +17,13 @@
 
 
 
-
+@if($title)
 <label class="control-label">{{$title}}</label>
+@endif
 <div class=" {{ isset($describedby) ? 'input-group' : ''}} {!! $errors->has($name) ? 'has-error' : null !!} ">
 
     {!! Form::text($name, $value, array('placeholder' =>  $placeholder,
-                                        'class' => 'form-control',
+                                        'class' => $class,
                                         'id' => $name,
                                         'aria-describedby' => $describedby,
                                         'readonly' => $readonly)) !!}
@@ -29,7 +32,8 @@
     @endif
 
 </div>
+@if($errors->has($name))
 <p class="help-block {!! $errors->has($name) ? 'has-error' : null !!}">{!! $errors->first($name) !!}</p>
-
+@endif
 
 

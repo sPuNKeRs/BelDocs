@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{!! asset('bower_components/font-awesome/css/font-awesome.min.css') !!}">
     <link rel="stylesheet" href="{!! asset('bower_components/jquery-ui/themes/base/jquery-ui.css') !!}">
     <link rel="stylesheet" href="{!! asset('css/hierapolis_theme_full.css') !!}">
+    <link rel="stylesheet" href="{!! asset('bower_components/bootstrap-select/dist/css/bootstrap-select.min.css') !!}">
     <link rel="stylesheet" href="{!! asset('bower_components/bootstrap-fileinput/css/fileinput.min.css') !!}">
 
     <link rel="stylesheet" href="{!! asset('css/custom.css') !!}">
@@ -24,6 +25,12 @@
     {{HTML::script('bower_components/moment/min/moment.min.js')}}
     {{HTML::script('bower_components/jquery-ui/jquery-ui.min.js')}}
     {{HTML::script('bower_components/jquery-ui/ui/i18n/datepicker-ru.js')}}
+
+    {{HTML::script('bower_components/jquery-ui/ui/i18n/datepicker-ru.js')}}
+
+    {{HTML::script('bower_components/bootstrap-select/dist/js/bootstrap-select.min.js')}}
+    {{HTML::script('bower_components/bootstrap-select/dist/js/i18n/defaults-ru_RU.min.js')}}
+
 
     {{HTML::script('vendor/canvas-to-blob.min.js')}}
     {{HTML::script('vendor/Sortable.min.js')}}

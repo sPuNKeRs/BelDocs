@@ -73,6 +73,11 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
+                            @include('partials.responsibles')
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             @include('partials.files_attachments')
                         </div>
                     </div>

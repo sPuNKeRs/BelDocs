@@ -10,7 +10,9 @@ if (!isset($left)) $left = null;
 
 ?>
 
+@if($errors->has($name))
 <div class="{!! $errors->has($name) ? 'has-error' : null !!}">
+@endif
     @if($left)
         <div class="checkbox checkbox-circle checkbox-info">
             <label for="{!! $name !!}">{{ $title }}</label>
@@ -22,4 +24,6 @@ if (!isset($left)) $left = null;
             <label for="{!! $name !!}">{{ $title }}</label>
         </div>
     @endif
+@if($errors->has($name))
 </div>
+@endif
