@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-3">
                             {{--@include('widgets.form._formitem_text', ['name' => 'item_number', 'title' => ' Номенклатурный номер', 'placeholder' => 'Номенклатурный номер' ])--}}
-                            @include('widgets.form._formitem_select', ['name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
+                            @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
                         </div>
                         <div class="col-md-3">
                             @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' ])

@@ -171,7 +171,7 @@ class OrdersController extends Controller
             $attachment->delete();
         }
 
-        Storage::deleteDirectory('orders/'.$order->slug);
+        Storage::deleteDirectory('orders/'.$order->id);
 
         $order->delete();
 
@@ -275,7 +275,7 @@ class OrdersController extends Controller
                 $attachment->delete();
             }
 
-            Storage::deleteDirectory('orders/'.$order->slug);
+            Storage::deleteDirectory('orders/'.$order->id);
 
             $order->delete();
 

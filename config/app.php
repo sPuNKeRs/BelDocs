@@ -222,6 +222,7 @@ return [
         'DiffFormatter'     => 'Laravelrus\LocalizedCarbon\DiffFactoryFacade',
 
         'InitialPreview' => App\Helpers\InitialPreview::class,
+        'SprHelper' => App\Helpers\SprHelper::class,
 
     ],
 

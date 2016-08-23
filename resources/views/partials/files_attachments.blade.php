@@ -27,10 +27,10 @@
                 @endif
                 'browseOnZoneClick': false,
                 'autoReplace': false,
-                'purifyHtml': true,
                 'fileActionSettings': {
                     'showRemove': false
                 },
+//                'initialPreviewFileType': 'image',
                 'previewSettings': {
                     image: {width: "100px", height: "100px"},
                     html: {width: "100px", height: "100px"},
@@ -41,6 +41,7 @@
                     object: {width: "100px", height: "100px"},
                     other: {width: "100px", height: "100px"}
                 },
+
                 'previewFileIconSettings': {
                     'doc': '<i class="fa fa-file-word-o text-primary"></i>',
                     'docx': '<i class="fa fa-file-word-o text-primary"></i>',
@@ -53,7 +54,8 @@
                     'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
                     'ZIP': '<i class="fa fa-file-archive-o text-muted"></i>',
                 },
-
+                'resizeImage': true,
+                'purifyHtml': true,
                 'ajaxSettings': {
                     headers: {'X-CSRF-TOKEN': token}
                 },
@@ -96,7 +98,10 @@
                     data: data,
                     type: 'POST',
                     success: function (response) {
-                        window.location = response;
+
+                        downloadFile(response);
+                        //window.location.href = response;
+                       // window.open(response, '_top');
                     },
                     error: function (errors) {
                         console.log(errors);
@@ -107,6 +112,8 @@
             $('#upload_files').on('filebatchselected', function (event, files) {
                 $('#upload_files').fileinput('upload');
             });
+
+
         });
     </script>
 @endsection

@@ -38,7 +38,7 @@ class AttachmentsController extends Controller
             }
 
             $files = $request->file('upload_files');
-            $this->path = $entity_folder.'/'.$request->slug. '/';
+            $this->path = $entity_folder.'/'.$request->id. '/';
 
             $initialPreview = array();
             $initialPreviewConfig = array();
@@ -70,9 +70,10 @@ class AttachmentsController extends Controller
                         $showZoom = true;
                     }
 
-                    $otherActionButtons = '<a href="/"><button type="button" class="btn btn-xs btn-default" title="Скачать"><i class="fa fa-download" aria-hidden="true"></i></button></a>';
+                    //$otherActionButtons = '<a href="/"><button type="button" class="btn btn-xs btn-default" title="Скачать"><i class="fa fa-download" aria-hidden="true"></i></button></a>';
+                    //$initialPreConfig = ['type' => $type, 'size' => $attachment->size, 'caption' => $attachment->title, 'url' => route('attachments.destroy'), 'key' => $attachment->id, 'showZoom'=>$showZoom, 'dataKey'=>$otherActionButtons];
 
-                    $initialPreConfig = ['type' => $type, 'size' => $attachment->size, 'caption' => $attachment->title, 'url' => route('attachments.destroy'), 'key' => $attachment->id, 'showZoom'=>$showZoom, 'dataKey'=>$otherActionButtons];
+                    $initialPreConfig = ['type' => $type, 'size' => $attachment->size, 'caption' => $attachment->title, 'url' => route('attachments.destroy'), 'key' => $attachment->id, 'showZoom'=>$showZoom];
 
                     array_push($initialPreviewConfig, $initialPreConfig);
 

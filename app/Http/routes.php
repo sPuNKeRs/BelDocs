@@ -11,6 +11,12 @@
 |
 */
 
+
+
+Route::get('/demotest', function(){
+    dd(\App\User::getArrayOptions());
+});
+
 // Общая группа
 Route::group(['middleware' => ['logged']], function () {
     Route::get('/', [

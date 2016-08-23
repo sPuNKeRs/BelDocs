@@ -43,5 +43,19 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Order', 'author_id', 'id');
     }
+    
+    public static function getArrayOptions()
+    {
+        $users = User::all();
+        $options = [];
+
+        foreach ($users as $user)
+        {
+            $user_profile = $user_profile = \App::make('authenticator')->getUserById($user->id)->user_profile()->first();
+            $options[$user->id] = $user_profile->last_name." ".$user_profile->first_name." ".$user_profile->second_name;
+        }
+
+        return $options;
+    }
 
 }
