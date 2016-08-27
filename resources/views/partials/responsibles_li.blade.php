@@ -1,10 +1,12 @@
+{{--// Передать сюда ID связи и добавить ко всем атрибутам--}}
+
 <li class="list-group-item">
     <div class="row">
         <div class="col-md-4">
-            <i class="fa fa-user fa-2x" aria-hidden="true"></i>    {{ Form::select('sel',
+            <i class="fa fa-user fa-2x" aria-hidden="true"></i>    {{ Form::select('responsible_user',
                                                                                     \App\User::getArrayOptions(),
                                                                                     null,
-                                                                                    ['class' => 'selectpicker']) }}
+                                                                                    ['class' => 'selectpicker responsible_user']) }}
         </div>
         <div class="col-md-3">
             @include('widgets.form._formitem_text', ['name' => 'executed_at',
@@ -19,7 +21,7 @@
                                                             'title'=> 'Статус',
                                                             'value'=> '1',
                                                             'id' => 'status_user',
-                                                            'class' => 'custom checkbox',
+                                                            'class' => 'custom checkbox status_user',
                                                             'left' => null])
         </div>
         <div class="col-md-2">
@@ -28,7 +30,6 @@
                             <a href="#" class="add-responsible-btn"><i class="fa fa-check-circle fa-2x" aria-hidden="true"></i></a>
                             <a href="#" class="del-responsible-btn"><i class="fa fa-minus-circle fa-2x text-danger" aria-hidden="true"></i></a>
                         </div>
-
         </span>
         </div>
     </div>

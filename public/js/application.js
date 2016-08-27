@@ -34,7 +34,6 @@ $(document).ready(function(){
             link.href = sUrl;
 
             if (link.download !== undefined) {
-                //Set HTML5 download attribute. This will prevent file from opening if supported.
                 var fileName = sUrl.substring(sUrl.lastIndexOf('/') + 1, sUrl.length);
                 link.download = fileName;
             }
