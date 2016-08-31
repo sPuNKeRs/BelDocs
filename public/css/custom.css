@@ -210,3 +210,7 @@ p.has-error {
     background: inherit;
     left: 20px;
 }
+
+.responsibles-table div.row.has-error-row{
+    background-color: rgba(240, 128, 128, 0.42);
+}

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\ResponsibleRequest;
 use App\Responsible;
 use App\Order;
 use App\User;
@@ -18,38 +19,30 @@ class ResponsibleController extends Controller
 
     }
 
-    public function store()
+    public function store(ResponsibleRequest $request)
     {
-
-//        $responsible = new Responsible();
-//        $responsible->entity_id = 406;
-//        $responsible->entity_type = 'App\Order';
-//        $responsible->user_id = \App::make('authenticator')->getLoggedUser()->id;
-//        $responsible->executed_at = Carbon::today();
-//        $responsible->status = false;
-//
-//        $responsible->save();
-        
-      // $order = Order::find(3);
-       // $responsibles = $order->responsibles;
-//
-//        dd($responsibles);
-
-        $user = User::find('1');
-        $responsibles = $user->orders_responsible;
-//
-////        foreach ($responsibles as $resp)
-////        {
-////            echo $resp->entity->title."<br>";
-////        }
-//
-        dd($responsibles);
-
-
+        if($request->rel_id){
+            $responsible = Responsible::find($request->rel_id);
+            $responsible->update($request->all());
+            return response([$responsible, 'id'=>$responsible->id]);
+        }
+        else{
+            $responsible = Responsible::create($request->all());
+            return response([$request->all(), 'id'=>$responsible->id]);
+        }
     }
 
-    public function destroy()
+    public function destroy(Request $request)
     {
-
+        if(Responsible::destroy($request->id))
+        {
+            return response($request->id);
+        }
+            return response('Ошибка при удалении ответсвенного!', 401);
+    }
+    
+    public function getResponsibleTpl(Request $request)
+    {
+        return view('partials.responsibles_li', ['countLi' => $request->countLi]);
     }
 }

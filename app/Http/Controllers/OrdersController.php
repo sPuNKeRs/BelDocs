@@ -119,8 +119,11 @@ class OrdersController extends Controller
         $append = true;
 
         $entity = $order;
-        
-        //dd($entity);
+
+        // Получить всех ответственных
+
+        $responsibles = $entity->responsibles;
+        //dd($responsibles);
         
         return view('orders.inbox-edit', compact('entity',
                                                 'item_numbers_opt',
@@ -129,7 +132,8 @@ class OrdersController extends Controller
                                                 'initialPreview',
                                                 'initialPreviewConfig',
                                                 'append',
-                                                'entity_type'));
+                                                'entity_type',
+                                                'responsibles'));
     }
 
     /**

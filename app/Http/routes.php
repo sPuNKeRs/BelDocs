@@ -191,9 +191,26 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
     });
 
+
+
     // Группа для работы с ответственными лицами
     Route::group(['middleware' => []], function(){
         Route::get('/responsible/store', 'ResponsibleController@store');
+
+        Route::post('/responsible/store', [
+            'as' => 'responsible.store',
+            'uses' => 'ResponsibleController@store'
+        ]);
+
+        Route::post('/responsible/getResponsibleTpl', [
+            'as' => 'responsible.getResponsibleTpl',
+            'uses' => 'ResponsibleController@getResponsibleTpl'
+        ]);
+        
+        Route::post('/responsible/destroy', [
+            'as' => 'responsible.destroy',
+            'uses' => 'ResponsibleController@destroy'
+        ]);
     });
 
 

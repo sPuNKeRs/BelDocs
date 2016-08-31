@@ -1,7 +1,3 @@
-<?php
-$users_opt = [];
-?>
-
 <div class="panel panel-default responsibles-table">
     <div class="panel-heading">
         <i class="fa fa-users" aria-hidden="true"></i> Исполнители
@@ -10,38 +6,68 @@ $users_opt = [];
         </span>
     </div>
     <ul class="responsibles-table-list list-group">
-        {{--@include('partials.responsibles_li')--}}
+        @if(isset($responsibles))
+            @foreach($responsibles as $index => $responsible)
+                @include('partials.responsibles_li', [$responsible, $index])
+            @endforeach
+        @endif
     </ul>
 </div>
 
-
 @section('custom_js')
     @parent
-
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.selectpicker').selectpicker({
-                size: 4,
-                liveSearch: true,
-                width: '90%',
-                title: 'Выберите из списка'
+            // -- ИНИЦИАЛИЗАЦИЯ --
+
+            var token = $('input[name=_token]').val();
+            var entity_id = $('#entity_id').val();
+            var entity_type = $('#entity_type').val();
+            $('.selectpicker').selectpicker();
+
+            // -- СОБЫТИЯ --
+
+
+            $('.responsibles-table-list').on('change', '.status_user', function(e){
+                var self = $(e.currentTarget).parents('.list-group-item');
+                storeResponsibleUser(self);
             });
 
-            $('.execute_at').datepicker();
 
+            $('.responsibles-table-list').on('changed.bs.select', '.selectpicker', function(e){
+                var self = $(e.currentTarget).parents('.list-group-item');
+
+                storeResponsibleUser(self);
+            });
+
+            $('.responsibles-table-list').on('change', '.executed_at', function(e){
+                var self = $(e.currentTarget).parents('.list-group-item');
+                storeResponsibleUser(self);
+            });
 
             // Наэимаем на плюсик для добавления ответсвтенного
             $('#add_responsible').click(function () {
-
+                getResponsibleTpl();
             });
 
+            $('.responsibles-table-list').on('click', '.del-responsible-btn', function (e) {
+                if(confirm('Удалить ответственного?')){
+                    var self = $(e.currentTarget).parents('.list-group-item');
+                    destroyResponsibleUser(self);
+                }
+            });
 
-            // Запрашиваем шаблон для ответственного
-            function getResponsibleRow() {
+            // -- ФУНКЦИИ --
 
-                var id = $(this).data('key');
-                var url = ' {{route('attachments.geturl') }}';
-                var data = {'id': id};
+            //Удалить ответственного
+            function destroyResponsibleUser(self)
+            {
+                var rel_id = self.data('responsibleId');
+                var url = '{{ route('responsible.destroy') }}';
+
+                var data = {
+                    'id': rel_id
+                };
 
                 $.ajax({
                     url: url,
@@ -50,6 +76,7 @@ $users_opt = [];
                     type: 'POST',
                     success: function (response) {
                         console.log(response);
+                        self.remove();
                     },
                     error: function (errors) {
                         console.log(errors);
@@ -57,26 +84,68 @@ $users_opt = [];
                 });
             }
 
-            $('.responsibles-table-list').on('click', '.add-responsible-btn', function (e) {
-                var self = $(e.currentTarget).parents('.list-group-item');
-                var entity_id = $('#entity_id').val();
-                var entity_type = $('#entity_type').val();
+            // Сохранение ответственного лица
+            function storeResponsibleUser(self)
+            {
                 var user_id = self.find('select').val();
-                var status = self.find('input.status_user').val();
+                var executed_at = self.find('.executed_at').val();
+                var status = self.find('input.status_user').prop('checked');
 
+                console.log('Entity ID: ' + entity_id);
+                console.log('Entity Type: ' + entity_type);
+                console.log('user_id: ' + user_id);
+                console.log('executed_at: ' + executed_at);
+                console.log('status: ' + status);
 
-                console.log(status);
-            });
+                var url = ' {{route('responsible.store') }}';
+                var data = {
+                    'rel_id': self.data('responsibleId'),
+                    'entity_id': entity_id,
+                    'entity_type': entity_type,
+                    'user_id': user_id,
+                    'executed_at': executed_at,
+                    'status': status
+                };
 
-            $('.responsibles-table-list').on('click', '.del-responsible-btn', function (e) {
-                alert('Del');
-            });
+                $.ajax({
+                    url: url,
+                    headers: {'X-CSRF-TOKEN': token},
+                    data: data,
+                    type: 'POST',
+                    success: function (response) {
+                        console.log(response);
+                        self.find('.del-responsible-btn').removeClass('hidden');
+                        self.find('.row').animate({ backgroundColor: "#ffffff" }, 400).removeClass('has-error-row');
+                        self.data('responsibleId', response.id);
+                        console.log(self.data('responsibleId'));
+                    },
+                    error: function (errors) {
+                        console.log(errors);
+                    }
+                });
+            }
 
+            // Запрашиваем шаблон для ответственного
+            function getResponsibleTpl() {
+                var url = ' {{route('responsible.getResponsibleTpl') }}';
+                var countLi = $('.responsibles-table-list').children().length;
+                var data = {'countLi': countLi, 'entity_id': entity_id, 'entity_type': entity_type};
 
-            // status
-            // executed_at
-
-
+                $.ajax({
+                    url: url,
+                    headers: {'X-CSRF-TOKEN': token},
+                    data: data,
+                    type: 'POST',
+                    success: function (response) {
+                        $('.responsibles-table-list').append(response);
+                        $('.selectpicker').selectpicker('render');
+                        $('.executed_at').datepicker();
+                    },
+                    error: function (errors) {
+                        console.log(errors);
+                    }
+                });
+            }
         });
     </script>
 @stop
