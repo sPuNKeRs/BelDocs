@@ -34,6 +34,13 @@ Breadcrumbs::register('orders.inbox.edit', function($breadcrumbs)
     $breadcrumbs->push('Редактировать', route('orders.inbox.edit'));
 });
 
+// Приказы > Входящие > Просмотр
+Breadcrumbs::register('orders.inbox.view', function($breadcrumbs)
+{
+    $breadcrumbs->parent('orders.inbox');
+    $breadcrumbs->push('Просмотр', route('orders.inbox.view'));
+});
+
 // Приказы > Исходящие
 Breadcrumbs::register('orders.outbox', function($breadcrumbs)
 {

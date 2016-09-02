@@ -135,6 +135,52 @@ class OrdersController extends Controller
                                                 'entity_type',
                                                 'responsibles'));
     }
+    
+    /*
+     * Форма простотра входящего приказа
+     */
+    public function viewInbox($id)
+    {
+        $entity_type = $this->entity_type;
+        $order = Order::findOrFail($id);
+        $comments = Order::find($id)->comments()->orderBy('created_at', 'desc')->get();
+
+        foreach ($comments as $comment) {
+            $comment->user = $comment->user;
+            $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
+        }
+
+        $entity_id = $order->slug;
+        
+        $item_numbers_opt = ItemNumber::getArray();
+
+        // FILES
+        if(count($order->attachments) > 0)
+        {
+            $attachments = $order->attachments;
+            $initialPreview = InitialPreview::getInitialPreview($attachments, 'orders');
+            $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
+        }
+        $append = true;
+
+        $entity = $order;
+
+        // Получить всех ответственных
+
+        $responsibles = $entity->responsibles;
+        //dd($responsibles);
+
+        return view('orders.inbox-view', compact('entity',
+            'item_numbers_opt',
+            'entity_id',
+            'comments',
+            'initialPreview',
+            'initialPreviewConfig',
+            'append',
+            'entity_type',
+            'responsibles'));
+    }
+
 
     /**
      * Сохранение изменений входящего приказа

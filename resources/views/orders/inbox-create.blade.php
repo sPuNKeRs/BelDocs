@@ -126,14 +126,6 @@
                 var form = $('#order_form')[0];
                 var formData = new FormData(form);
 
-
-                //console.log($('#description').val());
-
-                // Display the key/value pairs
-                // for (var pair of formData.entries()) {
-                //       console.log(pair[0]+ ', ' + pair[1]);
-                // }
-
                 $.ajax({
                     url: '{{ route('orders.inbox.create') }}',
                     headers: {'X-CSRF-TOKEN': token},
@@ -165,73 +157,69 @@
                     }
                 });
             }
-        });
+            // Пометить ошибки
+            function setErrors(errors){
 
-        // Пометить ошибки
-        function setErrors(errors){
+                console.log(errors);
+                var err = JSON.parse(errors.responseText);
 
-            //$('#message').html(@include('widgets.form._alerts_message'));
+                $.each(err, function(index, value) {
+                    var errMsg = '<p class="help-block">'+value+'</p>';
+                    $("#"+index+"").parent('div').addClass('has-error');
+                    $("#"+index+"").parent('div').find('.help-block').remove();
+                    $("#"+index+"").parent('div').append(errMsg);
+                });
+            }
 
-            console.log(errors);
+            // Состояние сохранения
+            function setStateInfo(state)
+            {
+                var msg;
 
-            var err = JSON.parse(errors.responseText);
+                switch (state){
+                    case 'save':
+                        msg = "<i class='fa fa-floppy-o fa-fw fa-lg'></i> Сохранение...";
+                        break;
 
-            $.each(err, function(index, value) {
-                var errMsg = '<p class="help-block">'+value+'</p>';
-                $("#"+index+"").parent('div').addClass('has-error');
-                $("#"+index+"").parent('div').find('.help-block').remove();
-                $("#"+index+"").parent('div').append(errMsg);
+                    case 'saved':
+                        msg = "<i style='color: rgb(86, 190, 255)' class='fa fa-floppy-o fa-lg'></i> Сохранено";
+                        break;
+
+                    case 'load':
+                        msg = "<i class='fa fa-spinner fa-lg'></i> Загрузка...";
+                        break;
+
+                    case 'error':
+                        msg = "<i style='color: red;' class='fa fa-exclamation-circle fa-lg'></i> Ошибка при сохранении";
+                        break;
+                    case 'draft':
+                        msg = "<i class='fa fa-newspaper-o fa-lg'></i> Создан черновик";
+                        break;
+                }
+
+                $('#stateInfo').html(msg);
+            }
+
+
+            isDraft();
+            // Проверка на черновик
+            function isDraft()
+            {
+                if($('#draft').val() == '1'){
+                    setStateInfo('draft');
+                }
+            }
+
+            // При изменнении значния в поле
+            // убирать класс ошибки
+            $('input').bind('keypress change',function(e){
+                var self = e.currentTarget;
+                $(self).parent('div').removeClass('has-error');
+                $(self).parent('div').find('.help-block').remove();
             });
-        }
 
-        // Состояние сохранения
-        function setStateInfo(state)
-        {
-            var msg;
-
-            switch (state){
-                case 'save':
-                    msg = "<i class='fa fa-floppy-o fa-fw fa-lg'></i> Сохранение...";
-                    break;
-
-                case 'saved':
-                    msg = "<i style='color: rgb(86, 190, 255)' class='fa fa-floppy-o fa-lg'></i> Сохранено";
-                    break;
-
-                case 'load':
-                    msg = "<i class='fa fa-spinner fa-lg'></i> Загрузка...";
-                    break;
-
-                case 'error':
-                    msg = "<i style='color: red;' class='fa fa-exclamation-circle fa-lg'></i> Ошибка при сохранении";
-                    break;
-                case 'draft':
-                    msg = "<i class='fa fa-newspaper-o fa-lg'></i> Создан черновик";
-                    break;
-            }
-
-            $('#stateInfo').html(msg);
-        }
-
-
-        isDraft();
-        // Проверка на черновик
-        function isDraft()
-        {
-            if($('#draft').val() == '1'){
-                setStateInfo('draft');
-            }
-        }
-
-        // При изменнении значния в поле
-        // убирать класс ошибки
-        $('input').bind('keypress change',function(e){
-            var self = e.currentTarget;
-            $(self).parent('div').removeClass('has-error');
-            $(self).parent('div').find('.help-block').remove();
+            $('#create_date').datepicker();
+            $('#execute_date').datepicker();
         });
-
-        $('#create_date').datepicker();
-        $('#execute_date').datepicker();
     </script>
 @stop

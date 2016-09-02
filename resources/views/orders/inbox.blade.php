@@ -75,6 +75,11 @@
                           {{--<a class="btn btn-success" data-toggle="tooltip" href="#" title="">--}}
                               {{--<i class="fa fa-search-plus"></i>--}}
                           {{--</a>--}}
+
+                          <a class="btn btn-success" href="{{ route('orders.inbox.view', $order->id) }}">
+                              <i class="fa fa-eye"></i>
+                          </a>
+
                           @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-edit")))
                           <a class="btn btn-info" href="{{ route('orders.inbox.edit', $order->id) }}">
                               <i class="fa fa-pencil-square-o"></i>

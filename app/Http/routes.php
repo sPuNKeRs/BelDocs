@@ -72,6 +72,13 @@ Route::group(['middleware' => ['logged']], function () {
             'middleware' => 'has_perm:_superadmin,_orders-inbox-edit'
         ]);
 
+        // Страница просмотра входящего приказа
+        Route::get('/orders/inbox/view/{id?}', [
+            'as' => 'orders.inbox.view',
+            'uses' => 'OrdersController@viewInbox',
+            'middleware' => 'has_perm:_superadmin,_orders-inbox-edit'
+        ]);
+
         // Обновление входящего приказа
         Route::post('/orders/inbox/update', [
             'as' => 'orders.inbox.update',

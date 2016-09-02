@@ -52,7 +52,8 @@
     <script>
         $(document).ready(function () {
             // Удалить комментарий
-            $('.delete-comment').click(function () {
+
+            $('#comments-list').on('click', '.delete-comment', function () {
                 if (confirm('Вы действительно хотите удалить комментарий?')) {
                     var token, url, data, commentID, commentObj;
 
