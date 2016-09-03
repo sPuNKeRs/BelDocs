@@ -14,7 +14,7 @@
 
 @section('content')
 
-    <div id='wrapper'>
+    <div id='wrapper' class="inbox-view">
     @include('partials.sidebar')
     @include('partials.tools')
     <!-- Content -->
@@ -39,7 +39,7 @@
                             @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'disabled'=> 'true', 'name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
                         </div>
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' ])
+                            @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' , 'disabled' => 'true', 'readonly' => 'true'])
                         </div>
                         <div class="col-md-3 text-right">
                             @include('widgets.form._formitem_checkbox', ['name'=>'status',
@@ -47,28 +47,29 @@
                                                                           'value'=> '1',
                                                                           'id' => 'status',
                                                                           'class' => 'custom checkbox',
-                                                                           'left' => null])
+                                                                          'left' => null,
+                                                                          'disabled' => 'true'])
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа' ])
+                            @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа', 'readonly' => 'true' ])
                         </div>
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'create_date', 'value' => date('d.m.Y', strtotime($entity->create_date)), 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
+                            @include('widgets.form._formitem_text', ['name' => 'create_date', 'value' => date('d.m.Y', strtotime($entity->create_date)), 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1','disabled' => 'true', 'readonly' => 'true'])
                         </div>
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'execute_date', 'value' => date('d.m.Y', strtotime($entity->execute_date)), 'title' => 'Дата исполнения', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
+                            @include('widgets.form._formitem_text', ['name' => 'execute_date', 'value' => date('d.m.Y', strtotime($entity->execute_date)), 'title' => 'Дата исполнения', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1', 'disabled' => 'true', 'readonly' => 'true'])
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @include('widgets.form._formitem_textarea', ['id' => 'description', 'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
+                            @include('widgets.form._formitem_textarea', ['id' => 'description', 'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа', 'disabled' => 'true'])
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @include('widgets.form._formitem_textarea', ['name' => 'resolution', 'id' => 'resolution','title' => 'Резолюция', 'rows' => '3', 'placeholder' => 'Резолюция'])
+                            @include('widgets.form._formitem_textarea', ['name' => 'resolution', 'id' => 'resolution','title' => 'Резолюция', 'rows' => '3', 'placeholder' => 'Резолюция', 'disabled' => 'true'])
                         </div>
                     </div>
                     <div class="row">
@@ -96,8 +97,8 @@
 @section('custom_js')
     <script type="text/javascript">
         $(document).ready(function(){
-            $('#create_date').datepicker();
-            $('#execute_date').datepicker();
+           // $('#create_date').datepicker();
+           // $('#execute_date').datepicker();
         });
     </script>
 @stop

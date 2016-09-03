@@ -214,3 +214,8 @@ p.has-error {
 .responsibles-table div.row.has-error-row{
     background-color: rgba(240, 128, 128, 0.42);
 }
+
+
+.inbox-view .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #fff;
+}

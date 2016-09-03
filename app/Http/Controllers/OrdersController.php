@@ -7,6 +7,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use InitialPreview;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+
 use App\ItemNumber;
 use App\User;
 use Illuminate\Http\Request;
@@ -43,19 +45,33 @@ class OrdersController extends Controller
     */
     public function inbox(Order $order)
     {
-        if($this->wall->hasPermission(['_superadmin']))
-        {
+        if ($this->wall->hasPermission(['_superadmin'])) {
             $orders = Order::all();
-        }
-        else
-        {
+        } else {
             $orders = User::find($this->logged_user->id)->orders_responsible;
         }
 
-        // $orders = $order->paginate(25);
         $count = count($orders);
 
-        return view('orders.inbox', compact('orders', 'count'));
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+        $collection = new Collection($orders);
+
+        $perPage = config('app_options.count_per_page');
+
+        $currentPageSearchResults = $collection->slice((($currentPage - 1) * $perPage), $perPage)->all();
+
+        $currentPageSearchResults = new LengthAwarePaginator($currentPageSearchResults, $count, $perPage);
+
+        $orders = $currentPageSearchResults;
+
+        $slice = ((($currentPage - 1) * $perPage) == 0) ? '1' : (($currentPage - 1) * $perPage);
+        $perPage = (($currentPage * $perPage) > $count) ? $count : ($currentPage * $perPage);
+
+        return view('orders.inbox', compact('orders',
+            'slice',
+            'perPage',
+            'count'));
     }
 
     /*
@@ -84,12 +100,12 @@ class OrdersController extends Controller
         $item_numbers_opt = ItemNumber::getArray();
 
         return view('orders.inbox-create', compact('last_order_num',
-                                                    'item_numbers_opt',
-                                                    'id',
-                                                    'draft',
-                                                    'slug',
-                                                    'entity_type',
-                                                    'entity'));
+            'item_numbers_opt',
+            'id',
+            'draft',
+            'slug',
+            'entity_type',
+            'entity'));
     }
 
     /*
@@ -110,8 +126,7 @@ class OrdersController extends Controller
         $item_numbers_opt = ItemNumber::getArray();
 
         // FILES
-        if(count($order->attachments) > 0)
-        {
+        if (count($order->attachments) > 0) {
             $attachments = $order->attachments;
             $initialPreview = InitialPreview::getInitialPreview($attachments, 'orders');
             $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
@@ -124,18 +139,18 @@ class OrdersController extends Controller
 
         $responsibles = $entity->responsibles;
         //dd($responsibles);
-        
+
         return view('orders.inbox-edit', compact('entity',
-                                                'item_numbers_opt',
-                                                'entity_id',
-                                                'comments',
-                                                'initialPreview',
-                                                'initialPreviewConfig',
-                                                'append',
-                                                'entity_type',
-                                                'responsibles'));
+            'item_numbers_opt',
+            'entity_id',
+            'comments',
+            'initialPreview',
+            'initialPreviewConfig',
+            'append',
+            'entity_type',
+            'responsibles'));
     }
-    
+
     /*
      * Форма простотра входящего приказа
      */
@@ -151,12 +166,11 @@ class OrdersController extends Controller
         }
 
         $entity_id = $order->slug;
-        
+
         $item_numbers_opt = ItemNumber::getArray();
 
         // FILES
-        if(count($order->attachments) > 0)
-        {
+        if (count($order->attachments) > 0) {
             $attachments = $order->attachments;
             $initialPreview = InitialPreview::getInitialPreview($attachments, 'orders');
             $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
@@ -216,12 +230,11 @@ class OrdersController extends Controller
         // Удаляем вложения
         $attachments = $order->attachments;
 
-        foreach ($attachments as $attachment)
-        {
+        foreach ($attachments as $attachment) {
             $attachment->delete();
         }
 
-        Storage::deleteDirectory('orders/'.$order->id);
+        Storage::deleteDirectory('orders/' . $order->id);
 
         $order->delete();
 
@@ -264,7 +277,7 @@ class OrdersController extends Controller
 
         $order->save();
 
-        return response(['status' => true, 'action' => 'save', 'id' => $order->id, 'slug'=> $order->slug]);
+        return response(['status' => true, 'action' => 'save', 'id' => $order->id, 'slug' => $order->slug]);
     }
 
     /*
@@ -308,7 +321,7 @@ class OrdersController extends Controller
     {
         $order = Order::findOrFail($request->id);
 
-        if($order->draft == '1'){
+        if ($order->draft == '1') {
 
             //Удаляем комментарии
             $comments = $order->comments;
@@ -320,12 +333,11 @@ class OrdersController extends Controller
             // Удаляем вложения
             $attachments = $order->attachments;
 
-            foreach ($attachments as $attachment)
-            {
+            foreach ($attachments as $attachment) {
                 $attachment->delete();
             }
 
-            Storage::deleteDirectory('orders/'.$order->id);
+            Storage::deleteDirectory('orders/' . $order->id);
 
             $order->delete();
 

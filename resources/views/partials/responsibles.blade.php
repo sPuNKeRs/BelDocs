@@ -1,9 +1,14 @@
 <div class="panel panel-default responsibles-table">
     <div class="panel-heading">
         <i class="fa fa-users" aria-hidden="true"></i> Исполнители
+
+
+        @if(App::make('authentication_helper')->hasPermission(array("_superadmin")) || App::make('authenticator')->getLoggedUser()->id == $entity->author_id)
         <span class="pull-right" style="margin: -4px; width: 30px;">
             <a href="#" id="add_responsible"><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></a>
         </span>
+        @endif
+
     </div>
     <ul class="responsibles-table-list list-group">
         @if(isset($responsibles))

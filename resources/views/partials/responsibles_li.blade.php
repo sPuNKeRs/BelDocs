@@ -1,9 +1,22 @@
 <?php
-    if (isset($responsibles))$countLi = $index;
-    if(!isset($responsible)) $responsible = null;
+if (isset($responsibles)) $countLi = $index;
+if (!isset($responsible)) $responsible = null;
+
+$access = false;
+if (App::make('authentication_helper')->hasPermission(array("_superadmin")) || App::make('authenticator')->getLoggedUser()->id == $entity->author_id) {
+    $access = true;
+}
+
+$access_status = false;
+if (App::make('authentication_helper')->hasPermission(array("_superadmin")) || App::make('authenticator')->getLoggedUser()->id == $responsible->user_id) {
+    $access_status = true;
+}
+
+
 ?>
 
-<li class="list-group-item" data-count-num="{{$countLi}}" data-responsible-id="{{(isset($responsible->id)? $responsible->id: '')}}">
+<li class="list-group-item" data-count-num="{{$countLi}}"
+    data-responsible-id="{{(isset($responsible->id)? $responsible->id: '')}}">
     <div class="row {{!isset($responsible) ? 'has-error-row' : ''}}">
         <div class="col-md-4">
             <i class="fa fa-user fa-2x" aria-hidden="true"></i> {{ Form::select('responsible_user'.$countLi,
@@ -14,7 +27,8 @@
                                                                                     'data-size'=> 4,
                                                                                     'data-width'=>'90%',
                                                                                     'data-title'=>'Выберите из списка',
-                                                                                    'data-count-li'=>$countLi]) }}
+                                                                                    'data-count-li'=>$countLi,
+                                                                                    ($access)?'':'disabled']) }}
         </div>
         <div class="col-md-3">
             @include('widgets.form._formitem_text', ['name' => 'executed_at'.$countLi,
@@ -23,6 +37,7 @@
                                                         'data-count-li' => $countLi,
                                                         'placeholder' => '01.01.2016',
                                                         'describedby' => 'basic-addon1',
+                                                        ($access)?'':'readonly' => 'true'
                                                         ])
 
         </div>
@@ -34,17 +49,20 @@
                                                             'data-count-li' => $countLi,
                                                             'class' => 'custom checkbox status_user',
                                                             'left' => null,
-                                                            'checked' => (isset($responsible->status) and $responsible->status == 1) ? true : false])
+                                                            'checked' => (isset($responsible->status) and $responsible->status == 1) ? true : false,
+                                                            ($access_status)?'':'disabled'=>'true'])
         </div>
         <div class="col-md-2">
-                    <span class="pull-right" style="margin: 6px -30px 0px 0; width: 57px;">
+            @if(App::make('authentication_helper')->hasPermission(array("_superadmin")) || App::make('authenticator')->getLoggedUser()->id == $entity->author_id)
+                <span class="pull-right" style="margin: 6px -30px 0px 0; width: 57px;">
                         <div style="width: 55px;">
                             {{--<a href="#" class="add-responsible-btn"><i class="fa fa-check-circle fa-2x" aria-hidden="true"></i></a>--}}
 
                             <a href="#" class="del-responsible-btn {{(isset($responsible)? '': 'hidden')}}"><i
                                         class="fa fa-minus-circle fa-2x text-danger" aria-hidden="true"></i></a>
                         </div>
-        </span>
+                    </span>
+            @endif
         </div>
     </div>
 </li>
