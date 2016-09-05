@@ -10,11 +10,10 @@ class InitialPreview
 {
     public static function getInitialPreview($files, $entity_type)
     {
-        $path = $entity_type.'/'.$files[0]->entity_id. '/';
+        $path = $entity_type . '/' . $files[0]->entity_id . '/';
         $initialPreview = array();
 
-        foreach ($files as $file)
-        {
+        foreach ($files as $file) {
             array_push($initialPreview, asset(Storage::url($path . $file->title)));
         }
 
@@ -26,30 +25,20 @@ class InitialPreview
 
         $initialPreConfig = array();
 
-        foreach ($files as $file)
-        {
+        foreach ($files as $file) {
             $showDelete = false;
-            if(\App::make('authentication_helper')->hasPermission(array("_superadmin")) || \App::make('authenticator')->getLoggedUser()->id == $file->author_id)
-            {
+            if (\App::make('authentication_helper')->hasPermission(array("_superadmin")) || \App::make('authenticator')->getLoggedUser()->id == $file->author_id) {
                 $showDelete = true;
             }
 
             $type = InitialPreview::getTypePreview($file->type);
 
             $showZoom = false;
-            if($type == 'image' || $type == 'pdf')
-            {
+            if ($type == 'image' || $type == 'pdf') {
                 $showZoom = true;
             }
 
-            //$otherActionButtons = '<a href="/"><button type="button" class="btn btn-xs btn-default" title="Скачать"><i class="fa fa-download" aria-hidden="true"></i></button></a>';
-
-           // 'layoutTemplates': {actions: "{upload} {delete} {zoom} {other}"},
-            //$actions = ['actions' => '{upload} {delete} {zoom} {other}'];
-
-
-            $config = ['type' => $type, 'size' => $file->size, 'caption' => $file->title, 'url' => route('attachments.destroy'), 'key' => $file->id, 'showDelete' => $showDelete, 'showZoom'=>$showZoom];
-           // dd($config);
+            $config = ['type' => $type, 'size' => $file->size, 'caption' => $file->title, 'url' => route('attachments.destroy'), 'key' => $file->id, 'showDelete' => $showDelete, 'showZoom' => $showZoom];
 
             array_push($initialPreConfig, $config);
         }
@@ -59,8 +48,7 @@ class InitialPreview
 
     public static function getTypePreview($mime)
     {
-        switch ($mime)
-        {
+        switch ($mime) {
             case 'image/png':
                 $type = 'image';
                 break;
@@ -70,10 +58,10 @@ class InitialPreview
             case 'application/pdf':
                 $type = 'pdf';
                 break;
-                // case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-                // case 'application/msword':
-                // case 'application/vnd.oasis.opendocument.spreadsheet':
-                // case 'application/vnd.ms-excel':
+            // case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            // case 'application/msword':
+            // case 'application/vnd.oasis.opendocument.spreadsheet':
+            // case 'application/vnd.ms-excel':
             default:
                 $type = 'other';
                 break;

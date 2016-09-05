@@ -169,8 +169,6 @@ return [
          DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
          Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
          'Laravelrus\LocalizedCarbon\LocalizedCarbonServiceProvider',
-         Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
-        
 
     ],
 
@@ -223,8 +221,7 @@ return [
         'DiffFormatter'     => 'Laravelrus\LocalizedCarbon\DiffFactoryFacade',
 
         'InitialPreview' => App\Helpers\InitialPreview::class,
-        'SprHelper' => App\Helpers\SprHelper::class,
-
+        'SortHelper' => App\Helpers\SortHelper::class,
     ],
 
 ];

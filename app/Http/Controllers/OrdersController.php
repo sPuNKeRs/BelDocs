@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use InitialPreview;
 
+
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\ItemNumber;
@@ -43,12 +44,30 @@ class OrdersController extends Controller
     /*
     * Вывод страницы с входящими приказами
     */
-    public function inbox()
+    public function inbox(Request $request)
     {
-        if ($this->wall->hasPermission(['_superadmin'])) {
-            $orders = Order::all();
-        } else {
-            $orders = User::find($this->logged_user->id)->orders_responsible;
+        // Сортировка
+
+
+
+        if($request->has('sort') && $request->has('order'))
+        {
+            if ($this->wall->hasPermission(['_superadmin'])) {
+                $orders = Order::orderBy($request->sort, $request->order)->get();
+            } else {
+                if($request->order == 'asc')
+                    $orders = User::find($this->logged_user->id)->orders_responsible->sortBy($request->sort);
+                else
+                    $orders = User::find($this->logged_user->id)->orders_responsible->sortByDesc($request->sort);
+            }
+        }
+        else
+        {
+            if ($this->wall->hasPermission(['_superadmin'])) {
+                $orders = Order::all();
+            } else {
+                $orders = User::find($this->logged_user->id)->orders_responsible;
+            }
         }
 
         $count = count($orders);

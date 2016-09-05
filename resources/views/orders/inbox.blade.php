@@ -1,11 +1,6 @@
 <?php
 
-if (Request::has('page')) {
-    $page = Request::input('page');
-}else{
-    $page = null;
-}
-
+    use Illuminate\Support\Facades\Input;
 
 ?>
 
@@ -59,13 +54,13 @@ if (Request::has('page')) {
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>@sortLink('order_num', '#', {!! $page !!})</th>
-                        <th>@sortablelink('item_number', 'Номенклатурный номер')</th>
-                        <th>@sortablelink('incoming_number', 'Входящий номер')</th>
-                        <th>@sortablelink('title', 'Тема')</th>
-                        <th>@sortablelink('create_date', 'Создан')</th>
-                        <th>@sortablelink('execute_date', 'Исполнить до')</th>
-                        <th>@sortablelink('status', 'Статус')</th>
+                        <th>@sortLink('order_num', '#')</th>
+                        <th>@sortLink('item_number', 'Номенклатурный номер')</th>
+                        <th>@sortLink('incoming_number', 'Входящий номер')</th>
+                        <th>@sortLink('title', 'Тема')</th>
+                        <th>@sortLink('create_date', 'Создан')</th>
+                        <th>@sortLink('execute_date', 'Исполнить до')</th>
+                        <th>@sortLink('status', 'Статус')</th>
                         <th class="actions">
                             Действия
                         </th>
@@ -116,7 +111,7 @@ if (Request::has('page')) {
 
                 <div class="panel-footer">
 
-                    {{ $orders->setPath('inbox')->render() }}
+                    {{ $orders->setPath('inbox')->appends(Input::except('page'))->render() }}
                     <div class="pull-right">
                         Показать с {{$slice}} по {{$perPage}} из {{$count}} записей
                     </div>
