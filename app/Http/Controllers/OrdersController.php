@@ -43,7 +43,7 @@ class OrdersController extends Controller
     /*
     * Вывод страницы с входящими приказами
     */
-    public function inbox(Order $order)
+    public function inbox()
     {
         if ($this->wall->hasPermission(['_superadmin'])) {
             $orders = Order::all();

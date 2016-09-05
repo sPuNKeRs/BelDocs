@@ -5,9 +5,14 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+use Kyslik\ColumnSortable\Sortable;
+
 class Order extends Model
 {
-    
+    use Sortable;
+
+    protected $sortable = ['order_num', 'item_number', 'incoming_number', 'title', 'create_date', 'execute_date', 'status'];
+
     
 
     public function responsibles()

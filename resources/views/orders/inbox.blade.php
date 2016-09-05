@@ -1,3 +1,14 @@
+<?php
+
+if (Request::has('page')) {
+    $page = Request::input('page');
+}else{
+    $page = null;
+}
+
+
+?>
+
 @extends('layouts.master')
 
 @section('title', 'Входящие приказы')
@@ -48,13 +59,13 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Номенклатурный номер</th>
-                        <th>Входящий номер</th>
-                        <th>Тема</th>
-                        <th>Создан</th>
-                        <th>Исполнить до</th>
-                        <th>Статус</th>
+                        <th>@sortLink('order_num', '#', {!! $page !!})</th>
+                        <th>@sortablelink('item_number', 'Номенклатурный номер')</th>
+                        <th>@sortablelink('incoming_number', 'Входящий номер')</th>
+                        <th>@sortablelink('title', 'Тема')</th>
+                        <th>@sortablelink('create_date', 'Создан')</th>
+                        <th>@sortablelink('execute_date', 'Исполнить до')</th>
+                        <th>@sortablelink('status', 'Статус')</th>
                         <th class="actions">
                             Действия
                         </th>
@@ -107,7 +118,7 @@
 
                     {{ $orders->setPath('inbox')->render() }}
                     <div class="pull-right">
-                    Показать с {{$slice}} по {{$perPage}} из {{$count}} записей
+                        Показать с {{$slice}} по {{$perPage}} из {{$count}} записей
                     </div>
                 </div>
             </div>

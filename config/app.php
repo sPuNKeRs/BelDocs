@@ -168,7 +168,8 @@ return [
          Barryvdh\Debugbar\ServiceProvider::class,
          DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
          Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        'Laravelrus\LocalizedCarbon\LocalizedCarbonServiceProvider',
+         'Laravelrus\LocalizedCarbon\LocalizedCarbonServiceProvider',
+         Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
         
 
     ],
