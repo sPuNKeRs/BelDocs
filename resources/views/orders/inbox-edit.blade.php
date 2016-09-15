@@ -88,7 +88,8 @@
                             <button id="save_close_order" class="btn btn-default">Сохранить и закрыть</button>
                         @endif
 
-                        <a class="btn" href="{{ route('orders.inbox') }}">Отмена</a>
+                        {{--<a class="btn" href="{{ route('orders.inbox') }}">Отмена</a>--}}
+                        <a class="btn" href="{{ URL::previous() }}">Отмена</a>
                     </div>
                     {!! Form::close()!!}
                 </div>

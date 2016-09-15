@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use InitialPreview;
 
 
@@ -46,23 +49,20 @@ class OrdersController extends Controller
     */
     public function inbox(Request $request)
     {
+        // Сохраняем строку параметров в сессии
+        $request->session()->put('paramStr', Input::all());
+
         // Сортировка
-
-
-
-        if($request->has('sort') && $request->has('order'))
-        {
+        if ($request->has('sort') && $request->has('order')) {
             if ($this->wall->hasPermission(['_superadmin'])) {
                 $orders = Order::orderBy($request->sort, $request->order)->get();
             } else {
-                if($request->order == 'asc')
+                if ($request->order == 'asc')
                     $orders = User::find($this->logged_user->id)->orders_responsible->sortBy($request->sort);
                 else
                     $orders = User::find($this->logged_user->id)->orders_responsible->sortByDesc($request->sort);
             }
-        }
-        else
-        {
+        } else {
             if ($this->wall->hasPermission(['_superadmin'])) {
                 $orders = Order::all();
             } else {
@@ -360,8 +360,8 @@ class OrdersController extends Controller
 
             $order->delete();
 
-            return redirect('/orders/inbox');
+            return redirect()->route('orders.inbox', $request->session()->get('paramStr'));
         }
-        return redirect('/orders/inbox');
+        return redirect()->route('orders.inbox', $request->session()->get('paramStr'));
     }
 }

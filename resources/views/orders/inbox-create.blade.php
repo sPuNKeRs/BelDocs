@@ -85,12 +85,11 @@
                   </div>
               </div>
               <div class="form-actions">
-                  {{--@include('widgets.form._formitem_btn_submit',['title' => 'Сохранить', 'class' => 'btn btn-default'])--}}
                   <button id="save_order" class="btn btn-default">Сохранить</button>
                   <button id="save_close_order" class="btn btn-default">Сохранить и закрыть</button>
                   <a id='cancelBtn' class="btn" href="{{ route('orders.inbox.cancel', ['id'=>$id]) }}">Отмена</a>
               </div>
-              {{--{!! Form::token() !!}--}}
+
             {!! Form::close()!!}
 
         </div>

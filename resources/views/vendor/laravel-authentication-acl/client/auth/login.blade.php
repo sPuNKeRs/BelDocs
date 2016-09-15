@@ -49,7 +49,7 @@
                 </div>
                 <input type="submit" value="Войти" class="btn btn-info btn-block">
                 <br>
-                {!! link_to_route('user.recovery-password','Забыли пароль?') !!}
+                {{--{!! link_to_route('user.recovery-password','Забыли пароль?') !!}--}}
               </div>
             </fieldset>
           {!! Form::close() !!}
