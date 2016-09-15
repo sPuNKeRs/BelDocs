@@ -13,6 +13,9 @@ if (App::make('authentication_helper')->hasPermission(array("_superadmin")) || A
 }
 
 
+//$entity_id = $entity->id;
+//$entity_type = get_class($entity);
+
 ?>
 
 <li class="list-group-item" data-count-num="{{$countLi}}"
@@ -20,7 +23,9 @@ if (App::make('authentication_helper')->hasPermission(array("_superadmin")) || A
     <div class="row {{!isset($responsible) ? 'has-error-row' : ''}}">
         <div class="col-md-4">
             <i class="fa fa-user fa-2x" aria-hidden="true"></i> {{ Form::select('responsible_user'.$countLi,
-                                                                                    \App\User::getArrayOptions(),
+
+                                                                                    (isset($responsible))? \App\User::getArrayUser($responsible->user_id) : \App\User::getArrayOptions($entity_id, $entity_type),
+                                                                                    //dd(\App\User::getArrayOptions($entity_id, $entity_type)),
                                                                                     (isset($responsible->user_id)) ? $responsible->user_id : null,
                                                                                     ['class' => 'selectpicker responsible_user',
                                                                                     'data-live-search' => true,
@@ -28,6 +33,7 @@ if (App::make('authentication_helper')->hasPermission(array("_superadmin")) || A
                                                                                     'data-width'=>'90%',
                                                                                     'data-title'=>'Выберите из списка',
                                                                                     'data-count-li'=>$countLi,
+                                                                                    (!isset($responsible)) ? '' : 'disabled',
                                                                                     ($access)?'':'disabled']) }}
         </div>
         <div class="col-md-3">

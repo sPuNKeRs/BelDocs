@@ -17,7 +17,7 @@ Breadcrumbs::register('orders.index', function($breadcrumbs)
 Breadcrumbs::register('orders.inbox', function($breadcrumbs)
 {
     $breadcrumbs->parent('orders.index');
-    $breadcrumbs->push('Входящие', route('orders.inbox'));
+    $breadcrumbs->push('Входящие', route('orders.inbox', Session::get('paramStr')));
 });
 
 // Приказы > Входящие > Создать

@@ -43,4 +43,6 @@ class Responsible extends Model
     {
         $this->attributes['executed_at'] = Carbon::createFromFormat('d.m.Y',$date);
     }
+    
+    
 }

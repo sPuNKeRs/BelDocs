@@ -15,7 +15,7 @@
 @section('toolsbar')
     @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-create")))
         <a class='btn' data-toggle='toolbar-tooltip' href='{{ route('orders.inbox.create')}}' title='Создать приказ'>
-            <i class='fa fa-plus-circle'></i>
+            <i class='fa fa-plus-circle'> Создать</i>
         </a>
     @endif
 @stop

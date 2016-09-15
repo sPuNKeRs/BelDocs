@@ -43,6 +43,11 @@ class ResponsibleController extends Controller
     
     public function getResponsibleTpl(Request $request)
     {
-        return view('partials.responsibles_li', ['countLi' => $request->countLi]);
+        if(!count(User::getArrayOptions($request->entity_id, $request->entity_type)))
+        {
+            return response('');
+        };
+
+        return view('partials.responsibles_li', ['entity_id'=>$request->entity_id, 'entity_type' => $request->entity_type,  'countLi' => $request->countLi]);
     }
 }

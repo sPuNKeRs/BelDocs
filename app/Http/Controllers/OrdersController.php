@@ -33,7 +33,7 @@ class OrdersController extends Controller
     {
         $this->logged_user = \App::make('authenticator')->getLoggedUser();
         $this->wall = \App::make('authentication_helper');
-        $this->entity_type = 'orders';
+        $this->entity_type = 'App\Order';
     }
 
     /*
@@ -141,7 +141,7 @@ class OrdersController extends Controller
             $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
         }
 
-        $entity_id = $order->slug;
+        $entity_id = $order->id;
         $item_numbers_opt = ItemNumber::getArray();
 
         // FILES
@@ -156,8 +156,7 @@ class OrdersController extends Controller
 
         // Получить всех ответственных
 
-        $responsibles = $entity->responsibles;
-        //dd($responsibles);
+        $responsibles = $entity->responsibles;        
 
         return view('orders.inbox-edit', compact('entity',
             'item_numbers_opt',
@@ -235,7 +234,7 @@ class OrdersController extends Controller
     /**
      * Удаление входящего приказа
      */
-    public function delete($id)
+    public function delete($id, Request $request)
     {
         $order = Order::findOrFail($id);
 
@@ -259,7 +258,7 @@ class OrdersController extends Controller
 
         Session::flash('flash_message', 'Входящий приказ успешно удален.');
 
-        return redirect('/orders/inbox');
+        return redirect()->route('orders.inbox', $request->session()->get('paramStr'));
     }
 
     /*

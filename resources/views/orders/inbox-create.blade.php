@@ -6,8 +6,16 @@
 
 @section('pageClass', 'main page')
 
-@section('toolsbar')    
-
+@section('toolsbar')
+    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-create")))
+        <a class='btn save_order' data-toggle='toolbar-tooltip' href='#' title='Сохранить'>
+            <i class='fa fa-plus-circle'> Сохранить</i>
+        </a>
+        &nbsp;
+        <a class='btn btn-danger' data-toggle='toolbar-tooltip' href='{{ route('orders.inbox.cancel', ['id'=>$id]) }}' title='Закрыть'>
+            <i class='fa fa-times'></i>
+        </a>
+    @endif
 @stop
 
 @include('partials.navbar')
@@ -81,11 +89,16 @@
               </div>
               <div class="row">
                   <div class="col-md-12">
+                      @include('partials.responsibles')
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
                       @include('partials.files_attachments')
                   </div>
               </div>
               <div class="form-actions">
-                  <button id="save_order" class="btn btn-default">Сохранить</button>
+                  <button id="save_order" class="btn btn-default save_order">Сохранить</button>
                   <button id="save_close_order" class="btn btn-default">Сохранить и закрыть</button>
                   <a id='cancelBtn' class="btn" href="{{ route('orders.inbox.cancel', ['id'=>$id]) }}">Отмена</a>
               </div>
@@ -104,7 +117,7 @@
     <script type="text/javascript">
         $(document).ready(function(){
             // Сохранить приказ
-            $('#save_order').on('click',function(e){
+            $('.save_order').on('click',function(e){
                 saveOrder();
                 e.preventDefault();
             });

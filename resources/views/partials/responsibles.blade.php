@@ -28,7 +28,11 @@
             var token = $('input[name=_token]').val();
             var entity_id = $('#entity_id').val();
             var entity_type = $('#entity_type').val();
-            $('.selectpicker').selectpicker();
+            $('.executed_at').datepicker();
+
+            //alert(entity_type);
+            //$('.selectpicker').selectpicker();
+            //$('.selectpicker').selectpicker('render');
 
             // -- СОБЫТИЯ --
 
@@ -151,6 +155,12 @@
                     }
                 });
             }
+
+            $('.responsibles-table-list').on('change', '.selectpicker', function(e){
+                var self = e.currentTarget;
+                console.log(self);
+                $(self).prop('disabled', true);
+            });
         });
     </script>
 @stop

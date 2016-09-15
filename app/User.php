@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use App\Responsible;
+
 class User extends Authenticatable
 {
     /**
@@ -26,7 +28,7 @@ class User extends Authenticatable
 
     public function comments()
     {
-        return $this->hasMany('App\Comment','author_id','id');
+        return $this->hasMany('App\Comment', 'author_id', 'id');
     }
 
     public function responsibles()
@@ -43,17 +45,46 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Order', 'author_id', 'id');
     }
-    
-    public static function getArrayOptions()
+
+    public static function getArrayOptions($entity_id = null, $entity_type = null)
     {
         $users = User::all();
+
+        if ($entity_id && $entity_type) {
+            $entity = $entity_type::find($entity_id);
+
+            $responsibles = $entity->responsibles;
+
+            $user_already = [];
+
+            foreach ($responsibles as $responsible) {
+                $user_already[] = $responsible->user_id;
+            }
+
+            foreach ($users as $key => $user) {
+                if (in_array($user->id, $user_already)) {
+                    array_forget($users, $key);
+                }
+            }
+        }
+
         $options = [];
 
-        foreach ($users as $user)
-        {
+        foreach ($users as $user) {
             $user_profile = $user_profile = \App::make('authenticator')->getUserById($user->id)->user_profile()->first();
-            $options[$user->id] = $user_profile->last_name." ".$user_profile->first_name." ".$user_profile->second_name;
+            $options[$user->id] = $user_profile->last_name . " " . $user_profile->first_name . " " . $user_profile->second_name;
         }
+
+        return $options;
+    }
+
+    public static function getArrayUser($user_id)
+    {
+        $options = [];
+        $user = User::find($user_id);
+
+        $user_profile = $user_profile = \App::make('authenticator')->getUserById($user->id)->user_profile()->first();
+        $options[$user->id] = $user_profile->last_name . " " . $user_profile->first_name . " " . $user_profile->second_name;
 
         return $options;
     }

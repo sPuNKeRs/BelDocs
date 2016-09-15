@@ -11,10 +11,10 @@
             <a href="{{ route('orders.index') }}">Приказы</a>            
             <ul class='dropdown-menu'>              
               <li>
-                <a href='{{ route('orders.inbox') }}'>Входящие</a>
+                <a href='{{ route('orders.inbox', Request::session()->get('paramStr') ) }}'>Входящие</a>
               </li>
               <li>
-                <a href='{{ route('orders.outbox') }}'>Исходящие</a>
+                <a href='{{ route('orders.outbox', Request::session()->get('paramStr')) }}'>Исходящие</a>
               </li>              
             </ul>
           </li>

@@ -219,3 +219,7 @@ p.has-error {
 .inbox-view .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
     background-color: #fff;
 }
+
+#tools .btn-group .btn.btn-danger {
+    background-color: #d9534f;
+}

@@ -7,7 +7,15 @@
 @section('pageClass', 'main page')
 
 @section('toolsbar')
-
+    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-create")))
+        <a class='btn save_order' data-toggle='toolbar-tooltip' href='#' title='Сохранить'>
+            <i class='fa fa-plus-circle'> Сохранить</i>
+        </a>
+        &nbsp;
+        <a class='btn btn-danger' data-toggle='toolbar-tooltip' href='{{ URL::previous() }}' title='Закрыть'>
+            <i class='fa fa-times'></i>
+        </a>
+    @endif
 @stop
 
 @include('partials.navbar')
@@ -84,8 +92,8 @@
                     </div>
                     <div class="form-actions">
                         @if(App::make('authentication_helper')->hasPermission(array("_superadmin")) || App::make('authenticator')->getLoggedUser()->id == $entity->author_id)
-                            <button id="save_order" class="btn btn-default">Сохранить</button>
-                            <button id="save_close_order" class="btn btn-default">Сохранить и закрыть</button>
+                            <button id="save_order" class="btn btn-default save_order">Сохранить</button>
+                            <button id="save_close_order" class="btn btn-default save_close_order">Сохранить и закрыть</button>
                         @endif
 
                         {{--<a class="btn" href="{{ route('orders.inbox') }}">Отмена</a>--}}
@@ -104,13 +112,13 @@
     <script type="text/javascript">
         $(document).ready(function(){
             // Сохранить приказ
-            $('#save_order').on('click',function(e){
+            $('.save_order').on('click',function(e){
                 saveOrder();
                 e.preventDefault();
             });
 
             // Сохранить и закрыть приказ
-            $('#save_close_order').click(function(e){
+            $('.save_close_order').click(function(e){
                 saveOrder(true);
 
                 e.preventDefault();
