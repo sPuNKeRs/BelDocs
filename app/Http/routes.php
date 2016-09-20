@@ -14,7 +14,7 @@
 
 
 Route::get('/demotest', function(){
-    dd(\App\User::getArrayOptions());
+    echo "Hello, World!";
 });
 
 // Общая группа
