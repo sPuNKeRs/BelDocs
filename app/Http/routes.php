@@ -11,12 +11,6 @@
 |
 */
 
-
-
-Route::get('/demotest', function(){
-    echo "Hello, World!";
-});
-
 // Общая группа
 Route::group(['middleware' => ['logged']], function () {
     Route::get('/', [
@@ -43,14 +37,7 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'orders.inbox.create',
             'uses' => 'OrdersController@inboxCreate',
             'middleware' => 'has_perm:_superadmin,_orders-inbox-create'
-        ]);
-
-        // Сохранение входящего приказа
-//        Route::post('/orders/inbox/create', [
-//            'as' => 'orders.inbox.create',
-//            'uses' => 'OrdersController@inboxSave',
-//            'middleware' => 'has_perm:_superadmin,_orders-inbox-create'
-//        ]);
+        ]);     
 
         // Сохранение входящего приказа AJAX
         Route::post('/orders/inbox/create', [
@@ -93,7 +80,6 @@ Route::group(['middleware' => ['logged']], function () {
             'middleware' => 'has_perm:_superadmin,_orders-inbox-delete'
         ]);
 
-
         // Страница с исходящими приказами
         Route::get('/orders/outbox', [
             'as' => 'orders.outbox',
@@ -116,9 +102,6 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
     });
 
-
-
-
     // Группа для работы с документами
     Route::group(['middleware' => []], function () {
         // Страница с приказами
@@ -140,7 +123,7 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
     });
 
-// Группа для работы с ДСП
+    // Группа для работы с ДСП
     Route::group(['middleware' => []], function () {
         // Страница с ДСП
         Route::get('/dsp', [
@@ -198,8 +181,6 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
     });
 
-
-
     // Группа для работы с ответственными лицами
     Route::group(['middleware' => []], function(){
         Route::get('/responsible/store', 'ResponsibleController@store');
@@ -219,7 +200,6 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'ResponsibleController@destroy'
         ]);
     });
-
 
     // Группа для работы со справочниками
     Route::group(['middleware' => []], function(){
@@ -253,16 +233,10 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'ReferencesController@itemNumberDelete'
         ]);
 
-
-
         // Справочник "Получатели"
         Route::get('/admin/references/recipients', [
             'as' => 'references.recipients',
             'uses' => 'ReferencesController@recipientsIndex'
         ]);
     });
-});
-
-Route::get('/test', function(){
-    return view('test.test');
 });
