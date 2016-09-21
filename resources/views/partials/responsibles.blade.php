@@ -24,24 +24,16 @@
     <script type="text/javascript">
         $(document).ready(function () {
             // -- ИНИЦИАЛИЗАЦИЯ --
-
             var token = $('input[name=_token]').val();
             var entity_id = $('#entity_id').val();
             var entity_type = $('#entity_type').val();
             $('.executed_at').datepicker();
 
-            //alert(entity_type);
-            //$('.selectpicker').selectpicker();
-            //$('.selectpicker').selectpicker('render');
-
             // -- СОБЫТИЯ --
-
-
             $('.responsibles-table-list').on('change', '.status_user', function(e){
                 var self = $(e.currentTarget).parents('.list-group-item');
                 storeResponsibleUser(self);
             });
-
 
             $('.responsibles-table-list').on('changed.bs.select', '.selectpicker', function(e){
                 var self = $(e.currentTarget).parents('.list-group-item');
