@@ -11,6 +11,12 @@
 |
 */
 
+// Тестовый маршрут
+Route::get('/test', function(){
+    echo 'Hello, World!';
+});
+
+
 // Общая группа
 Route::group(['middleware' => ['logged']], function () {
     Route::get('/', [
