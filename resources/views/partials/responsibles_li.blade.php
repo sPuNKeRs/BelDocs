@@ -11,11 +11,6 @@ $access_status = false;
 if (App::make('authentication_helper')->hasPermission(array("_superadmin")) || App::make('authenticator')->getLoggedUser()->id == $responsible->user_id) {
     $access_status = true;
 }
-
-
-//$entity_id = $entity->id;
-//$entity_type = get_class($entity);
-
 ?>
 
 <li class="list-group-item" data-count-num="{{$countLi}}"

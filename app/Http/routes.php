@@ -256,5 +256,53 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'references.recipient.delete',
             'uses' => 'ReferencesController@recipientDelete'
         ]);
+
+        // Справочник "Отправители"
+        Route::get('/admin/references/sender', [
+            'as' => 'references.sender', 
+            'uses' => 'ReferencesController@sendersIndex'
+        ]);
+
+        // Справочник "Отправители" - форма добавления / редактирования
+        Route::get('/admin/references/sender/edit', [
+            'as' => 'references.sender.edit',
+            'uses' => 'ReferencesController@senderEdit'
+        ]);
+
+        // Справочник "Отправители" - сохранение
+        Route::post('/admin/references/sender/edit', [
+            'as' => 'references.sender.edit',
+            'uses' => 'ReferencesController@senderPost'
+        ]);
+
+        // Справочник "Отправители" - удаление
+        Route::get('/admin/references/sender/delete', [
+            'as' => 'references.sender.delete',
+            'uses' => 'ReferencesController@senderDelete'
+        ]);
+
+        // Справочник "Заявители"
+        Route::get('/admin/references/declarer', [
+            'as' => 'references.declarer', 
+            'uses' => 'ReferencesController@declarersIndex'
+        ]);
+
+        // Справочник "Заявители" - форма добавления / редактирования
+        Route::get('/admin/references/declarer/edit', [
+            'as' => 'references.declarer.edit',
+            'uses' => 'ReferencesController@declarerEdit'
+        ]);
+
+        // Справочник "Заявители" - сохранение
+        Route::post('/admin/references/declarer/edit', [
+            'as' => 'references.declarer.edit',
+            'uses' => 'ReferencesController@declarerPost'
+        ]);
+
+        // Справочник "Заявители" - удаление
+        Route::get('/admin/references/declarer/delete', [
+            'as' => 'references.declarer.delete',
+            'uses' => 'ReferencesController@declarerDelete'
+        ]);
     });
 });

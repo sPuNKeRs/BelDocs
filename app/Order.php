@@ -22,10 +22,16 @@ class Order extends Model
         return $this->morphMany('App\Attachment', 'entity');
     }
 
+    public function sender()
+    {
+        return $this->hasOne('App\Sender', 'id', 'sender_id');
+    }
+
     // Заполняемые поля
     protected $fillable = ['order_num',
         'item_number',
         'incoming_number',
+        'sender_id',
         'title',
         'create_date',
         'execute_date',

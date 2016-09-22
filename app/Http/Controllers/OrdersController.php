@@ -14,6 +14,7 @@ use InitialPreview;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\ItemNumber;
+use App\Sender;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -117,9 +118,12 @@ class OrdersController extends Controller
 
 
         $item_numbers_opt = ItemNumber::getArray();
+        $senders_opt = Sender::getArray();
+
 
         return view('orders.inbox-create', compact('last_order_num',
             'item_numbers_opt',
+            'senders_opt',
             'id',
             'draft',
             'slug',
@@ -133,7 +137,8 @@ class OrdersController extends Controller
     public function edit($id)
     {
         $entity_type = $this->entity_type;
-        $order = Order::findOrFail($id);
+        $order = Order::findOrFail($id);       
+
         $comments = Order::find($id)->comments()->orderBy('created_at', 'desc')->get();
 
         foreach ($comments as $comment) {
@@ -143,6 +148,7 @@ class OrdersController extends Controller
 
         $entity_id = $order->id;
         $item_numbers_opt = ItemNumber::getArray();
+        $senders_opt = Sender::getArray();
 
         // FILES
         if (count($order->attachments) > 0) {
@@ -160,6 +166,7 @@ class OrdersController extends Controller
 
         return view('orders.inbox-edit', compact('entity',
             'item_numbers_opt',
+            'senders_opt',
             'entity_id',
             'comments',
             'initialPreview',
@@ -186,6 +193,7 @@ class OrdersController extends Controller
         $entity_id = $order->slug;
 
         $item_numbers_opt = ItemNumber::getArray();
+        $senders_opt = Sender::getArray();
 
         // FILES
         if (count($order->attachments) > 0) {
@@ -204,6 +212,7 @@ class OrdersController extends Controller
 
         return view('orders.inbox-view', compact('entity',
             'item_numbers_opt',
+            'senders_opt',
             'entity_id',
             'comments',
             'initialPreview',

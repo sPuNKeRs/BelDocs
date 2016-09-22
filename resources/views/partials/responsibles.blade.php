@@ -48,6 +48,8 @@
 
             // Наэимаем на плюсик для добавления ответсвтенного
             $('#add_responsible').click(function () {
+                $('#add_responsible').hide();
+
                 getResponsibleTpl();
             });
 
@@ -77,6 +79,7 @@
                     type: 'POST',
                     success: function (response) {
                         console.log(response);
+                        $('#add_responsible').show();
                         self.remove();
                     },
                     error: function (errors) {
@@ -90,13 +93,7 @@
             {
                 var user_id = self.find('select').val();
                 var executed_at = self.find('.executed_at').val();
-                var status = self.find('input.status_user').prop('checked');
-
-                console.log('Entity ID: ' + entity_id);
-                console.log('Entity Type: ' + entity_type);
-                console.log('user_id: ' + user_id);
-                console.log('executed_at: ' + executed_at);
-                console.log('status: ' + status);
+                var status = self.find('input.status_user').prop('checked');                
 
                 var url = ' {{route('responsible.store') }}';
                 var data = {
@@ -114,13 +111,14 @@
                     data: data,
                     type: 'POST',
                     success: function (response) {
+                        $('#add_responsible').show();
                         console.log(response);
                         self.find('.del-responsible-btn').removeClass('hidden');
                         self.find('.row').animate({ backgroundColor: "#ffffff" }, 400).removeClass('has-error-row');
                         self.data('responsibleId', response.id);
                         console.log(self.data('responsibleId'));
                     },
-                    error: function (errors) {
+                    error: function (errors) {                        
                         console.log(errors);
                     }
                 });
@@ -138,11 +136,16 @@
                     data: data,
                     type: 'POST',
                     success: function (response) {
+                        if(response.length <= 0)
+                        {
+                            alert('Больше нет пользователей для выбора.');
+                        }
+
                         $('.responsibles-table-list').append(response);
                         $('.selectpicker').selectpicker('render');
                         $('.executed_at').datepicker();
                     },
-                    error: function (errors) {
+                    error: function (errors) {                        
                         console.log(errors);
                     }
                 });

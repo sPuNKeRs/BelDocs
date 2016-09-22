@@ -41,16 +41,19 @@
                     {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
 
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             @include('widgets.form._formitem_text', ['name' => 'order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
                         </div>
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' ])
+                        @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'sender_id', 'title' => 'Отправитель', 'options' => $senders_opt])                            
                         </div>
-                        <div class="col-md-3 text-right">
+                        <div class="col-md-3">
+                            @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' ])
+                        </div>                        
+                        <div class="col-md-2 text-right">
                             @include('widgets.form._formitem_checkbox', ['name'=>'status',
                                                                           'title'=> 'Статус',
                                                                           'value'=> '1',
