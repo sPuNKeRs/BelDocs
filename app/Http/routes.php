@@ -227,16 +227,34 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'ReferencesController@itemNumbersPost'
         ]);
 
-        // Справочник "Номенклатурный номер" - сохранение
+        // Справочник "Номенклатурный номер" - удаление
         Route::get('/admin/references/itemnumber/delete', [
             'as' => 'references.itemnumber.delete',
             'uses' => 'ReferencesController@itemNumberDelete'
         ]);
 
         // Справочник "Получатели"
-        Route::get('/admin/references/recipients', [
-            'as' => 'references.recipients',
+        Route::get('/admin/references/recipient', [
+            'as' => 'references.recipient',
             'uses' => 'ReferencesController@recipientsIndex'
+        ]);
+
+         // Справочник "Получатели" - форма добавления
+        Route::get('/admin/references/recipient/edit', [
+            'as' => 'references.recipient.edit',
+            'uses' => 'ReferencesController@recipientEdit'
+        ]);
+
+        // Справочник "Получатели" - сохранение
+        Route::post('/admin/references/recipient/edit', [
+            'as' => 'references.recipient.edit',
+            'uses' => 'ReferencesController@recipientPost'
+        ]);
+
+        // Справочник "Получатели" - удаление
+        Route::get('/admin/references/recipient/delete', [
+            'as' => 'references.recipient.delete',
+            'uses' => 'ReferencesController@recipientDelete'
         ]);
     });
 });

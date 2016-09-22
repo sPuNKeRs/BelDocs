@@ -24,7 +24,7 @@
                     <h3 class="panel-title bariol-thin"><i class="fa fa-envelope"></i> Справочник "Получатели"</h3>
                 </div>
                 <div class="panel-body">
-                    {{--@include('laravel-authentication-acl::admin.permission.permission-table')--}}
+                    @include('admin.references.recipients.recipients-table')                    
                 </div>
             </div>
         </div>

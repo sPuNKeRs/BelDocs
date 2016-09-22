@@ -1,22 +1,24 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 
 use App\ItemNumber;
+use App\Recipient;
 
 class ReferencesController extends Controller
 {
     // "Номенклатурные номер"
     protected $item_numbers;
+    // "Получатели"
+    protected $recipients;
 
     // Констурктор класса
     public function __construct()
     {
         $this->item_numbers = "";
+        $this->recipients = "";
     }
 
     // Формирование бокового меню "Справочники"
@@ -28,7 +30,7 @@ class ReferencesController extends Controller
             "icon" => '<i class="fa fa-list-ul"></i>'
         ],
         "Получатели"   => [
-            'url'  => route('references.recipients'),
+            'url'  => route('references.recipient'),
             "icon" => '<i class="fa fa-list-ul"></i>'
         ]
         ];
@@ -38,9 +40,6 @@ class ReferencesController extends Controller
     {
         return view('admin.references.index')->with(['sidebar_items' => $this->getSidebar()]);
     }
-
-
-
 
     // Раздел справочника "Номенклатурный номер"
     public function itemNumbersIndex()
@@ -100,22 +99,63 @@ class ReferencesController extends Controller
         return redirect()->route('references.itemnumber')->with('status', $status);
     }
     
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
     // Раздел справочника "Получатели"
     public function recipientsIndex()
     {
-        return view('admin.references.recipients.index')->with(['sidebar_items' => $this->getSidebar()]);
+        $this->recipients = Recipient::all();
+
+        return view('admin.references.recipients.index')->with([
+            'sidebar_items' => $this->getSidebar(), 
+            'recipients' => $this->recipients]);
+    }
+
+    // Справочник "Получатели" - Сохранение
+    public function recipientPost(Request $request)
+    {
+        $id = $request->get('id');
+
+        $recipient = Recipient::find($id);
+        if(!$recipient)
+        {
+            $recipient = new Recipient($request->all());
+            $recipient->save();
+            $status = "Успешно создан";
+        }
+        else{
+            $recipient->update($request->all());
+            $status = "Успешно изменен";
+        }
+        return redirect()->route('references.recipient')->with('status', $status);
+
+    }
+    
+    // Справочник "Получатели" - Редактирование 
+    public function recipientEdit(Request $request)
+    {
+        $recipient = Recipient::find($request->id);
+        if(!$recipient)
+        {
+            $recipient = new Recipient();
+        }
+        
+        return view('admin.references.recipients.edit')->with([
+            'sidebar_items' => $this->getSidebar(),
+            'recipient' => $recipient]);
+
+    }
+
+    // Справочник "Получатели" - Удаление
+    public function recipientDelete(Request $request)
+    {
+        if(Recipient::destroy($request->get('id')))
+        {
+            $status = "Успешно удален!";
+        }
+        else
+        {
+            $status = "Ошибка при удалени!";
+        }
+
+        return redirect()->route('references.recipient')->with('status', $status);
     }
 }
