@@ -11,6 +11,16 @@ $access_status = false;
 if (App::make('authentication_helper')->hasPermission(array("_superadmin")) || App::make('authenticator')->getLoggedUser()->id == $responsible->user_id) {
     $access_status = true;
 }
+
+// Если это просто просмотр, то запретить вносить изменения
+if(isset($is_view))
+{
+   $is_view = true;
+}
+else
+{
+  $is_view = false;
+}
 ?>
 
 <li class="list-group-item" data-count-num="{{$countLi}}"
@@ -33,7 +43,7 @@ if (App::make('authentication_helper')->hasPermission(array("_superadmin")) || A
         </div>
         <div class="col-md-3">
             @include('widgets.form._formitem_text', ['name' => 'executed_at'.$countLi,
-                                                        'class' => 'executed_at executed_at'.$countLi.' form-control',
+                                                        'class' => ($is_view) ? ' form-control' : 'executed_at executed_at'.$countLi.' form-control',
                                                         'value' => (isset($responsible->executed_at))? date('d.m.Y', strtotime($responsible->executed_at)) : date('d.m.Y'),
                                                         'data-count-li' => $countLi,
                                                         'placeholder' => '01.01.2016',

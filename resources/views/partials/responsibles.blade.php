@@ -1,3 +1,14 @@
+<?php
+if(isset($is_view))
+{
+   $is_view = true;
+}
+else
+{
+  $is_view = false;
+}
+
+?>
 <div class="panel panel-default responsibles-table">
     <div class="panel-heading">
         <i class="fa fa-users" aria-hidden="true"></i> Исполнители
@@ -13,7 +24,7 @@
     <ul class="responsibles-table-list list-group">
         @if(isset($responsibles))
             @foreach($responsibles as $index => $responsible)
-                @include('partials.responsibles_li', [$responsible, $index])
+                @include('partials.responsibles_li', [$responsible, $index, $is_view])
             @endforeach
         @endif
     </ul>

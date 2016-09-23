@@ -109,7 +109,7 @@
                     </tbody>
                 </table>
 
-                <div class="panel-footer">
+                <div class="panel-footer" style="min-height: 54px;">
 
                     {{ $orders->setPath('inbox')->appends(Input::except('page'))->render() }}
                     <div class="pull-right">

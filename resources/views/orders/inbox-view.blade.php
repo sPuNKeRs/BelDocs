@@ -38,7 +38,7 @@
                         <div class="col-md-2">
                             @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'disabled'=> 'true', 'name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'disabled'=> 'true', 'name' => 'sender_id', 'title' => 'Отправитель', 'options' => $senders_opt])
                         </div>
                         <div class="col-md-3">
@@ -82,7 +82,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @include('partials.files_attachments')
+                            @include('partials.files_attachments', ['is_view' => true])
                         </div>
                     </div>
                     <div class="form-actions">

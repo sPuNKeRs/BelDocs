@@ -3,5 +3,5 @@
 
 return [
     // Количество элементов на странице
-    'count_per_page' => 10,
+    'count_per_page' => 15,
 ];
