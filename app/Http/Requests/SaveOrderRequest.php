@@ -25,7 +25,7 @@ class SaveOrderRequest extends Request
     {
         return [
             //'order_id' => 'required',
-            'item_number' => 'required',
+            'item_number_id' => 'required',
             'incoming_number' => 'required',
             'title' => 'required',
             'create_date' => 'required',

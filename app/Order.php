@@ -27,9 +27,16 @@ class Order extends Model
         return $this->hasOne('App\Sender', 'id', 'sender_id');
     }
 
+    public function item_number()
+    {
+        return $this->hasOne('App\ItemNumber', 'id', 'item_number_id');
+    }
+
+
+
     // Заполняемые поля
     protected $fillable = ['order_num',
-        'item_number',
+        'item_number_id',
         'incoming_number',
         'sender_id',
         'title',

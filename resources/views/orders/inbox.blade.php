@@ -55,7 +55,7 @@
                     <thead>
                     <tr>
                         <th>@sortLink('order_num', '#')</th>
-                        <th>@sortLink('item_number', 'Номенклатурный номер')</th>
+                        <th>@sortLink('item_number_id', 'Номенклатурный номер')</th>
                         <th>@sortLink('incoming_number', 'Входящий номер')</th>
                         <th>@sortLink('title', 'Тема')</th>
                         <th>@sortLink('create_date', 'Создан')</th>
@@ -71,7 +71,7 @@
                     @foreach($orders as $order)
                         <tr class="orders {{ isset($order->status) ? 'success' : '' }}  ">
                             <td>{{$order->order_num}}</td>
-                            <td>{{$order->item_number}}</td>
+                            <td>{{$order->item_number->item_number}}</td>
                             <td>{{$order->incoming_number}}</td>
                             <td>{{$order->title}}</td>
                             <td>{{ date('d.m.Y', strtotime($order->create_date)) }}</td>

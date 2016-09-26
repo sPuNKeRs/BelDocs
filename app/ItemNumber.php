@@ -16,7 +16,7 @@ class ItemNumber extends Model
         $options = array();
 
         foreach ($item_numbers as $item_number) {
-            $options[$item_number->item_number] = $item_number->item_number;
+            $options[$item_number->id] = $item_number->item_number;
         }
 
         return $options;
