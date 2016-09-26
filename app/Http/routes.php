@@ -233,6 +233,30 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'ReferencesController@itemNumberDelete'
         ]);
 
+        // Справочник "Номенклатурный номер ДСП"
+        Route::get('/admin/references/itemnumber_dsp', [
+            'as' => 'references.itemnumber_dsp',
+            'uses' => 'ReferencesController@itemNumbers_dspIndex'
+        ]);
+
+        // Справочник "Номенклатурный номер ДСП" - форма добавления
+        Route::get('/admin/references/itemnumber_dsp/edit', [
+            'as' => 'references.itemnumber_dsp.edit',
+            'uses' => 'ReferencesController@itemNumbers_dspEdit'
+        ]);
+
+        // Справочник "Номенклатурный номер ДСП" - сохранение
+        Route::post('/admin/references/itemnumber_dsp/edit', [
+            'as' => 'references.itemnumber_dsp.edit',
+            'uses' => 'ReferencesController@itemNumbers_dspPost'
+        ]);
+
+        // Справочник "Номенклатурный номер ДСП" - удаление
+        Route::get('/admin/references/itemnumber_dsp/delete', [
+            'as' => 'references.itemnumber_dsp.delete',
+            'uses' => 'ReferencesController@itemNumber_dspDelete'
+        ]);
+
         // Справочник "Получатели"
         Route::get('/admin/references/recipient', [
             'as' => 'references.recipient',
@@ -255,6 +279,30 @@ Route::group(['middleware' => ['logged']], function () {
         Route::get('/admin/references/recipient/delete', [
             'as' => 'references.recipient.delete',
             'uses' => 'ReferencesController@recipientDelete'
+        ]);
+
+        // Справочник "Получатели ДСП"
+        Route::get('/admin/references/recipient_dsp', [
+            'as' => 'references.recipient_dsp',
+            'uses' => 'ReferencesController@recipient_dspIndex'
+        ]);
+
+         // Справочник "Получатели ДСП" - форма добавления
+        Route::get('/admin/references/recipient_dsp/edit', [
+            'as' => 'references.recipient_dsp.edit',
+            'uses' => 'ReferencesController@recipient_dspEdit'
+        ]);
+
+        // Справочник "Получатели ДСП" - сохранение
+        Route::post('/admin/references/recipient_dsp/edit', [
+            'as' => 'references.recipient_dsp.edit',
+            'uses' => 'ReferencesController@recipient_dspPost'
+        ]);
+
+        // Справочник "Получатели ДСП" - удаление
+        Route::get('/admin/references/recipient_dsp/delete', [
+            'as' => 'references.recipient_dsp.delete',
+            'uses' => 'ReferencesController@recipient_dspDelete'
         ]);
 
         // Справочник "Отправители"

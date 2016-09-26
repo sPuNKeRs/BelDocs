@@ -5,7 +5,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\ItemNumber;
+use App\ItemNumberDsp;
 use App\Recipient;
+use App\RecipientDsp;
 use App\Sender;
 use App\Declarer;
 
@@ -15,6 +17,8 @@ class ReferencesController extends Controller
     protected $item_numbers;
     // "Получатели"
     protected $recipients;
+    // "Получатели"
+    protected $recipients_dsp;
     // "Отправители"
     protected $senders;
     // "Заявители"
@@ -25,6 +29,7 @@ class ReferencesController extends Controller
     {
         $this->item_numbers = "";
         $this->recipients = "";
+        $this->recipients_dsp = "";
         $this->senders = "";
         $this->declarers = "";
     }
@@ -37,8 +42,16 @@ class ReferencesController extends Controller
             'url'  => route('references.itemnumber'),
             "icon" => '<i class="fa fa-list-ul"></i>'
         ],
+         "Номенклатурный номер ДСП" => [
+            'url'  => route('references.itemnumber_dsp'),
+            "icon" => '<i class="fa fa-list-ul"></i>'
+        ],
         "Получатели"   => [
             'url'  => route('references.recipient'),
+            "icon" => '<i class="fa fa-list-ul"></i>'
+        ], 
+        "Получатели ДСП"   => [
+            'url'  => route('references.recipient_dsp'),
             "icon" => '<i class="fa fa-list-ul"></i>'
         ], 
         "Отправители"   => [
@@ -114,6 +127,64 @@ class ReferencesController extends Controller
 
         return redirect()->route('references.itemnumber')->with('status', $status);
     }
+
+    // Раздел справочника "Номенклатурный номер ДСП"
+    public function itemNumbers_dspIndex()
+    {
+        $this->item_numbers_dsp= ItemNumberDsp::all();
+
+
+        return view('admin.references.item_numbers_dsp.index')->with([
+            'sidebar_items' => $this->getSidebar(),
+            'item_numbers_dsp' => $this->item_numbers_dsp]);
+    }
+
+    // Справочник "Номенклатурный номер ДСП" - форма создания
+    public function itemNumbers_dspEdit(Request $request)
+    {
+        $item_number_dsp = ItemNumberDsp::find($request->id);
+        if(!$item_number_dsp)
+        {
+            $item_number_dsp = new ItemNumberDsp();
+        }
+        
+        return view('admin.references.item_numbers_dsp.edit')->with([
+            'sidebar_items' => $this->getSidebar(),
+            'item_number_dsp' => $item_number_dsp]);
+    }
+
+    // Справочник "Номенклатурный номер ДСП" - создание / редактирование
+    public function itemNumbers_dspPost(Request $request)
+    {
+        $id = $request->get('id');
+
+        $item_number_dsp = ItemNumberDsp::find($id);
+        if(!$item_number_dsp)
+        {
+            $item_number_dsp = new ItemNumberDsp($request->all());
+            $item_number_dsp->save();
+            $status = "Успешно создан";
+        }
+        else{
+            $item_number_dsp->update($request->all());
+            $status = "Успешно изменен";
+        }
+        return redirect()->route('references.itemnumber_dsp')->with('status', $status);
+    }
+
+    // Справочник "Номенклатурный номер ДСП" - удаление
+    public function itemNumber_dspDelete(Request $request)
+    {
+        if(ItemNumberDsp::destroy($request->get('id')))
+        {
+            $status = "Успешно удален!";
+        }else
+        {
+            $status = "Ошибка при удалени!";
+        }
+
+        return redirect()->route('references.itemnumber_dsp')->with('status', $status);
+    }
     
     // Раздел справочника "Получатели"
     public function recipientsIndex()
@@ -175,7 +246,67 @@ class ReferencesController extends Controller
         return redirect()->route('references.recipient')->with('status', $status);
     }
 
-    // Раздел справочника "Получатели"
+    // Раздел справочника "Получатели ДСП"
+    public function recipient_dspIndex()
+    {
+        $this->recipients_dsp = RecipientDsp::all();
+
+        return view('admin.references.recipients_dsp.index')->with([
+            'sidebar_items' => $this->getSidebar(), 
+            'recipients_dsp' => $this->recipients_dsp]);
+    }
+
+    // Справочник "Получатели ДСП" - Сохранение
+    public function recipient_dspPost(Request $request)
+    {
+        $id = $request->get('id');
+
+        $recipient_dsp = RecipientDsp::find($id);
+        if(!$recipient_dsp)
+        {
+            $recipient_dsp = new RecipientDsp($request->all());
+            $recipient_dsp->save();
+            $status = "Успешно создан";
+        }
+        else{
+            $recipient_dsp->update($request->all());
+            $status = "Успешно изменен";
+        }
+        return redirect()->route('references.recipient_dsp')->with('status', $status);
+
+    }
+    
+    // Справочник "Получатели ДСП" - Редактирование 
+    public function recipient_dspEdit(Request $request)
+    {
+        $recipient_dsp = RecipientDsp::find($request->id);
+        if(!$recipient_dsp)
+        {
+            $recipient_dsp = new RecipientDsp();
+        }
+        
+        return view('admin.references.recipients_dsp.edit')->with([
+            'sidebar_items' => $this->getSidebar(),
+            'recipient_dsp' => $recipient_dsp]);
+
+    }
+
+    // Справочник "Получатели ДСП" - Удаление
+    public function recipient_dspDelete(Request $request)
+    {
+        if(RecipientDsp::destroy($request->get('id')))
+        {
+            $status = "Успешно удален!";
+        }
+        else
+        {
+            $status = "Ошибка при удалени!";
+        }
+
+        return redirect()->route('references.recipient_dsp')->with('status', $status);
+    }
+
+    // Раздел справочника "Отправители"
     public function sendersIndex()
     {
         $this->senders = Sender::all();
@@ -186,7 +317,7 @@ class ReferencesController extends Controller
         ]);
     }
 
-    // Раздел справочника "Получатели" - Сохранение
+    // Раздел справочника "Отправители" - Сохранение
     public function senderPost(Request $request)
     {
         $id = $request->get('id');
@@ -206,7 +337,7 @@ class ReferencesController extends Controller
 
     }
 
-    // Раздел справочника "Получатели" - Редактирование
+    // Раздел справочника "Отправители" - Редактирование
     public function senderEdit(Request $request)
     {
         $sender = Sender::find($request->id);
@@ -221,7 +352,7 @@ class ReferencesController extends Controller
 
     }
 
-    // Раздел справочника "Получатели" - Удаление
+    // Раздел справочника "Отправители" - Удаление
     public function senderDelete(Request $request)
     {
         if(Sender::destroy($request->get('id')))
