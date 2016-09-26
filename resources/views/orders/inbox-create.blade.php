@@ -52,7 +52,7 @@
                       @include('widgets.form._formitem_text', ['value' => $last_order_num+1,'name' => 'order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
                   </div>
                   <div class="col-md-2">
-                      @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
+                      @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'item_number_id', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
                   </div>
                   <div class="col-md-3">
                       @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'sender_id', 'title' => 'Отправитель', 'options' => $senders_opt])

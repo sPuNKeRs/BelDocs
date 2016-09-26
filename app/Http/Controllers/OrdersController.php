@@ -287,22 +287,23 @@ class OrdersController extends Controller
             return response(['status' => true, 'action' => 'update']);
         }
 
-        $slug = uniqid();
-        $order = new Order(array(
-            'order_num' => $request->order_num,
-            'item_number' => $request->item_number,
-            'incoming_number' => $request->incoming_number,
-            'title' => $request->title,
-            'create_date' => date($request->create_date),
-            'execute_date' => date($request->execute_date),
-            'description' => $request->description,
-            'resolution' => $request->resolution,
-            'status' => $request->status,
-            'author_id' => $this->logged_user->id,
-            'slug' => $slug
-        ));
+        // $slug = uniqid();
+        // $order = new Order(array(
+        //     'order_num' => $request->order_num,
+        //     'item_number_id' => $request->item_number,
+        //     'sender_id' => $request->sender_id,
+        //     'incoming_number' => $request->incoming_number,
+        //     'title' => $request->title,
+        //     'create_date' => date($request->create_date),
+        //     'execute_date' => date($request->execute_date),
+        //     'description' => $request->description,
+        //     'resolution' => $request->resolution,
+        //     'status' => $request->status,
+        //     'author_id' => $this->logged_user->id,
+        //     'slug' => $slug
+        // ));
 
-        $order->save();
+        // $order->save();
 
         return response(['status' => true, 'action' => 'save', 'id' => $order->id, 'slug' => $order->slug]);
     }
