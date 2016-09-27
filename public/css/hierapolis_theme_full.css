@@ -2635,7 +2635,7 @@ th {
 .table>tbody>tr:hover>td,
 .table-hover>tbody>tr:hover>th,
 .table>tbody>tr:hover>th {
-    background-color: whitesmoke
+    background-color: #bbe2db;
 }
 
 table col[class*="col-"] {
