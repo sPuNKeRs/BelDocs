@@ -71,7 +71,7 @@
                     @foreach($orders as $order)
                         <tr class="orders {{ isset($order->status) ? 'success' : '' }}  ">
                             <td>{{$order->order_num}}</td>
-                            <td>{{$order->item_number->item_number}}</td>
+                            <td>{{ (isset($order->item_number)) ? $order->item_number->item_number : '' }}</td>
                             <td>{{$order->incoming_number}}</td>
                             <td>{{$order->title}}</td>
                             <td>{{ date('d.m.Y', strtotime($order->create_date)) }}</td>
