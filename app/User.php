@@ -41,9 +41,19 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Order', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\Order');
     }
 
+    public function outbox_orders_responsible()
+    {
+        return $this->belongsToMany('App\OutboxOrder', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxOrder');
+    }
+
     public function orders()
     {
         return $this->hasMany('App\Order', 'author_id', 'id');
+    }
+
+    public function outbox_orders()
+    {
+        return $this->hasMany('App\OutboxOrder', 'author_id', 'id');
     }
 
     public static function getArrayOptions($entity_id = null, $entity_type = null)

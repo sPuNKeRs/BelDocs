@@ -36,7 +36,6 @@ class OrdersController extends Controller
     {
         $this->logged_user = \App::make('authenticator')->getLoggedUser();
         $this->wall = \App::make('authentication_helper');
-        //$this->entity_type = 'App\Order';
     }
 
     /*
@@ -44,6 +43,17 @@ class OrdersController extends Controller
      */
     public function index()
     {
+        if($this->wall->hasPermission(['_superadmin']))
+        {
+            $inbox_orders = Order::where('status', null)->orderBy('execute_date')->take(15)->get();
+            $outbox_orders = OutboxOrder::where('status', null)->orderBy('execute_date')->take(15)->get();
+        } 
+        else
+        {
+            $inbox_orders = User::find($this->logged_user->id)->orders_responsible->where('status', null)->take(15)->sortBy('execute_date');
+            $outbox_orders = User::find($this->logged_user->id)->outbox_orders_responsible->where('status', null)->take(15)->sortBy('execute_date');
+        }
+        
         return view('orders.index');
     }
 
