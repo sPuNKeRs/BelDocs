@@ -48,6 +48,27 @@ Breadcrumbs::register('orders.outbox', function($breadcrumbs)
     $breadcrumbs->push('Исходящие', route('orders.outbox'));
 });
 
+// Приказы > Исходящие > Создать
+Breadcrumbs::register('orders.outbox.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('orders.outbox');
+    $breadcrumbs->push('Создать', route('orders.outbox.create'));
+});
+
+// Приказы > Исходящие > Редактировать
+Breadcrumbs::register('orders.outbox.edit', function($breadcrumbs)
+{
+    $breadcrumbs->parent('orders.outbox');
+    $breadcrumbs->push('Редактировать', route('orders.outbox.edit'));
+});
+
+// Приказы > Исходящие > Просмотр
+Breadcrumbs::register('orders.outbox.view', function($breadcrumbs)
+{
+    $breadcrumbs->parent('orders.outbox');
+    $breadcrumbs->push('Просмотр', route('orders.outbox.view'));
+});
+
 // Документы
 Breadcrumbs::register('documents.index', function($breadcrumbs)
 {

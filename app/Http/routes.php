@@ -20,11 +20,14 @@ Route::group(['middleware' => ['logged']], function () {
 
     // Группа для работы с приказами
     Route::group(['middleware' => []], function () {
+
         // Страница с приказами
         Route::get('/orders', [
             'as' => 'orders.index',
             'uses' => 'OrdersController@index'
         ]);
+
+        // ----------------- Входящие приказы -----------------
 
         // Страница с входящими приказами
         Route::get('/orders/inbox', [
@@ -80,11 +83,63 @@ Route::group(['middleware' => ['logged']], function () {
             'middleware' => 'has_perm:_superadmin,_orders-inbox-delete'
         ]);
 
+        // ----------------- Исходящие приказы -----------------
+
         // Страница с исходящими приказами
         Route::get('/orders/outbox', [
             'as' => 'orders.outbox',
             'uses' => 'OrdersController@outbox'
         ]);
+
+        // Страница создания входящего приказа
+        Route::get('/orders/outbox/create', [
+            'as' => 'orders.outbox.create',
+            'uses' => 'OrdersController@outboxCreate',
+            'middleware' => 'has_perm:_superadmin,_orders-outbox-create'
+        ]);     
+
+        // Сохранение входящего приказа AJAX
+        Route::post('/orders/outbox/create', [
+            'as' => 'orders.outbox.create',
+            'uses' => 'OrdersController@outboxSaveAjax',
+            'middleware' => 'has_perm:_superadmin,_orders-outbox-create'
+        ]);
+
+        // Отмена создания приказа
+        Route::get('/orders/outbox/cancel', [
+            'as' => 'orders.outbox.cancel',
+            'uses' => 'OrdersController@outboxOrderCancel'
+        ]);
+
+        // Страница редактирования входящего приказа
+        Route::get('/orders/outbox/edit/{id?}', [
+            'as' => 'orders.outbox.edit',
+            'uses' => 'OrdersController@outboxOrdersEdit',
+            'middleware' => 'has_perm:_superadmin,_orders-outbox-edit'
+        ]);
+
+        // Страница просмотра входящего приказа
+        Route::get('/orders/outbox/view/{id?}', [
+            'as' => 'orders.outbox.view',
+            'uses' => 'OrdersController@viewOutbox',
+            'middleware' => 'has_perm:_superadmin,_orders-outbox-view'
+        ]);
+
+        // Обновление входящего приказа
+        Route::post('/orders/outbox/update', [
+            'as' => 'orders.outbox.update',
+            'uses' => 'OrdersController@outboxOrdersUpdate',
+            'middleware' => 'has_perm:_superadmin,_orders-outbox-edit'
+        ]);
+
+        // Удаление входящего приказа
+        Route::get('/orders/outbox/delete/{id?}',[
+            'as' => 'orders.outbox.delete',
+            'uses' => 'OrdersController@outboxOrdersDelete',
+            'middleware' => 'has_perm:_superadmin,_orders-outbox-delete'
+        ]);
+
+
     });
 
     // Группа для работы с комментариями

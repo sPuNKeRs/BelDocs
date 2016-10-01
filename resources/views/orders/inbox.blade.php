@@ -69,7 +69,7 @@
                     <tbody>
 
                     @foreach($orders as $order)
-                        <tr class="orders {{ isset($order->status) ? 'success' : '' }}  ">
+                        <tr class="orders {{ isset($order->status) ? 'success' : '' }} {{ ($order->draft == 1)?'draft' : ''}}">
                             <td>{{$order->order_num}}</td>
                             <td>{{ (isset($order->item_number)) ? $order->item_number->item_number : '' }}</td>
                             <td>{{$order->incoming_number}}</td>
@@ -101,6 +101,10 @@
                                        href="{{ route('orders.inbox.delete', $order->id) }}">
                                         <i class="fa fa-trash-o"></i>
                                     </a>
+                                @endif
+
+                                @if($order->draft == 1)
+                                    <i class="fa fa-question-circle-o" title="Черновик"></i>
                                 @endif
                             </td>
                         </tr>

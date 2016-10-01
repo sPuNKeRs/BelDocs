@@ -224,3 +224,7 @@ p.has-error {
     background-color: #d9534f;
 }
 
+tr.draft td{
+    background-color: #ffeaae !important;
+}
+

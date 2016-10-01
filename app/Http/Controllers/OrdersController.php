@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\OutboxOrder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -20,6 +21,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\SaveOrderRequest;
+use App\Http\Requests\SaveOutboxOrderRequest;
 use Illuminate\Support\Facades\Session;
 
 
@@ -27,14 +29,14 @@ class OrdersController extends Controller
 {
 
     protected $logged_user;
-    protected $entity_type;
+    
     protected $wall;
 
     public function __construct()
     {
         $this->logged_user = \App::make('authenticator')->getLoggedUser();
         $this->wall = \App::make('authentication_helper');
-        $this->entity_type = 'App\Order';
+        //$this->entity_type = 'App\Order';
     }
 
     /*
@@ -51,7 +53,7 @@ class OrdersController extends Controller
     public function inbox(Request $request)
     {
         // Сохраняем строку параметров в сессии
-        $request->session()->put('paramStr', Input::all());
+        $request->session()->put('inboxOrderParamSort', Input::all());
 
         // Сортировка
         if ($request->has('sort') && $request->has('order')) {
@@ -100,13 +102,15 @@ class OrdersController extends Controller
     public function inboxCreate()
     {
         $slug = uniqid();
-        $entity_type = $this->entity_type;
+        $entity_type = 'App\Order';
         $last_order_num = Order::orderBy('order_num', 'DESC')->first()->order_num;
 
         // Создаем черновик
         $order = new Order(array(
             'order_num' => $last_order_num + 1,
             'author_id' => $this->logged_user->id,
+            'create_date' => date('d.m.Y'),
+            'execute_date' => date('d.m.Y'),
             'slug' => $slug,
             'draft' => true
         ));
@@ -136,7 +140,7 @@ class OrdersController extends Controller
      */
     public function edit($id)
     {
-        $entity_type = $this->entity_type;
+        $entity_type = 'App\Order';
         $order = Order::findOrFail($id);       
 
         $comments = Order::find($id)->comments()->orderBy('created_at', 'desc')->get();
@@ -181,7 +185,7 @@ class OrdersController extends Controller
      */
     public function viewInbox($id)
     {
-        $entity_type = $this->entity_type;
+        $entity_type = 'App\Order';
         $order = Order::findOrFail($id);
         $comments = Order::find($id)->comments()->orderBy('created_at', 'desc')->get();
 
@@ -206,9 +210,7 @@ class OrdersController extends Controller
         $entity = $order;
 
         // Получить всех ответственных
-
         $responsibles = $entity->responsibles;
-        //dd($responsibles);
 
         return view('orders.inbox-view', compact('entity',
             'item_numbers_opt',
@@ -220,24 +222,6 @@ class OrdersController extends Controller
             'append',
             'entity_type',
             'responsibles'));
-    }
-
-
-    /**
-     * Сохранение изменений входящего приказа
-     */
-    public function update(SaveOrderRequest $request)
-    {
-        $order = Order::findOrFail($request->id);
-
-        $input = $request->all();
-        //$input['draft'] = NULL;
-
-        if ($order->status != $request->status) $order->status = $request->status;
-
-        $order->fill($input)->save();
-
-        return redirect('/orders/inbox')->with('flash_message', 'Входящий приказ успешно изменен.');
     }
 
     /**
@@ -267,7 +251,7 @@ class OrdersController extends Controller
 
         Session::flash('flash_message', 'Входящий приказ успешно удален.');
 
-        return redirect()->route('orders.inbox', $request->session()->get('paramStr'));
+        return redirect()->route('orders.inbox', $request->session()->get('inboxOrderParamSort'));
     }
 
     /*
@@ -281,69 +265,18 @@ class OrdersController extends Controller
 
             $input = $request->all();
 
+            $order->draft = false;
 
             $order->update($input);
 
             return response(['status' => true, 'action' => 'update']);
         }
-
-        // $slug = uniqid();
-        // $order = new Order(array(
-        //     'order_num' => $request->order_num,
-        //     'item_number_id' => $request->item_number,
-        //     'sender_id' => $request->sender_id,
-        //     'incoming_number' => $request->incoming_number,
-        //     'title' => $request->title,
-        //     'create_date' => date($request->create_date),
-        //     'execute_date' => date($request->execute_date),
-        //     'description' => $request->description,
-        //     'resolution' => $request->resolution,
-        //     'status' => $request->status,
-        //     'author_id' => $this->logged_user->id,
-        //     'slug' => $slug
-        // ));
-
-        // $order->save();
-
+        
         return response(['status' => true, 'action' => 'save', 'id' => $order->id, 'slug' => $order->slug]);
     }
 
     /*
-     * Сохраняем входящий приказ
-     */
-    public function inboxSave(Request $request)
-    {
-        $slug = uniqid();
-        $order = new Order(array(
-            'order_num' => $request->order_num,
-            'item_number' => $request->item_number,
-            'incoming_number' => $request->incoming_number,
-            'title' => $request->title,
-            'create_date' => date($request->create_date),
-            'execute_date' => date($request->execute_date),
-            'description' => $request->description,
-            'resolution' => $request->resolution,
-            'status' => $request->status,
-            'author_id' => $this->logged_user->id,
-            'slug' => $slug
-        ));
-
-        $order->save();
-
-        return redirect('/orders/inbox')->with('flash_message', 'Входящий приказ успешно создан.');
-    }
-
-
-    /*
-    * Вывод страницы с исходящими приказами
-    */
-    public function outbox()
-    {
-        return view('orders.outbox');
-    }
-
-    /*
-     * Нажатие на кнопку отмена создания приказа
+     * Нажатие на кнопку отмена создания входящего приказа
      */
     public function orderCancel(Request $request)
     {
@@ -369,8 +302,262 @@ class OrdersController extends Controller
 
             $order->delete();
 
-            return redirect()->route('orders.inbox', $request->session()->get('paramStr'));
+            return redirect()->route('orders.inbox', $request->session()->get('inboxOrderParamSort'));
         }
-        return redirect()->route('orders.inbox', $request->session()->get('paramStr'));
+        return redirect()->route('orders.inbox', $request->session()->get('inboxOrderParamSort'));
+    }
+
+    // ----------------- Исходящий приказ ------------------
+    /*
+    * Вывод страницы с исходящими приказами
+    */
+    public function outbox(Request $request)
+    {
+        // Сохраняем строку параметров в сессии
+        //dd(Input::all());
+        
+        $request->session()->put('outboxOrderParamSort', Input::all());
+
+        // Сортировка
+        if ($request->has('sort') && $request->has('order')) {
+            if ($this->wall->hasPermission(['_superadmin'])) {
+                $outbox_orders = OutboxOrder::orderBy($request->sort, $request->order)->get();
+            } else {
+                if ($request->outbox_order == 'asc')
+                    $outbox_orders = User::find($this->logged_user->id)->outbox_orders_responsible->sortBy($request->sort);
+                else
+                    $outbox_orders = User::find($this->logged_user->id)->outbox_orders_responsible->sortByDesc($request->sort);
+            }
+        } else {
+            if ($this->wall->hasPermission(['_superadmin'])) {
+                $outbox_orders = OutboxOrder::all();
+            } else {
+                $outbox_orders = User::find($this->logged_user->id)->outbox_orders_responsible;
+            }
+        }
+
+        $count = count($outbox_orders);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+        $collection = new Collection($outbox_orders);
+
+        $perPage = config('app_options.count_per_page');
+
+        $currentPageSearchResults = $collection->slice((($currentPage - 1) * $perPage), $perPage)->all();
+
+        $currentPageSearchResults = new LengthAwarePaginator($currentPageSearchResults, $count, $perPage);
+
+        $outbox_orders = $currentPageSearchResults;
+
+        $slice = ((($currentPage - 1) * $perPage) == 0) ? '1' : (($currentPage - 1) * $perPage);
+        $perPage = (($currentPage * $perPage) > $count) ? $count : ($currentPage * $perPage);
+
+        return view('orders.outbox', compact('outbox_orders',
+            'slice',
+            'perPage',
+            'count'));
+    }
+
+    /**
+     * Форма исходящего приказа
+     */
+    public function outboxCreate()
+    {
+        $slug = uniqid();
+        $entity_type = 'App\OutboxOrder';
+        
+        if(count(OutboxOrder::all()) > 0)
+            $last_outbox_order_num = OutboxOrder::orderBy('outbox_order_num', 'DESC')->first()->outbox_order_num;
+        else
+            $last_outbox_order_num = 0;
+
+        // Создаем черновик
+        $outbox_order = new OutboxOrder(array(
+            'outbox_order_num' => $last_outbox_order_num + 1,
+            'author_id' => $this->logged_user->id,
+            'create_date' => date('d.m.Y'),
+            'execute_date' => date('d.m.Y'),
+            'slug' => $slug,
+            'draft' => true
+        ));
+
+        $outbox_order->save();
+        $id = $outbox_order->id;
+        $draft = $outbox_order->draft;
+        $entity = $outbox_order;
+
+        return view('orders.outbox-create', compact('last_outbox_order_num',            
+            'id',
+            'draft',
+            'slug',
+            'entity_type',
+            'entity'));
+    }
+
+    /*
+     * Нажатие на кнопку отмена создания исходящего приказа
+     */
+    public function outboxOrderCancel(Request $request)
+    {
+        $outbox_order = OutboxOrder::findOrFail($request->id);
+
+        if ($outbox_order->draft == '1') {
+
+            //Удаляем комментарии
+            $comments = $outbox_order->comments;
+
+            foreach ($comments as $comment) {
+                $comment->delete();
+            }
+
+            // Удаляем вложения
+            $attachments = $outbox_order->attachments;
+
+            foreach ($attachments as $attachment) {
+                $attachment->delete();
+            }
+
+            Storage::deleteDirectory('outbox_orders/' . $outbox_order->id);
+
+            $outbox_order->delete();
+
+            return redirect()->route('orders.outbox', $request->session()->get('outboxOrderParamSort'));
+        }
+        return redirect()->route('orders.outbox', $request->session()->get('outboxOrderParamSort'));
+    }
+
+    /*
+     * Сохраняем исходящий приказ AJAX
+     */
+    public function outboxSaveAjax(SaveOutboxOrderRequest $request)
+    {
+        if ($request->id > 0) {
+
+            $outbox_order = OutboxOrder::find($request->id);
+
+            $input = $request->all();
+
+            $outbox_order->draft = false;
+
+            $outbox_order->update($input);
+
+            return response(['status' => true, 'action' => 'update']);
+        }
+        
+        return response(['status' => true, 'action' => 'save', 'id' => $outbox_order->id, 'slug' => $outbox_order->slug]);
+    }
+
+    /**
+     * Удаление входящего приказа
+     */
+    public function outboxOrdersDelete($id, Request $request)
+    {
+        $outbox_order = OutboxOrder::findOrFail($id);
+
+        //Удаляем комментарии
+        $comments = $outbox_order->comments;
+
+        foreach ($comments as $comment) {
+            $comment->delete();
+        }
+
+        // Удаляем вложения
+        $attachments = $outbox_order->attachments;
+
+        foreach ($attachments as $attachment) {
+            $attachment->delete();
+        }
+
+        Storage::deleteDirectory('outbox_orders/' . $outbox_order->id);
+
+        $outbox_order->delete();
+
+        Session::flash('flash_message', 'Исходящий приказ успешно удален.');
+
+        return redirect()->route('orders.outbox', $request->session()->get('outboxOrderParamSort'));
+    }
+
+    /*
+     * Форма простотра исходящего приказа
+     */
+    public function viewOutbox($id)
+    {
+        $entity_type = 'App\OutboxOrder';
+        $outbox_order = OutboxOrder::findOrFail($id);
+        $comments = OutboxOrder::find($id)->comments()->orderBy('created_at', 'desc')->get();
+
+        foreach ($comments as $comment) {
+            $comment->user = $comment->user;
+            $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
+        }
+
+        $entity_id = $outbox_order->slug;       
+
+        // FILES
+        if (count($outbox_order->attachments) > 0) {
+            $attachments = $outbox_order->attachments;
+            $initialPreview = InitialPreview::getInitialPreview($attachments, 'outbox_orders');
+            $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
+        }
+        $append = true;
+
+        $entity = $outbox_order;
+
+        // Получить всех ответственных
+        $responsibles = $entity->responsibles;
+
+        return view('orders.outbox-view', compact(
+            'entity',
+            'entity_id',
+            'comments',
+            'initialPreview',
+            'initialPreviewConfig',
+            'append',
+            'entity_type',
+            'responsibles')
+        );
+    }
+
+    /*
+     * Форма редактирования исходящего приказа
+     */
+    public function outboxOrdersEdit($id)
+    {
+        $entity_type = 'App\OutboxOrder';
+        $outbox_order = OutboxOrder::findOrFail($id);       
+
+        $comments = OutboxOrder::find($id)->comments()->orderBy('created_at', 'desc')->get();
+
+        foreach ($comments as $comment) {
+            $comment->user = $comment->user;
+            $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
+        }
+
+        $entity_id = $outbox_order->id;        
+
+        // FILES
+        if (count($outbox_order->attachments) > 0) {
+            $attachments = $outbox_order->attachments;
+            $initialPreview = InitialPreview::getInitialPreview($attachments, 'outbox_orders');
+            $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
+        }
+        $append = true;
+
+        $entity = $outbox_order;
+
+        // Получить всех ответственных
+
+        $responsibles = $entity->responsibles;        
+
+        return view('orders.outbox-edit', compact(
+            'entity',            
+            'entity_id',
+            'comments',
+            'initialPreview',
+            'initialPreviewConfig',
+            'append',
+            'entity_type',
+            'responsibles'));
     }
 }
