@@ -228,3 +228,12 @@ tr.draft td{
     background-color: #ffeaae !important;
 }
 
+
+.inbox-table .action {
+    width: 63px;
+}
+
+.inbox-table .action a {
+    padding: 2px;    
+}
+

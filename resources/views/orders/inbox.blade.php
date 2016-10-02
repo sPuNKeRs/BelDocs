@@ -34,20 +34,7 @@
                 <div class="panel-heading">
                     <i class='fa fa-wpforms fa-lg'></i>
                     Входящие приказы
-                    <div class="panel-tools">
-                        <div class="btn-group">
-                            {{--<a class="btn" href="#">--}}
-                            {{--<i class="fa fa-wrench"></i>--}}
-                            {{--Настройки--}}
-                            {{--</a>--}}
-                            {{--<a class="btn" href="#">--}}
-                            {{--<i class="fa fa-filter"></i>--}}
-                            {{--Фильтры--}}
-                            {{--</a>--}}
-                            {{--<a class="btn" data-toggle="toolbar-tooltip" href="#" title="" data-original-title="Обновить">--}}
-                            {{--<i class="fa fa-refresh"></i>--}}
-                            {{--</a>--}}
-                        </div>
+                    <div class="panel-tools">                        
                         <div class="badge">{{ $count }} записей</div>
                     </div>
                 </div>
@@ -55,11 +42,11 @@
                     <thead>
                     <tr>
                         <th>@sortLink('order_num', '#')</th>
-                        <th>@sortLink('item_number_id', 'Номенклатурный номер')</th>
+                        <th>@sortLink('item_number_id', 'Номенк. номер')</th>
                         <th>@sortLink('incoming_number', 'Входящий номер')</th>
                         <th>@sortLink('title', 'Тема')</th>
                         <th>@sortLink('create_date', 'Создан')</th>
-                        <th>@sortLink('execute_date', 'Исполнить до')</th>
+                        <th>@sortLink('execute_date', 'Исп. до')</th>
                         <th>@sortLink('status', 'Статус')</th>
                         <th class="actions">
                             Действия
@@ -78,10 +65,7 @@
                             <td>{{ date('d.m.Y', strtotime($order->execute_date)) }}</td>
                             <td>{{ isset($order->status) ? 'Исполнен' : 'Не исполнен' }} </td>
                             <td class="action">
-                                {{--<a class="btn btn-success" data-toggle="tooltip" href="#" title="">--}}
-                                {{--<i class="fa fa-search-plus"></i>--}}
-                                {{--</a>--}}
-
+                            
                                 @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-view")))
                                     <a class="btn btn-success orders-inbox-view"
                                        href="{{ route('orders.inbox.view', $order->id) }}">

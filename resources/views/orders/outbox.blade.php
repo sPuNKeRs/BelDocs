@@ -46,7 +46,7 @@
                         <th>@sortLink('outbox_order_num', '#')</th>                        
                         <th>@sortLink('title', 'Тема')</th>
                         <th>@sortLink('create_date', 'Создан')</th>
-                        <th>@sortLink('execute_date', 'Исполнить до')</th>
+                        <th>@sortLink('execute_date', 'Исп. до')</th>
                         <th>@sortLink('status', 'Статус')</th>
                         <th class="actions">
                             Действия

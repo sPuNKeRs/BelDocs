@@ -86,7 +86,7 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        <a class="btn" href="{{ route('orders.inbox') }}">Отмена</a>
+                        <a class="btn" href="{{ URL::previous() }}">Отмена</a>
                     </div>
                     {!! Form::close()!!}
                 </div>
@@ -100,8 +100,7 @@
 @section('custom_js')
     <script type="text/javascript">
         $(document).ready(function(){
-           // $('#create_date').datepicker();
-           // $('#execute_date').datepicker();
+           
         });
     </script>
 @stop

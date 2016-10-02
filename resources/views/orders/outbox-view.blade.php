@@ -34,18 +34,7 @@
                     <div class="row">
                         <div class="col-md-2">
                             @include('widgets.form._formitem_text', ['name' => 'outbox_order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
-                        </div>
-                        {{-- <div class="col-md-2">
-                            @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'disabled'=> 'true', 'name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
-                        </div> --}}
-                        {{-- <div class="col-md-3">
-                            @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'disabled'=> 'true', 'name' => 'sender_id', 'title' => 'Отправитель', 'options' => $senders_opt])
-                        </div> --}}
-                       {{--  <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' , 'disabled' => 'true', 'readonly' => 'true'])
-                        </div> --}}
-                        
-                   
+                        </div>                   
                         <div class="col-md-4">
                             @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа', 'readonly' => 'true' ])
                         </div>
@@ -86,7 +75,7 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        <a class="btn" href="{{ route('orders.outbox') }}">Отмена</a>
+                        <a class="btn" href="{{ URL::previous() }}">Отмена</a>
                     </div>
                     {!! Form::close()!!}
                 </div>
@@ -100,8 +89,7 @@
 @section('custom_js')
     <script type="text/javascript">
         $(document).ready(function(){
-           // $('#create_date').datepicker();
-           // $('#execute_date').datepicker();
+                      
         });
     </script>
 @stop

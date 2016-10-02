@@ -52,9 +52,12 @@ class OrdersController extends Controller
         {
             $inbox_orders = User::find($this->logged_user->id)->orders_responsible->where('status', null)->take(15)->sortBy('execute_date');
             $outbox_orders = User::find($this->logged_user->id)->outbox_orders_responsible->where('status', null)->take(15)->sortBy('execute_date');
-        }
+        }       
         
-        return view('orders.index');
+        return view('orders.index', compact(
+            'inbox_orders',
+            'outbox_orders'
+        ));
     }
 
     /*

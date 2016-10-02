@@ -17,43 +17,46 @@
             <i class='fa fa-wpforms fa-lg'></i>
             Входящие приказы
             <div class="panel-tools">
-              <div class="badge">0 Всего</div>
-              <div class="badge">0 Выполнено</div>
+              <div class="badge">{{ count($inbox_orders) }} Всего</div>              
               <div class="badge">0 Просрочено</div>
               <div class="badge">0 Выполняются</div>
             </div>
           </div>
           <div class='panel-body'>
-            <table class="table">
+            <table class="table inbox-table">
               <thead>
                 <tr>
                   <th>#</th>
                   <th>Тема</th>
-                  <th>Исполнить до</th>
+                  <th>Исп. до</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
+
+              @foreach($inbox_orders as $inbox)
                 <tr>
-                  <td>1</td>
-                  <td>Приказ 1</td>
-                  <td>10-12-2016</td>
+                  <td>{{ $inbox->order_num }}</td>
+                  <td>{{ $inbox->title }}</td>
+                  <td>{{ $inbox->execute_date }}</td>
+                  <td class="action">                            
+                                @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-view")))
+                                    <a class="btn btn-success orders-inbox-view"
+                                       href="{{ route('orders.inbox.view', $inbox->id) }}">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                @endif
+
+                                @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-edit")))
+                                    <a class="btn btn-info orders-inbox-edit"
+                                       href="{{ route('orders.inbox.edit', $inbox->id) }}">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </a>
+                                @endif                                
+                            </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Приказ 2</td>
-                  <td>02-12-2016</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Приказ 3</td>
-                  <td>13-12-2016</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Приказ 4</td>
-                  <td>16-12-2016</td>
-                </tr>
-              <tr></tr>
+              @endforeach                
+
             </tbody>
           </table>
         </div>
@@ -65,8 +68,7 @@
           <i class='fa fa-wpforms fa-lg'></i>
           Исходящие приказы
           <div class="panel-tools">
-            <div class="badge">0 Всего</div>
-            <div class="badge">0 Выполнено</div>
+            <div class="badge">{{ count($outbox_orders) }} Всего</div>              
             <div class="badge">0 Просрочено</div>
             <div class="badge">0 Выполняются</div>
           </div>
@@ -77,31 +79,21 @@
               <tr>
                 <th>#</th>
                 <th>Тема</th>
-                <th>Исполнить до</th>
+                <th>Исп. до</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Приказ 1</td>
-                <td>10-12-2016</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Приказ 2</td>
-                <td>02-12-2016</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Приказ 3</td>
-                <td>13-12-2016</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>Приказ 4</td>
-                <td>16-12-2016</td>
-              </tr>
-            <tr></tr>
+              
+              @foreach($outbox_orders as $outbox)
+                <tr>
+                  <td>{{ $outbox->outbox_order_num }}</td>
+                  <td>{{ $outbox->title }}</td>
+                  <td>{{ $outbox->execute_date }}</td>
+                  <td>0</td>
+                </tr>
+              @endforeach  
+
           </tbody>
         </table>
       </div>
@@ -110,4 +102,15 @@
 </div>
 </div>
 </div>
+@stop
+@section('custom_js')
+  <script>
+    $(document).ready(function(){
+
+
+
+
+
+    })
+  </script>
 @stop
