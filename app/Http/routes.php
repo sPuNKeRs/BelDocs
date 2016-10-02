@@ -4,11 +4,6 @@
 |--------------------------------------------------------------------------
 | Application Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
 */
 
 // Общая группа
@@ -17,6 +12,10 @@ Route::group(['middleware' => ['logged']], function () {
         'as' => 'mainpage',
         'uses' => 'PagesController@mainpage',
     ]);
+
+    // --------------------------------------------------------
+    // ------------------------  ПРИКАЗЫ ----------------------
+    // --------------------------------------------------------
 
     // Группа для работы с приказами
     Route::group(['middleware' => []], function () {
@@ -27,12 +26,14 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'OrdersController@index'
         ]);
 
-        // ----------------- Входящие приказы -----------------
+        // --------------------------------------------------------
+        // ----------------- Входящие приказы ---------------------
+        // --------------------------------------------------------
 
         // Страница с входящими приказами
         Route::get('/orders/inbox', [
             'as' => 'orders.inbox',
-            'uses' => 'OrdersController@inbox'            
+            'uses' => 'OrdersController@inbox'
         ]);
 
         // Страница создания входящего приказа
@@ -83,7 +84,9 @@ Route::group(['middleware' => ['logged']], function () {
             'middleware' => 'has_perm:_superadmin,_orders-inbox-delete'
         ]);
 
-        // ----------------- Исходящие приказы -----------------
+        // --------------------------------------------------------
+        // ---------------- Исходящие приказы ---------------------
+        // --------------------------------------------------------
 
         // Страница с исходящими приказами
         Route::get('/orders/outbox', [
@@ -108,7 +111,8 @@ Route::group(['middleware' => ['logged']], function () {
         // Отмена создания приказа
         Route::get('/orders/outbox/cancel', [
             'as' => 'orders.outbox.cancel',
-            'uses' => 'OrdersController@outboxOrderCancel'
+            'uses' => 'OrdersController@outboxOrderCancel', 
+            'middleware' => 'has_perm:_superadmin,_orders-outbox-create'
         ]);
 
         // Страница редактирования входящего приказа
@@ -125,12 +129,12 @@ Route::group(['middleware' => ['logged']], function () {
             'middleware' => 'has_perm:_superadmin,_orders-outbox-view'
         ]);
 
-        // Обновление входящего приказа
-        Route::post('/orders/outbox/update', [
-            'as' => 'orders.outbox.update',
-            'uses' => 'OrdersController@outboxOrdersUpdate',
-            'middleware' => 'has_perm:_superadmin,_orders-outbox-edit'
-        ]);
+        // // Обновление входящего приказа
+        // Route::post('/orders/outbox/update', [
+        //     'as' => 'orders.outbox.update',
+        //     'uses' => 'OrdersController@outboxOrdersUpdate',
+        //     'middleware' => 'has_perm:_superadmin,_orders-outbox-edit'
+        // ]);
 
         // Удаление входящего приказа
         Route::get('/orders/outbox/delete/{id?}',[
@@ -138,9 +142,11 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'OrdersController@outboxOrdersDelete',
             'middleware' => 'has_perm:_superadmin,_orders-outbox-delete'
         ]);
-
-
     });
+
+    // --------------------------------------------------------
+    // ---------------------  КОММЕНТАРИИ ---------------------
+    // --------------------------------------------------------
 
     // Группа для работы с комментариями
     Route::group(['middleware' => []],function(){
@@ -157,6 +163,10 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
     });
 
+    // --------------------------------------------------------
+    // -----------------------  ДОКУМЕНТЫ ---------------------
+    // --------------------------------------------------------
+
     // Группа для работы с документами
     Route::group(['middleware' => []], function () {
         // Страница с приказами
@@ -164,6 +174,9 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'documents.index',
             'uses' => 'DocumentsController@index'
         ]);
+        // --------------------------------------------------------
+        // -----------------  Входящие документы ------------------
+        // --------------------------------------------------------
 
         // Страница с входящими документами
         Route::get('/documents/inbox', [
@@ -171,21 +184,117 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'DocumentsController@inbox'
         ]);
 
+        // Страница создания входящего документа
+        Route::get('/documents/inbox/create', [
+            'as' => 'documents.inbox.create', 
+            'uses' => 'DocumentsController@inboxCreate', 
+            'middleware' => 'has_perm:_superadmin,_documents-inbox-create'
+        ]);
+
+        // Сохранение входящего документа
+        Route::post('/documents/inbox/save', [
+            'as' => 'documents.inbox.save', 
+            'uses' => 'DocumentsController@inboxSave',
+            'middleware' => 'has_perm:_superadmin,_documents-inbox-create'
+        ]);
+
+        // Отмена создания входящего документа
+        Route::get('/documents/inbox/cancel', [
+            'as' => 'documents.inbox.cancel', 
+            'uses' => 'DocumentsController@inboxCancel', 
+            'middleware' => 'has_perm:_superadmin,_documents-inbox-create'
+        ]);
+
+        // Страница редактирования входящего документа
+        Route::get('/documents/inbox/edit/{id?}', [
+            'as' => 'documents.inbox.edit', 
+            'uses' => 'DocumentsController@inboxEdit', 
+            'middleware' => 'has_perm:_superadmin,_documents-inbox-edit'
+        ]);
+
+        // Страница просмотра входящего документа
+        Route::get('/documents/inbox/view/{id?}', [
+            'as' => 'documents.inbox.view', 
+            'uses' => 'DocumentsController@inboxView', 
+            'middleware' => 'has_perm:_superadmin,_documents-inbox-view'
+        ]);
+
+        // Удаление входящего документа
+        Route::get('/documents/inbox/delete/{id?}', [
+            'as' => 'documents.inbox.delete', 
+            'uses' => 'DocumentsController@inboxDelete',
+            'middleware' => 'has_perm:_superadmin,_documents-inbox-delete'
+        ]);
+
+        // --------------------------------------------------------
+        // ----------------- Исходящие документы ------------------
+        // --------------------------------------------------------
+
         // Страница с  исходящими документами
         Route::get('/documents/outbox', [
             'as' => 'documents.outbox',
             'uses' => 'DocumentsController@outbox'
         ]);
+
+        // Страница создания исходящего документа
+        Route::get('/documents/outbox/create', [
+            'as' => 'documents.outbox.create', 
+            'uses' => 'DocumentsController@outboxCreate', 
+            'middleware' => 'has_perm:_superadmin,_documents-outbox-create'
+        ]);
+
+        // Сохранение исходящего документа
+        Route::post('/documents/outbox/save', [
+            'as' => 'documents.outbox.save', 
+            'uses' => 'DocumentsController@outboxSave',
+            'middleware' => 'has_perm:_superadmin,_documents-outbox-create'
+        ]);
+
+        // Отмена создания исходящего документа
+        Route::get('/documents/outbox/cancel', [
+            'as' => 'documents.outbox.cancel', 
+            'uses' => 'DocumentsController@outboxCancel', 
+            'middleware' => 'has_perm:_superadmin,_documents-outbox-create'
+        ]);
+
+        // Страница редактирования исходящего документа
+        Route::get('/documents/outbox/edit/{id?}', [
+            'as' => 'documents.outbox.edit', 
+            'uses' => 'DocumentsController@outboxEdit', 
+            'middleware' => 'has_perm:_superadmin,_documents-outbox-edit'
+        ]);
+
+        // Страница просмотра исходящего документа
+        Route::get('/documents/outbox/view/{id?}', [
+            'as' => 'documents.outbox.view', 
+            'uses' => 'DocumentsController@outboxView', 
+            'middleware' => 'has_perm:_superadmin,_documents-outbox-view'
+        ]);
+
+        // Удаление исходящего документа
+        Route::get('/documents/outbox/delete/{id?}', [
+            'as' => 'documents.outbox.delete', 
+            'uses' => 'DocumentsController@outboxDelete',
+            'middleware' => 'has_perm:_superadmin,_documents-outbox-delete'
+        ]);
     });
+
+    // --------------------------------------------------------
+    // ----------------------- ДСП ----------------------------
+    // --------------------------------------------------------
 
     // Группа для работы с ДСП
     Route::group(['middleware' => []], function () {
         // Страница с ДСП
         Route::get('/dsp', [
-            'as' => 'dsp.index',
-            'middleware' => 'has_perm:_dsp.index',
-            'uses' => 'DspsController@index'
+            'as' => 'dsp.index',            
+            'uses' => 'DspsController@index',
+            'middleware' => 'has_perm:_superadmin,has_perm:_dsp.index'
         ]);
+
+        // --------------------------------------------------------
+        // -------------------- Входящие ДСП ----------------------
+        // --------------------------------------------------------
 
         // Страница с входящими ДСП
         Route::get('/dsp/inbox', [
@@ -193,12 +302,104 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'DspsController@inbox'
         ]);
 
+        // Страница создания входящего ДСП
+        Route::get('/dsp/inbox/create', [
+            'as' => 'dsp.inbox.create', 
+            'uses' => 'DspsController@inboxCreate', 
+            'middleware' => 'has_perm:_superadmin,_dsp-inbox-create'
+        ]);
+
+        // Сохранение входящего ДСП
+        Route::post('/dsp/inbox/save', [
+            'as' => 'dsp.inbox.save', 
+            'uses' => 'DspsController@inboxSave',
+            'middleware' => 'has_perm:_superadmin,_dsp-inbox-create'
+        ]);
+
+        // Отмена создания входящего ДСП
+        Route::get('/dsp/inbox/cancel', [
+            'as' => 'dsp.inbox.cancel', 
+            'uses' => 'DspsController@inboxCancel', 
+            'middleware' => 'has_perm:_superadmin,_dsp-inbox-create'
+        ]);
+
+        // Страница редактирования входящего ДСП
+        Route::get('/dsp/inbox/edit/{id?}', [
+            'as' => 'dsp.inbox.edit', 
+            'uses' => 'DspsController@inboxEdit', 
+            'middleware' => 'has_perm:_superadmin,_dsp-inbox-edit'
+        ]);
+
+        // Страница просмотра входящего ДСП
+        Route::get('/dsp/inbox/view/{id?}', [
+            'as' => 'dsp.inbox.view', 
+            'uses' => 'DspsController@inboxView', 
+            'middleware' => 'has_perm:_superadmin,_dsp-inbox-view'
+        ]);
+
+        // Удаление входящего ДСП
+        Route::get('/dsp/inbox/delete/{id?}', [
+            'as' => 'dsp.inbox.delete', 
+            'uses' => 'DspsController@inboxDelete',
+            'middleware' => 'has_perm:_superadmin,_dsp-inbox-delete'
+        ]);
+
+        // --------------------------------------------------------
+        // ----------------- Исходящие ДСП ------------------------
+        // --------------------------------------------------------
+
         // Страница с Исходящими ДСП
         Route::get('/dsp/outbox', [
             'as' => 'dsp.outbox',
             'uses' => 'DspsController@outbox'
         ]);
+
+        // Страница создания исходящего ДСП
+        Route::get('/dsp/outbox/create', [
+            'as' => 'dsp.outbox.create', 
+            'uses' => 'DspsController@outboxCreate', 
+            'middleware' => 'has_perm:_superadmin,_dsp-outbox-create'
+        ]);
+
+        // Сохранение исходящего ДСП
+        Route::post('/dsp/outbox/save', [
+            'as' => 'dsp.outbox.save', 
+            'uses' => 'DspsController@outboxSave',
+            'middleware' => 'has_perm:_superadmin,_dsp-outbox-create'
+        ]);
+
+        // Отмена создания исходящего ДСП
+        Route::get('/dsp/outbox/cancel', [
+            'as' => 'dsp.outbox.cancel', 
+            'uses' => 'DspsController@outboxCancel', 
+            'middleware' => 'has_perm:_superadmin,_dsp-outbox-create'
+        ]);
+
+        // Страница редактирования исходящего ДСП
+        Route::get('/dsp/outbox/edit/{id?}', [
+            'as' => 'dsp.outbox.edit', 
+            'uses' => 'DspsController@outboxEdit', 
+            'middleware' => 'has_perm:_superadmin,_dsp-outbox-edit'
+        ]);
+
+        // Страница просмотра исходящего ДСП
+        Route::get('/dsp/outbox/view/{id?}', [
+            'as' => 'dsp.outbox.view', 
+            'uses' => 'DspsController@outboxView', 
+            'middleware' => 'has_perm:_superadmin,_dsp-outbox-view'
+        ]);
+
+        // Удаление исходящего ДСП
+        Route::get('/dsp/outbox/delete/{id?}', [
+            'as' => 'dsp.outbox.delete', 
+            'uses' => 'DspsController@outboxDelete',
+            'middleware' => 'has_perm:_superadmin,_dsp-outbox-delete'
+        ]);
     });
+
+    // --------------------------------------------------------
+    // ---------------------- ОТЧЕТЫ --------------------------
+    // --------------------------------------------------------
 
     // Группа для работы с отчетами
     Route::group(['middleware' => []], function () {
@@ -209,7 +410,11 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
     });
 
-    // Группа для работы с отчетами
+    // --------------------------------------------------------
+    // ------------------------- ПОИСК ------------------------
+    // --------------------------------------------------------
+        
+    // Группа для работы с поиском
     Route::group(['middleware' => []], function () {
         // Страница с отчетами
         Route::get('/search', [
@@ -217,6 +422,10 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'SearchController@index'
         ]);
     });
+
+    // --------------------------------------------------------
+    // ----------------- ВЛОЖЕНИЯ (ФАЙЛЫ) ---------------------
+    // --------------------------------------------------------
 
     // Группа для работы с вложениями
     Route::group(['middlewate'=>[]], function(){
@@ -235,6 +444,10 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'AttachmentsController@getUrl'
         ]);
     });
+
+    // --------------------------------------------------------
+    // --------------------- ОТВЕТСВЕННЫЕ ---------------------
+    // --------------------------------------------------------
 
     // Группа для работы с ответственными лицами
     Route::group(['middleware' => []], function(){
@@ -256,6 +469,10 @@ Route::group(['middleware' => ['logged']], function () {
         ]);
     });
 
+    // --------------------------------------------------------
+    // ----------------- СПРАВОЧНИКИ --------------------------
+    // --------------------------------------------------------
+
     // Группа для работы со справочниками
     Route::group(['middleware' => []], function(){
         // Страница со справочниками
@@ -263,6 +480,9 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'references.index',
             'uses' => 'ReferencesController@index'
         ]);
+        // --------------------------------------------------------
+        // ----------------- Номенклатурный номер -----------------
+        // --------------------------------------------------------
 
         // Справочник "Номенклатурный номер"
         Route::get('/admin/references/itemnumber', [
@@ -288,6 +508,10 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'ReferencesController@itemNumberDelete'
         ]);
 
+        // --------------------------------------------------------
+        // --------------- Номенклатурный номер ДСП ---------------
+        // --------------------------------------------------------
+
         // Справочник "Номенклатурный номер ДСП"
         Route::get('/admin/references/itemnumber_dsp', [
             'as' => 'references.itemnumber_dsp',
@@ -311,6 +535,10 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'references.itemnumber_dsp.delete',
             'uses' => 'ReferencesController@itemNumber_dspDelete'
         ]);
+
+        // --------------------------------------------------------
+        // --------------------- Получатели -----------------------
+        // --------------------------------------------------------
 
         // Справочник "Получатели"
         Route::get('/admin/references/recipient', [
@@ -336,6 +564,10 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'ReferencesController@recipientDelete'
         ]);
 
+        // --------------------------------------------------------
+        // ----------------- Получатели ДСП -----------------------
+        // --------------------------------------------------------
+
         // Справочник "Получатели ДСП"
         Route::get('/admin/references/recipient_dsp', [
             'as' => 'references.recipient_dsp',
@@ -360,6 +592,10 @@ Route::group(['middleware' => ['logged']], function () {
             'uses' => 'ReferencesController@recipient_dspDelete'
         ]);
 
+        // --------------------------------------------------------
+        // -------------------- Отправители -----------------------
+        // --------------------------------------------------------
+
         // Справочник "Отправители"
         Route::get('/admin/references/sender', [
             'as' => 'references.sender', 
@@ -383,6 +619,10 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'references.sender.delete',
             'uses' => 'ReferencesController@senderDelete'
         ]);
+
+        // --------------------------------------------------------
+        // --------------------- Заявители  -----------------------
+        // --------------------------------------------------------
 
         // Справочник "Заявители"
         Route::get('/admin/references/declarer', [
