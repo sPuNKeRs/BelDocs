@@ -23,10 +23,10 @@
             <a href="{{ route('documents.index') }}">Документы</a>
             <ul class='dropdown-menu'>              
               <li>
-                <a href='{{ route('documents.inbox') }}'>Входящие</a>
+                <a href='{{ route('documents.inbox', Request::session()->get('inboxDocumetsParamSort')) }}'>Входящие</a>
               </li>
               <li>
-                <a href='{{ route('documents.outbox') }}'>Исходящие</a>
+                <a href='{{ route('documents.outbox', Request::session()->get('outboxDocumentsParamSort')) }}'>Исходящие</a>
               </li>              
             </ul>
           </li>
