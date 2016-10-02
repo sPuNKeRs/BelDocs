@@ -35,7 +35,7 @@
                     <i class='fa fa-wpforms fa-lg'></i>
                     Входящие документы
                     <div class="panel-tools">                        
-                        {{-- <div class="badge">{{ $count }} записей</div> --}}
+                        <div class="badge">{{ $count }} записей</div>
                     </div>
                 </div>
                 <div class="wrapper-height">

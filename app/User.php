@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 use App\Responsible;
 
 class User extends Authenticatable
@@ -26,14 +25,26 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    // -------------------------------------------------
+    // ------------------ Комментарии ------------------
+    // -------------------------------------------------
+
     public function comments()
     {
         return $this->hasMany('App\Comment', 'author_id', 'id');
     }
 
+    // -------------------------------------------------
+    // ------------------ Ответственные ----------------
+    // -------------------------------------------------
     public function responsibles()
     {
         return $this->hasMany('App\Responsible', 'user_id', 'id');
+    }
+
+    public function inbox_documents_responsible()
+    {
+        return $this->belongsToMany('App\InboxDocument', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\InboxDocument');
     }
 
     public function orders_responsible()
@@ -46,6 +57,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\OutboxOrder', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxOrder');
     }
 
+    // -------------------------------------------------
+    // ------------------- Приказы ---------------------
+    // -------------------------------------------------
+
     public function orders()
     {
         return $this->hasMany('App\Order', 'author_id', 'id');
@@ -55,6 +70,22 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\OutboxOrder', 'author_id', 'id');
     }
+
+    // -------------------------------------------------
+    // ------------------ Документы -00-----------------
+    // -------------------------------------------------
+    
+    public function inbox_documents()
+    {
+        return $this->hasMany('App\InboxDocument', 'author_id', 'id');
+    }
+
+    public function outbox_documents()
+    {
+        return $this->hasMany('App\OutboxDocument', 'author_id', 'id');
+    }
+
+
 
     public static function getArrayOptions($entity_id = null, $entity_type = null)
     {

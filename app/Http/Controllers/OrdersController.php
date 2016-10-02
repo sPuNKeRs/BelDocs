@@ -336,7 +336,7 @@ class OrdersController extends Controller
             if ($this->wall->hasPermission(['_superadmin'])) {
                 $outbox_orders = OutboxOrder::orderBy($request->sort, $request->order)->get();
             } else {
-                if ($request->outbox_order == 'asc')
+                if ($request->order == 'asc')
                     $outbox_orders = User::find($this->logged_user->id)->outbox_orders_responsible->sortBy($request->sort);
                 else
                     $outbox_orders = User::find($this->logged_user->id)->outbox_orders_responsible->sortByDesc($request->sort);

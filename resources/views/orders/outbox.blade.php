@@ -40,6 +40,7 @@
                         <div class="badge">{{ $count }} записей</div>
                     </div>
                 </div>
+                <div class="wrapper-height">
                 <table class="table">
                     <thead>
                     <tr>
@@ -93,6 +94,7 @@
 
                     </tbody>
                 </table>
+                </div>
 
                 <div class="panel-footer" style="min-height: 54px;">
 
