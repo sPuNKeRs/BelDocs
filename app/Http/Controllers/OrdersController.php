@@ -45,13 +45,13 @@ class OrdersController extends Controller
     {
         if($this->wall->hasPermission(['_superadmin']))
         {
-            $inbox_orders = Order::where('status', null)->orderBy('execute_date')->take(15)->get();
-            $outbox_orders = OutboxOrder::where('status', null)->orderBy('execute_date')->take(15)->get();
+            $inbox_orders = Order::where('status', null)->orderBy('execute_date')->get();
+            $outbox_orders = OutboxOrder::where('status', null)->orderBy('execute_date')->get();
         } 
         else
         {
-            $inbox_orders = User::find($this->logged_user->id)->orders_responsible->where('status', null)->take(15)->sortBy('execute_date');
-            $outbox_orders = User::find($this->logged_user->id)->outbox_orders_responsible->where('status', null)->take(15)->sortBy('execute_date');
+            $inbox_orders = User::find($this->logged_user->id)->orders_responsible->where('status', null)->sortBy('execute_date');
+            $outbox_orders = User::find($this->logged_user->id)->outbox_orders_responsible->where('status', null)->sortBy('execute_date');
         }       
         
         return view('orders.index', compact(

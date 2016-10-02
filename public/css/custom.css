@@ -229,11 +229,18 @@ tr.draft td{
 }
 
 
-.inbox-table .action {
+.inbox-table .action, 
+.outbox-table .action {
     width: 63px;
 }
 
-.inbox-table .action a {
+.inbox-table .action a,
+.outbox-table .action a {
     padding: 2px;    
+}
+
+.wrapper-height {
+    height: 70vh;
+    overflow: auto;
 }
 

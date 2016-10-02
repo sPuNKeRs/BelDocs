@@ -9,7 +9,7 @@
   @include('partials.sidebar')
   @include('partials.tools')
   <!-- Content -->
-  <div id='content'>
+  <div id='content' class='orders-dashbord'>
     <div class="row">
       <div class="col-md-6">
         <div class='panel panel-default'>
@@ -17,12 +17,12 @@
             <i class='fa fa-wpforms fa-lg'></i>
             Входящие приказы
             <div class="panel-tools">
-              <div class="badge">{{ count($inbox_orders) }} Всего</div>              
+              <div class="badge">{{ count($inbox_orders) }} Всего</div>
               <div class="badge">0 Просрочено</div>
               <div class="badge">0 Выполняются</div>
             </div>
-          </div>
-          <div class='panel-body'>
+          </div>          
+          <div class="wrapper-height">
             <table class="table inbox-table">
               <thead>
                 <tr>
@@ -38,28 +38,29 @@
                 <tr>
                   <td>{{ $inbox->order_num }}</td>
                   <td>{{ $inbox->title }}</td>
-                  <td>{{ $inbox->execute_date }}</td>
-                  <td class="action">                            
-                                @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-view")))
-                                    <a class="btn btn-success orders-inbox-view"
-                                       href="{{ route('orders.inbox.view', $inbox->id) }}">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                @endif
+                  <td>{{ date('d.m.Y', strtotime($inbox->execute_date)) }}</td>
+                  <td class="action">
+                      @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-view")))
+                          <a class="btn btn-success orders-inbox-view"
+                             href="{{ route('orders.inbox.view', $inbox->id) }}">
+                              <i class="fa fa-eye"></i>
+                          </a>
+                      @endif
 
-                                @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-edit")))
-                                    <a class="btn btn-info orders-inbox-edit"
-                                       href="{{ route('orders.inbox.edit', $inbox->id) }}">
-                                        <i class="fa fa-pencil-square-o"></i>
-                                    </a>
-                                @endif                                
-                            </td>
+                      @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-edit")))
+                          <a class="btn btn-info orders-inbox-edit"
+                             href="{{ route('orders.inbox.edit', $inbox->id) }}">
+                              <i class="fa fa-pencil-square-o"></i>
+                          </a>
+                      @endif
+                    </td>
                 </tr>
-              @endforeach                
+              @endforeach
 
             </tbody>
           </table>
         </div>
+        <div class="panel-footer" style="min-height: 54px;"></div>
       </div>
     </div>
     <div class="col-md-6">
@@ -73,8 +74,8 @@
             <div class="badge">0 Выполняются</div>
           </div>
         </div>
-        <div class='panel-body'>
-          <table class="table">
+        <div class='wrapper-height'>
+          <table class="table outbox-table">
             <thead>
               <tr>
                 <th>#</th>
@@ -89,14 +90,29 @@
                 <tr>
                   <td>{{ $outbox->outbox_order_num }}</td>
                   <td>{{ $outbox->title }}</td>
-                  <td>{{ $outbox->execute_date }}</td>
-                  <td>0</td>
+                  <td>{{ date('d.m.Y', strtotime($outbox->execute_date)) }}</td>
+                  <td class="action">
+                    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-outbox-view")))
+                        <a class="btn btn-success orders-outbox-view"
+                           href="{{ route('orders.outbox.view', $outbox->id) }}">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                    @endif
+
+                    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-outbox-edit")))
+                        <a class="btn btn-info orders-outbox-edit"
+                           href="{{ route('orders.outbox.edit', $outbox->id) }}">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                    @endif
+                    </td>
                 </tr>
               @endforeach  
 
           </tbody>
         </table>
       </div>
+      <div class="panel-footer" style="min-height: 54px;"></div>
     </div>
   </div>
 </div>
