@@ -6,11 +6,13 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
+use InitialPreview;
 
 use App\InboxDocument;
 use App\OutboxDocument;
-
-
+use App\ItemNumber;
 
 class DocumentsController extends Controller
 {
@@ -78,54 +80,218 @@ class DocumentsController extends Controller
           'count')
         );
     }
-   
 
    /*
     * Форма создания входящего документа
     */
    public function inboxCreate()
    {
+    $slug = uniqid();
+    $entity_type = 'App\InboxDocument';
 
+    if(count(InboxDocument::all()) > 0)
+      $last_inbox_document_num = InboxDocument::orderBy('doc_num', 'DESC')->first()->doc_num;
+    else
+      $last_inbox_document_num = 0;
+
+    // Создаем черновик
+    $inbox_document = new InboxDocument(array(
+        'doc_num' => $last_inbox_document_num + 1,
+        'author_id' => $this->logged_user->id,
+        'create_date' => date('d.m.Y'),
+        'execute_date' => date('d.m.Y'),
+        'slug' => $slug,
+        'draft' => true
+    ));
+
+    $inbox_document->save();
+    $id = $inbox_document->id;
+    $draft = $inbox_document->draft;
+    $entity = $inbox_document;
+
+    $item_numbers_opt = ItemNumber::getArray();
+
+    return view('documents.inbox-create', compact(
+        'last_inbox_document_num',
+        'item_numbers_opt',
+        'id',
+        'draft',
+        'slug',
+        'entity_type',
+        'entity')
+    );
    }
 
    /*
     * Созранение входящего документа
     */
-   public function inboxSave()
+   public function inboxSave(Request $request)
    {
+      if ($request->id > 0) {
+        $inbox_document = InboxDocument::find($request->id);
+        $input = $request->all();
+        $inbox_document->draft = false;
 
+        $inbox_document->status = (isset($input->status)) ? $input->status : null;
+
+        $inbox_document->update($input);
+
+        return response(['status' => true, 'action' => 'update']);
+      }
+
+      return response(['status' => true, 
+                       'action' => 'save', 
+                       'id' => $inbox_document->id, 
+                       'slug' => $inbox_document->slug]);
    }
 
    /*
     * Форма редактирования входящего документа
     */
-   public function inboxEdit()
+   public function inboxEdit($id)
    {
+      $entity_type = 'App\InboxDocument';
+      $inbox_document = InboxDocument::findOrFail($id);       
 
+      $comments = InboxDocument::find($id)->comments()->orderBy('created_at', 'desc')->get();
+
+      foreach ($comments as $comment) {
+          $comment->user = $comment->user;
+          $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
+      }
+
+      $entity_id = $inbox_document->id;
+      $item_numbers_opt = ItemNumber::getArray();
+
+      // FILES
+      if (count($inbox_document->attachments) > 0) {
+          $attachments = $inbox_document->attachments;
+          $initialPreview = InitialPreview::getInitialPreview($attachments, 'inbox_documents');
+          $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
+      }
+      $append = true;
+
+      $entity = $inbox_document;
+
+      // Получить всех ответственных
+      $responsibles = $entity->responsibles;
+
+      return view('documents.inbox-edit', compact(
+          'entity',
+          'item_numbers_opt',
+          'senders_opt',
+          'entity_id',
+          'comments',
+          'initialPreview',
+          'initialPreviewConfig',
+          'append',
+          'entity_type',
+          'responsibles')
+      );
    }
 
    /*
     * Удаление входящего документа
     */
-   public function inboxDelete()
+   public function inboxDelete($id, Request $request)
    {
+      $inbox_document = InboxDocument::findOrFail($id);
 
+      //Удаляем комментарии
+      $comments = $inbox_document->comments;
+
+      foreach ($comments as $comment) {
+          $comment->delete();
+      }
+
+      // Удаляем вложения
+      $attachments = $inbox_document->attachments;
+
+      foreach ($attachments as $attachment) {
+          $attachment->delete();
+      }
+
+      Storage::deleteDirectory('inbox_documents/' . $inbox_document->id);
+
+      $inbox_document->delete();
+
+      Session::flash('flash_message', 'Входящий документ успешно удален.');
+
+      return redirect()->route('documents.inbox', $request->session()->get('inboxDocumentsParamSort'));
    }
 
    /*
     * Форма просмотра входящего документа
     */
-   public function inboxView()
+   public function inboxView($id)
    {
+      $entity_type = 'App\InboxDocument';
+      $inbox_document = InboxDocument::findOrFail($id);
+      $comments = InboxDocument::find($id)->comments()->orderBy('created_at', 'desc')->get();
 
+      foreach ($comments as $comment) {
+          $comment->user = $comment->user;
+          $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
+      }
+
+      $entity_id = $inbox_document->slug;       
+
+      // FILES
+      if (count($inbox_document->attachments) > 0) {
+          $attachments = $inbox_document->attachments;
+          $initialPreview = InitialPreview::getInitialPreview($attachments, 'inbox_documents');
+          $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
+      }
+      $append = true;
+
+      $entity = $inbox_document;
+
+      $item_numbers_opt = ItemNumber::getArray();
+
+      // Получить всех ответственных
+      $responsibles = $entity->responsibles;
+
+      return view('documents.inbox-view', compact(
+          'entity',
+          'entity_id',
+          'item_numbers_opt',
+          'comments',
+          'initialPreview',
+          'initialPreviewConfig',
+          'append',
+          'entity_type',
+          'responsibles')
+      );
    }
 
    /*
     * Отмена создания входящего документа
     */
-   public function inboxCancel()
+   public function inboxCancel(Request $request)
    {
+      $inbox_document = InboxDocument::findOrFail($request->id);
 
+      if ($inbox_document->draft == '1') {
+          //Удаляем комментарии
+          $comments = $inbox_document->comments;
+
+          foreach ($comments as $comment) {
+              $comment->delete();
+          }
+
+          // Удаляем вложения
+          $attachments = $inbox_document->attachments;
+
+          foreach ($attachments as $attachment) {
+              $attachment->delete();
+          }
+
+          Storage::deleteDirectory('inbox_documents/' . $inbox_document->id);
+          $inbox_document->delete();
+
+          return redirect()->route('documents.inbox', $request->session()->get('inboxDocumentsParamSort'));
+      }
+      return redirect()->route('documents.inbox', $request->session()->get('inboxDocumentsParamSort'));
    }
 
    // ---------------------------------------------------
@@ -181,12 +347,6 @@ class DocumentsController extends Controller
         'perPage',
         'count')
       );
-
-
-
-
-
-        
    }
 
    /*

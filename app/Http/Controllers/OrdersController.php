@@ -116,7 +116,11 @@ class OrdersController extends Controller
     {
         $slug = uniqid();
         $entity_type = 'App\Order';
-        $last_order_num = Order::orderBy('order_num', 'DESC')->first()->order_num;
+
+        if(count(Order::all()) > 0)
+            $last_order_num = Order::orderBy('order_num', 'DESC')->first()->order_num;
+        else
+            $last_order_num = 0;
 
         // Создаем черновик
         $order = new Order(array(
@@ -279,6 +283,8 @@ class OrdersController extends Controller
             $input = $request->all();
 
             $order->draft = false;
+
+            $order->status = (isset($input->status)) ? $input->status : null;
 
             $order->update($input);
 
@@ -452,6 +458,8 @@ class OrdersController extends Controller
             $input = $request->all();
 
             $outbox_order->draft = false;
+
+            $outbox_order->status = (isset($input->status)) ? $input->status : null;
 
             $outbox_order->update($input);
 

@@ -37,7 +37,13 @@ class AttachmentsController extends Controller
                     break;
                 case 'App\OutboxOrder':
                     $entity_folder = 'outbox_orders';
-                    break;            
+                    break;
+                case 'App\InboxDocument':
+                    $entity_folder = 'inbox_documents';
+                    break;
+                case 'App\OutboxDocument':
+                    $entity_folder = 'outbox_documents';
+                    break;   
             }
 
             $files = $request->file('upload_files');

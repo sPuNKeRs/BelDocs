@@ -1,18 +1,18 @@
 @extends('layouts.master')
 
-@section('title', 'Создание - Входящий приказ')
+@section('title', 'Создание - Входящий документ')
 @section('description', '')
 @section('keywords', '')
 
 @section('pageClass', 'main page')
 
 @section('toolsbar')
-    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-inbox-create")))
-        <a class='btn save_order' data-toggle='toolbar-tooltip' href='#' title='Сохранить'>
+    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_documents-inbox-create")))
+        <a class='btn save_inbox_document' data-toggle='toolbar-tooltip' href='#' title='Сохранить'>
             <i class='fa fa-plus-circle'> Сохранить</i>
         </a>
         &nbsp;
-        <a class='btn btn-danger' data-toggle='toolbar-tooltip' href='{{ route('orders.inbox.cancel', ['id'=>$id]) }}' title='Закрыть'>
+        <a class='btn btn-danger' data-toggle='toolbar-tooltip' href='{{ route('documents.inbox.cancel', ['id'=>$id]) }}' title='Закрыть'>
             <i class='fa fa-times'></i>
         </a>
     @endif
@@ -30,7 +30,7 @@
         <div class='panel panel-default'>
           <div class='panel-heading'>
             <i class='fa fa-pencil-square-o fa-lg'></i>
-            Форма создание входящего приказа
+            Форма создание входящего документа
               <div id="stateInfo" class="pull-right"></div>
           </div>
 
@@ -38,7 +38,7 @@
               {{--@include('errors.errmsg')--}}
 
 
-            {!! Form::open(['route' => 'orders.inbox.create' , 'files'=> 'true', 'id'=>'order_form', 'name'=>'order_form'])!!}
+            {!! Form::open(['route' => 'documents.inbox.save' , 'files'=> 'true', 'id'=>'inbox_document_form', 'name'=>'inbox_document_form'])!!}
               {!! Form::hidden('id', $id, ['id'=>'entity_id']) !!}
               {!! Form::hidden('slug', $slug, ['id'=>'slug']) !!}
               {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
@@ -49,13 +49,13 @@
 
               <div class="row">
                   <div class="col-md-2">
-                      @include('widgets.form._formitem_text', ['value' => $last_order_num+1,'name' => 'order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                      @include('widgets.form._formitem_text', ['value' => $last_inbox_document_num+1,'name' => 'doc_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
                   </div>
                   <div class="col-md-2">
                       @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'item_number_id', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
                   </div>
                   <div class="col-md-3">
-                      @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'sender_id', 'title' => 'Отправитель', 'options' => $senders_opt])
+                      {{-- @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'sender_id', 'title' => 'Отправитель', 'options' => $senders_opt]) --}}
                   </div>
                   <div class="col-md-3">
                       @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' ])
@@ -71,7 +71,7 @@
               </div>
               <div class="row">
                   <div class="col-md-6">
-                      @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа' ])
+                      @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема документа' ])
                   </div>
                   <div class="col-md-3">
                       @include('widgets.form._formitem_text', ['name' => 'create_date', 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1', 'value' => date('d.m.Y') ])
@@ -82,7 +82,7 @@
               </div>
               <div class="row">
                   <div class="col-md-12">
-                      @include('widgets.form._formitem_textarea', ['name' => 'description', 'value'=>'' , 'id' => 'description','title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
+                      @include('widgets.form._formitem_textarea', ['name' => 'description', 'value'=>'' , 'id' => 'description','title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание документа'])
                   </div>
               </div>
               <div class="row">
@@ -101,9 +101,9 @@
                   </div>
               </div>
               <div class="form-actions">
-                  <button id="save_order" class="btn btn-default save_order">Сохранить</button>
-                  <button id="save_close_order" class="btn btn-default">Сохранить и закрыть</button>
-                  <a id='cancelBtn' class="btn" href="{{ route('orders.inbox.cancel', ['id'=>$id]) }}">Отмена</a>
+                  <button id="save_inbox_document" class="btn btn-default save_order">Сохранить</button>
+                  <button id="save_close_inbox_document" class="btn btn-default">Сохранить и закрыть</button>
+                  <a id='cancelBtn' class="btn" href="{{ route('documents.inbox.cancel', ['id'=>$id]) }}">Отмена</a>
               </div>
 
             {!! Form::close()!!}
@@ -120,29 +120,29 @@
     <script type="text/javascript">
         $(document).ready(function(){
             // Сохранить приказ
-            $('.save_order').on('click',function(e){
-                saveOrder();
+            $('.save_inbox_document').on('click',function(e){
+                saveInboxDocument();
                 e.preventDefault();
             });
 
             // Сохранить и закрыть приказ
-            $('#save_close_order').click(function(e){
-                saveOrder(true);
+            $('#save_close_inbox_document').click(function(e){
+                saveInboxDocument(true);
 
                 e.preventDefault();
             });
 
             // Функция отправки формы приказа
-            function saveOrder(close)
+            function saveInboxDocument(close)
             {
                 setStateInfo('save');
                 $('#draft').val('');
                 var token = $('input[name=_token]').val();
-                var form = $('#order_form')[0];
+                var form = $('#inbox_document_form')[0];
                 var formData = new FormData(form);
 
                 $.ajax({
-                    url: '{{ route('orders.inbox.create') }}',
+                    url: '{{ route('documents.inbox.save') }}',
                     headers: {'X-CSRF-TOKEN': token},
                     processData: false,
                     contentType: false,
@@ -158,7 +158,7 @@
 
                         if(close){
                            // console.log('close');
-                            if(confirm('Закрыть приказ?')){
+                            if(confirm('Закрыть документ?')){
                                 location.href = document.referrer;
                             }
 

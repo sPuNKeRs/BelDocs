@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Редактирование - Входящий приказ')
+@section('title', 'Редактирование - Входящий документ')
 @section('description', '')
 @section('keywords', '')
 
@@ -23,23 +23,23 @@
             <div class='panel panel-default'>
                 <div class='panel-heading'>
                     <i class='fa fa-pencil-square-o fa-lg'></i>
-                    Входящий приказ
+                    Входящий документ
                 </div>
                 <div class='panel-body'>
 
-                    {!! Form::model($entity, ['id'=>'order_form'])!!}
+                    {!! Form::model($entity, ['id'=>'inbox_document_form'])!!}
                     {!! Form::hidden('id', $entity->id, ['id'=>'entity_id']) !!}
                     {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
 
                     <div class="row">
                         <div class="col-md-2">
-                            @include('widgets.form._formitem_text', ['name' => 'order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                            @include('widgets.form._formitem_text', ['name' => 'doc_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
                         </div>
                         <div class="col-md-2">
                             @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'disabled'=> 'true', 'name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
                         </div>
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'disabled'=> 'true', 'name' => 'sender_id', 'title' => 'Отправитель', 'options' => $senders_opt])
+                            {{-- @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'disabled'=> 'true', 'name' => 'sender_id', 'title' => 'Отправитель', 'options' => $senders_opt]) --}}
                         </div>
                         <div class="col-md-3">
                             @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' , 'disabled' => 'true', 'readonly' => 'true'])
@@ -56,7 +56,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа', 'readonly' => 'true' ])
+                            @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема документа', 'readonly' => 'true' ])
                         </div>
                         <div class="col-md-3">
                             @include('widgets.form._formitem_text', ['name' => 'create_date', 'value' => date('d.m.Y', strtotime($entity->create_date)), 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1','disabled' => 'true', 'readonly' => 'true'])
@@ -67,7 +67,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @include('widgets.form._formitem_textarea', ['id' => 'description', 'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа', 'disabled' => 'true'])
+                            @include('widgets.form._formitem_textarea', ['id' => 'description', 'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание документа', 'disabled' => 'true'])
                         </div>
                     </div>
                     <div class="row">

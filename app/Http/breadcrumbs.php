@@ -83,11 +83,53 @@ Breadcrumbs::register('documents.inbox', function($breadcrumbs)
     $breadcrumbs->push('Входящие', route('documents.inbox'));
 });
 
+// Документы > Входящие > Создать
+Breadcrumbs::register('documents.inbox.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('documents.inbox');
+    $breadcrumbs->push('Создать', route('documents.inbox.create'));
+});
+
+// Документы > Входящие > Редактировать
+Breadcrumbs::register('documents.inbox.edit', function($breadcrumbs)
+{
+    $breadcrumbs->parent('documents.inbox');
+    $breadcrumbs->push('Редактировать', route('documents.inbox.edit'));
+});
+
+// Документы > Входящие > Просмотр
+Breadcrumbs::register('documents.inbox.view', function($breadcrumbs)
+{
+    $breadcrumbs->parent('documents.inbox');
+    $breadcrumbs->push('Просмотр', route('documents.inbox.view'));
+});
+
 // Документы > Исходящие
 Breadcrumbs::register('documents.outbox', function($breadcrumbs)
 {
     $breadcrumbs->parent('documents.index');
     $breadcrumbs->push('Исходящие', route('documents.outbox'));
+});
+
+// Документы > Исходящие > Создать
+Breadcrumbs::register('documents.outbox.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('documents.outbox');
+    $breadcrumbs->push('Создать', route('documents.outbox.create'));
+});
+
+// Документы > Исходящие > Редактировать
+Breadcrumbs::register('documents.outbox.edit', function($breadcrumbs)
+{
+    $breadcrumbs->parent('documents.outbox');
+    $breadcrumbs->push('Редактировать', route('documents.outbox.edit'));
+});
+
+// Документы > Исходящие > Просмотр
+Breadcrumbs::register('documents.outbox.view', function($breadcrumbs)
+{
+    $breadcrumbs->parent('documents.outbox');
+    $breadcrumbs->push('Просмотр', route('documents.outbox.view'));
 });
 
 // ДСП
@@ -104,11 +146,53 @@ Breadcrumbs::register('dsp.inbox', function($breadcrumbs)
     $breadcrumbs->push('Входящие', route('dsp.inbox'));
 });
 
+// ДСП > Входящие > Создать
+Breadcrumbs::register('dsp.inbox.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('dsp.inbox');
+    $breadcrumbs->push('Создать', route('dsp.inbox.create'));
+});
+
+// ДСП > Входящие > Редактировать
+Breadcrumbs::register('dsp.inbox.edit', function($breadcrumbs)
+{
+    $breadcrumbs->parent('dsp.inbox');
+    $breadcrumbs->push('Редактировать', route('dsp.inbox.edit'));
+});
+
+// ДСП > Входящие > Просмотр
+Breadcrumbs::register('dsp.inbox.view', function($breadcrumbs)
+{
+    $breadcrumbs->parent('dsp.inbox');
+    $breadcrumbs->push('Просмотр', route('dsp.inbox.view'));
+});
+
 // ДСП > Исходящие
 Breadcrumbs::register('dsp.outbox', function($breadcrumbs)
 {
     $breadcrumbs->parent('dsp.index');
     $breadcrumbs->push('Исходящие', route('dsp.outbox'));
+});
+
+// ДСП > Исходящие > Создать
+Breadcrumbs::register('dsp.outbox.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('dsp.outbox');
+    $breadcrumbs->push('Создать', route('dsp.outbox.create'));
+});
+
+// ДСП > Исходящие > Редактировать
+Breadcrumbs::register('dsp.outbox.edit', function($breadcrumbs)
+{
+    $breadcrumbs->parent('dsp.outbox');
+    $breadcrumbs->push('Редактировать', route('dsp.outbox.edit'));
+});
+
+// ДСП > Исходящие > Просмотр
+Breadcrumbs::register('dsp.outbox.view', function($breadcrumbs)
+{
+    $breadcrumbs->parent('dsp.outbox');
+    $breadcrumbs->push('Просмотр', route('dsp.outbox.view'));
 });
 
 // Отчеты
