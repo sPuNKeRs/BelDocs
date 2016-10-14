@@ -34,7 +34,21 @@ class DocumentsController extends Controller
     */
    public function index()
    {
-        return view('documents.index');
+        if($this->wall->hasPermission(['_superadmin']))
+        {
+            $inbox_documents = InboxDocument::where('status', null)->orderBy('execute_date')->get();
+            $outbox_documents = OutboxDocument::where('status', null)->orderBy('execute_date')->get();
+        } 
+        else
+        {
+            $inbox_documents = User::find($this->logged_user->id)->inbox_documents_responsible->where('status', null)->sortBy('execute_date');
+            $outbox_documents = User::find($this->logged_user->id)->outbox_documents_responsible->where('status', null)->sortBy('execute_date');
+        }       
+        
+        return view('documents.index', compact(
+            'inbox_documents',
+            'outbox_documents'
+        ));
    }
 
    // --------------------------------------------------------

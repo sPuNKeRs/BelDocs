@@ -47,6 +47,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\InboxDocument', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\InboxDocument');
     }
 
+    public function outbox_documents_responsible()
+    {
+        return $this->belongsToMany('App\OutboxDocument', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxDocument');
+    }
+
     public function orders_responsible()
     {
         return $this->belongsToMany('App\Order', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\Order');
@@ -72,7 +77,7 @@ class User extends Authenticatable
     }
 
     // -------------------------------------------------
-    // ------------------ Документы -00-----------------
+    // ------------------ Документы --------------------
     // -------------------------------------------------
     
     public function inbox_documents()
