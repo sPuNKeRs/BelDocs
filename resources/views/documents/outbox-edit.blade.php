@@ -1,14 +1,14 @@
 @extends('layouts.master')
 
-@section('title', 'Редактирование - Исходящий приказ')
+@section('title', 'Редактирование - Исходящий документ')
 @section('description', '')
 @section('keywords', '')
 
 @section('pageClass', 'main page')
 
 @section('toolsbar')
-    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-outbox-create")))
-        <a class='btn save_outbox_order' data-toggle='toolbar-tooltip' href='#' title='Сохранить'>
+    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_documents-outbox-create")))
+        <a class='btn save_outbox_document' data-toggle='toolbar-tooltip' href='#' title='Сохранить'>
             <i class='fa fa-plus-circle'> Сохранить</i>
         </a>
         &nbsp;
@@ -31,42 +31,56 @@
             <div class='panel panel-default'>
                 <div class='panel-heading'>
                     <i class='fa fa-pencil-square-o fa-lg'></i>
-                    Форма редактирования исходящего приказа
+                    Форма редактирования исходящего документа
                     <div id="stateInfo" class="pull-right"></div>
                 </div>
                 <div class='panel-body'>
 
-                    {!! Form::model($entity, ['route' => ['orders.outbox.update', $entity->id], 'id'=>'outbox_order_form'])!!}
+                    {!! Form::model($entity, ['route' => ['documents.outbox.save', $entity->id], 'id'=>'outbox_document_form'])!!}
                     {!! Form::hidden('id', $entity->id, ['id'=>'entity_id']) !!}
                     {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
 
                     <div class="row">
                         <div class="col-md-2">
-                            @include('widgets.form._formitem_text', ['name' => 'outbox_order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                            @include('widgets.form._formitem_text', ['name' => 'doc_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
                         </div>
 
-                        
-                        <div class="col-md-4">
-                            @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа' ])
-                        </div>
                         <div class="col-md-2">
-                            @include('widgets.form._formitem_text', ['name' => 'create_date', 'value' => date('d.m.Y', strtotime($entity->create_date)), 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
-                        </div>
-                        <div class="col-md-2">
-                            @include('widgets.form._formitem_text', ['name' => 'execute_date', 'value' => date('d.m.Y', strtotime($entity->execute_date)), 'title' => 'Дата исполнения', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
-                        </div>
-                        <div class="col-md-2 text-right">
+                      @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'item_number_id', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
+                  </div>
+
+                  <div class="col-md-2">
+                      @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'recipient_id', 'title' => 'Получатель', 'options' => $recipients_opt])
+                  </div>
+                  <div class="col-md-4">
+                    
+                  </div>
+
+                  <div class="col-md-2 text-right">
                             @include('widgets.form._formitem_checkbox', ['name'=>'status',
                                                                           'title'=> 'Статус',
                                                                           'value'=> '1',
                                                                           'id' => 'status',
                                                                           'class' => 'custom checkbox',
                                                                           'left' => null])
+                 </div>
+
+                  </div>
+                  <div class="row">
+                        <div class="col-md-6">
+                            @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема документа' ])
                         </div>
+                        <div class="col-md-3">
+                            @include('widgets.form._formitem_text', ['name' => 'create_date', 'value' => date('d.m.Y', strtotime($entity->create_date)), 'title' => 'Дата создания', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
+                        </div>
+                        <div class="col-md-3">
+                            @include('widgets.form._formitem_text', ['name' => 'execute_date', 'value' => date('d.m.Y', strtotime($entity->execute_date)), 'title' => 'Дата исполнения', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1'])
+                        </div>
+                        
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @include('widgets.form._formitem_textarea', ['id' => 'description', 'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание приказа'])
+                            @include('widgets.form._formitem_textarea', ['id' => 'description', 'name' => 'description', 'title' => 'Описание', 'rows' => '6', 'placeholder' => 'Описание документа'])
                         </div>
                     </div>
                     <div class="row">
@@ -86,11 +100,9 @@
                     </div>
                     <div class="form-actions">
                         @if(App::make('authentication_helper')->hasPermission(array("_superadmin")) || App::make('authenticator')->getLoggedUser()->id == $entity->author_id)
-                            <button id="save_outbox_order" class="btn btn-default save_outbox_order">Сохранить</button>
-                            <button id="save_close_outbox_order" class="btn btn-default save_close_outbox_order">Сохранить и закрыть</button>
+                            <button id="save_outbox_document" class="btn btn-default save_outbox_document">Сохранить</button>
+                            <button id="save_close_outbox_document" class="btn btn-default save_close_outbox_document">Сохранить и закрыть</button>
                         @endif
-
-                        {{--<a class="btn" href="{{ route('orders.inbox') }}">Отмена</a>--}}
                         <a class="btn" href="{{ URL::previous() }}">Отмена</a>
                     </div>
                     {!! Form::close()!!}
@@ -105,29 +117,29 @@
 @section('custom_js')
     <script type="text/javascript">
         $(document).ready(function(){
-            // Сохранить приказ
-            $('.save_outbox_order').on('click',function(e){
-                saveOutboxOrder();
+            // Сохранить документ
+            $('.save_outbox_document').on('click',function(e){
+                saveOutboxDocument();
                 e.preventDefault();
             });
 
-            // Сохранить и закрыть приказ
-            $('.save_close_outbox_order').click(function(e){
-                saveOutboxOrder(true);
+            // Сохранить и закрыть документ
+            $('.save_close_outbox_document').click(function(e){
+                saveOutboxDocument(true);
                 e.preventDefault();
             });
 
-            // Функция отправки формы приказа
-            function saveOutboxOrder(close)
+            // Функция отправки формы документа
+            function saveOutboxDocument(close)
             {
                 setStateInfo('save');
                 $('#draft').val('');
                 var token = $('input[name=_token]').val();
-                var form = $('#outbox_order_form')[0];
+                var form = $('#outbox_document_form')[0];
                 var formData = new FormData(form);
 
                 $.ajax({
-                    url: '{{ route('orders.outbox.create') }}',
+                    url: '{{ route('documents.outbox.save') }}',
                     headers: {'X-CSRF-TOKEN': token},
                     processData: false,
                     contentType: false,
@@ -143,7 +155,7 @@
 
                         if(close){
                             // console.log('close');
-                            if(confirm('Закрыть приказ?')){
+                            if(confirm('Закрыть документ?')){
                                 location.href = document.referrer;
                             }
                         };

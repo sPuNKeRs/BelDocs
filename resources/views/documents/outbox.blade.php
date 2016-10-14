@@ -60,7 +60,7 @@
                     @foreach($outbox_documents as $document)
                         <tr class="documents {{ isset($document->status) ? 'success' : '' }} {{ ($document->draft == 1)?'draft' : ''}}">
                             <td>{{ $document->doc_num }}</td>
-                            <td>{{ $document->item_number_id }}</td>
+                            <td>{{ (isset($document->item_number)) ? $document->item_number->item_number : '' }}</td>
                             <td>{{ $document->title }}</td>
                             <td>{{ date('d.m.Y', strtotime($document->create_date)) }}</td>
                             <td>{{ date('d.m.Y', strtotime($document->execute_date)) }}</td>

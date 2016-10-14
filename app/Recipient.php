@@ -16,7 +16,7 @@ class Recipient extends Model
         $options = array();
 
         foreach ($recipients as $recipient) {
-            $options[$recipient->recipient] = $recipient->recipient;
+            $options[$recipient->id] = $recipient->recipient;
         }
 
         return $options;

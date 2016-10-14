@@ -13,6 +13,10 @@ use InitialPreview;
 use App\InboxDocument;
 use App\OutboxDocument;
 use App\ItemNumber;
+use App\Recipient;
+use App\Http\Requests\InboxDocumentRequest;
+use App\Http\Requests\OutboxDocumentRequest;
+
 
 class DocumentsController extends Controller
 {
@@ -125,7 +129,7 @@ class DocumentsController extends Controller
    /*
     * Созранение входящего документа
     */
-   public function inboxSave(Request $request)
+   public function inboxSave(InboxDocumentRequest $request)
    {
       if ($request->id > 0) {
         $inbox_document = InboxDocument::find($request->id);
@@ -354,46 +358,221 @@ class DocumentsController extends Controller
     */
    public function outboxCreate()
    {
+    $slug = uniqid();
+    $entity_type = 'App\OutboxDocument';
 
+    if(count(OutboxDocument::all()) > 0)
+      $last_outbox_document_num = OutboxDocument::orderBy('doc_num', 'DESC')->first()->doc_num;
+    else
+      $last_outbox_document_num = 0;
+
+    // Создаем черновик
+    $outbox_document = new OutboxDocument(array(
+        'doc_num' => $last_outbox_document_num + 1,
+        'author_id' => $this->logged_user->id,
+        'create_date' => date('d.m.Y'),
+        'execute_date' => date('d.m.Y'),
+        'slug' => $slug,
+        'draft' => true
+    ));
+
+    $outbox_document->save();
+    $id = $outbox_document->id;
+    $draft = $outbox_document->draft;
+    $entity = $outbox_document;
+
+    $item_numbers_opt = ItemNumber::getArray();
+
+    $recipients_opt = Recipient::getArray();
+
+    return view('documents.outbox-create', compact(
+        'last_outbox_document_num',
+        'item_numbers_opt',
+        'recipients_opt',
+        'id',
+        'draft',
+        'slug',
+        'entity_type',
+        'entity')
+    );
    }
 
    /*
     * Созранение исходящего документа
     */
-   public function outboxSave()
+   public function outboxSave(OutboxDocumentRequest $request)
    {
+    if ($request->id > 0) {
+        $outbox_document = OutboxDocument::find($request->id);
+        $input = $request->all();
+        $outbox_document->draft = false;
 
+        $outbox_document->status = (isset($input->status)) ? $input->status : null;
+
+        $outbox_document->update($input);
+
+        return response(['status' => true, 'action' => 'update']);
+      }
+
+      return response(['status' => true, 
+                       'action' => 'save', 
+                       'id' => $outbox_document->id, 
+                       'slug' => $outbox_document->slug]);
    }
 
    /*
     * Форма редактирования исходящего документа
     */
-   public function outboxEdit()
+   public function outboxEdit($id)
    {
+      $entity_type = 'App\OutboxDocument';
+      $outbox_document = OutboxDocument::findOrFail($id);       
+
+      $comments = OutboxDocument::find($id)->comments()->orderBy('created_at', 'desc')->get();
+
+      foreach ($comments as $comment) {
+          $comment->user = $comment->user;
+          $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
+      }
+
+      $entity_id = $outbox_document->id;
+      $item_numbers_opt = ItemNumber::getArray();
+      $recipients_opt = Recipient::getArray();
+
+
+      // FILES
+      if (count($outbox_document->attachments) > 0) {
+          $attachments = $outbox_document->attachments;
+          $initialPreview = InitialPreview::getInitialPreview($attachments, 'outbox_documents');
+          $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
+      }
+      $append = true;
+
+      $entity = $outbox_document;
+
+      // Получить всех ответственных
+      $responsibles = $entity->responsibles;
+
+      return view('documents.outbox-edit', compact(
+          'entity',
+          'item_numbers_opt',
+          'recipients_opt',
+          'senders_opt',
+          'entity_id',
+          'comments',
+          'initialPreview',
+          'initialPreviewConfig',
+          'append',
+          'entity_type',
+          'responsibles')
+      );
 
    }
 
    /*
     * Удаление исходящего документа
     */
-   public function outboxDelete()
+   public function outboxDelete($id, Request $request)
    {
+    $outbox_document = OutboxDocument::findOrFail($id);
+
+      //Удаляем комментарии
+      $comments = $outbox_document->comments;
+
+      foreach ($comments as $comment) {
+          $comment->delete();
+      }
+
+      // Удаляем вложения
+      $attachments = $outbox_document->attachments;
+
+      foreach ($attachments as $attachment) {
+          $attachment->delete();
+      }
+
+      Storage::deleteDirectory('outbox_documents/' . $outbox_document->id);
+
+      $outbox_document->delete();
+
+      Session::flash('flash_message', 'Исходящий документ успешно удален.');
+
+      return redirect()->route('documents.outbox', $request->session()->get('outboxDocumentsParamSort'));
 
    }
 
    /*
     * Форма просмотра исходящего документа
     */
-   public function outboxView()
+   public function outboxView($id)
    {
+      $entity_type = 'App\OutboxDocument';
+      $outbox_document = OutboxDocument::findOrFail($id);
+      $comments = OutboxDocument::find($id)->comments()->orderBy('created_at', 'desc')->get();
 
+      foreach ($comments as $comment) {
+          $comment->user = $comment->user;
+          $comment->user_profile = \App::make('authenticator')->getUserById($comment->user->id)->user_profile()->first();
+      }
+
+      $entity_id = $outbox_document->slug;       
+
+      // FILES
+      if (count($outbox_document->attachments) > 0) {
+          $attachments = $outbox_document->attachments;
+          $initialPreview = InitialPreview::getInitialPreview($attachments, 'outbox_documents');
+          $initialPreviewConfig = json_encode(InitialPreview::getinitialPreviewConfig($attachments));
+      }
+      $append = true;
+
+      $entity = $outbox_document;
+
+      $item_numbers_opt = ItemNumber::getArray();
+      $recipients_opt = Recipient::getArray();
+
+      // Получить всех ответственных
+      $responsibles = $entity->responsibles;
+
+      return view('documents.outbox-view', compact(
+          'entity',
+          'entity_id',
+          'item_numbers_opt',
+          'recipients_opt',
+          'comments',
+          'initialPreview',
+          'initialPreviewConfig',
+          'append',
+          'entity_type',
+          'responsibles')
+      );
    }
 
    /*
     * Отмена создания исходящего документа
     */
-   public function outboxCancel()
+   public function outboxCancel(Request $request)
    {
+    $outbox_document = OutboxDocument::findOrFail($request->id);
 
+      if ($outbox_document->draft == '1') {
+          //Удаляем комментарии
+          $comments = $outbox_document->comments;
+
+          foreach ($comments as $comment) {
+              $comment->delete();
+          }
+
+          // Удаляем вложения
+          $attachments = $outbox_document->attachments;
+
+          foreach ($attachments as $attachment) {
+              $attachment->delete();
+          }
+
+          Storage::deleteDirectory('outbox_documents/' . $outbox_document->id);
+          $outbox_document->delete();
+
+          return redirect()->route('documents.outbox', $request->session()->get('outboxDocumentsParamSort'));
+      }
+      return redirect()->route('documents.outbox', $request->session()->get('outboxDocumentsParamSort'));
    }
 }
