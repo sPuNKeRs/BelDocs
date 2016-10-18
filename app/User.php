@@ -47,6 +47,17 @@ class User extends Authenticatable
         return $this->belongsToMany('App\InboxDocument', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\InboxDocument');
     }
 
+    public function inbox_dsps_responsible()
+    {
+        return $this->belongsToMany('App\InboxDsp', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\InboxDsp');
+    }
+
+    public function outbox_dsps_responsible()
+    {
+      return $this->belongsToMany('App\OutboxDsp', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxDsp');
+    }
+
+
     public function outbox_documents_responsible()
     {
         return $this->belongsToMany('App\OutboxDocument', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxDocument');
@@ -88,6 +99,19 @@ class User extends Authenticatable
     public function outbox_documents()
     {
         return $this->hasMany('App\OutboxDocument', 'author_id', 'id');
+    }
+
+    // -------------------------------------------------
+    // -------------------- ДСП ------------------------
+    // -------------------------------------------------
+    public function inbox_dsps()
+    {
+        return $this->hasMany('App\InboxDsp', 'author_id', 'id');
+    }
+
+    public function outbox_dsps()
+    {
+        return $this->hasMany('App\OutboxDsp', 'author_id', 'id');
     }
 
 
