@@ -36,7 +36,7 @@
                 </div>
                 <div class='panel-body'>
 
-                    {!! Form::model($entity, ['route' => ['orders.outbox.update', $entity->id], 'id'=>'outbox_order_form'])!!}
+                    {!! Form::model($entity, ['route' => ['orders.outbox.create', $entity->id], 'id'=>'outbox_order_form'])!!}
                     {!! Form::hidden('id', $entity->id, ['id'=>'entity_id']) !!}
                     {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
 

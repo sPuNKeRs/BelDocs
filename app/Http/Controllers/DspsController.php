@@ -131,9 +131,52 @@ class DspsController extends Controller
    /*
    * Вывод страницы с исходящими ДСП
    */
-   public function outbox()
+   public function outbox(Request $request)
    {
-        return view('dsp.outbox');
+      // Сохраняем строку параметров в сессии
+      $request->session()->put('outboxDspsParamSort', Input::all());
+
+      // Сортировка
+      if ($request->has('sort') && $request->has('order')) {
+          if ($this->wall->hasPermission(['_superadmin'])) {
+              $outbox_dsps = OutboxDsp::orderBy($request->sort, $request->order)->get();
+          } else {
+              if ($request->order == 'asc')
+                  $outbox_dsps = User::find($this->logged_user->id)->outbox_dsps_responsible->sortBy($request->sort);
+              else
+                  $outbox_dsps = User::find($this->logged_user->id)->outbox_dsps_responsible->sortByDesc($request->sort);
+          }
+      } else {
+          if ($this->wall->hasPermission(['_superadmin'])) {
+              $outbox_dsps = OutboxDsp::all();
+          } else {
+              $outbox_dsps = User::find($this->logged_user->id)->outbox_dsps_responsible;
+          }
+      }
+
+      $count = count($outbox_dsps);
+
+      $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+      $collection = new Collection($outbox_dsps);
+
+      $perPage = config('app_options.count_per_page');
+
+      $currentPageSearchResults = $collection->slice((($currentPage - 1) * $perPage), $perPage)->all();
+
+      $currentPageSearchResults = new LengthAwarePaginator($currentPageSearchResults, $count, $perPage);
+
+      $outbox_dsps = $currentPageSearchResults;
+
+      $slice = ((($currentPage - 1) * $perPage) == 0) ? '1' : (($currentPage - 1) * $perPage);
+      $perPage = (($currentPage * $perPage) > $count) ? $count : ($currentPage * $perPage);
+
+      return view('dsp.outbox', compact(
+        'outbox_dsps',
+        'slice',
+        'perPage',
+        'count')
+      );        
    }
 
    /*
