@@ -18,6 +18,7 @@ use App\Http\Requests\OutboxDspRequest;
 use App\InboxDsp;
 use App\OutboxDsp;
 use App\ItemNumberDsp;
+use App\RecipientDsp;
 
 class DspsController extends Controller
 {
@@ -35,7 +36,21 @@ class DspsController extends Controller
     */
    public function index()
    {
-        return view('dsp.index');
+        if($this->wall->hasPermission(['_superadmin']))
+        {
+            $inbox_dsps = InboxDsp::where('status', null)->orderBy('execute_date')->get();
+            $outbox_dsps = OutboxDsp::where('status', null)->orderBy('execute_date')->get();
+        } 
+        else
+        {
+            $inbox_dsps = User::find($this->logged_user->id)->inbox_dsps_responsible->where('status', null)->sortBy('execute_date');
+            $outbox_dsps = User::find($this->logged_user->id)->outbox_dsps_responsible->where('status', null)->sortBy('execute_date');
+        }       
+        
+        return view('dsp.index', compact(
+            'inbox_dsps',
+            'outbox_dsps'
+        ));
    }
 
    // --------------------------------------------------------
@@ -385,7 +400,7 @@ class DspsController extends Controller
 
         $item_numbers_opt = ItemNumberDsp::getArray();
 
-        $recipients_opt = Recipient::getArray();
+        $recipients_opt = RecipientDsp::getArray();
 
         return view('dsp.outbox-create', compact(
             'last_outbox_dsp_num',
@@ -440,7 +455,7 @@ class DspsController extends Controller
 
       $entity_id = $outbox_dsp->id;
       $item_numbers_opt = ItemNumberDsp::getArray();
-      $recipients_opt = Recipient::getArray();
+      $recipients_opt = RecipientDsp::getArray();
 
 
       // FILES
@@ -529,7 +544,7 @@ class DspsController extends Controller
       $entity = $outbox_dsp;
 
       $item_numbers_opt = ItemNumberDsp::getArray();
-      $recipients_opt = Recipient::getArray();
+      $recipients_opt = RecipientDsp::getArray();
 
       // Получить всех ответственных
       $responsibles = $entity->responsibles;

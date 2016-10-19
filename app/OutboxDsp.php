@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class OutboxDsp extends Model
 {
-  public function comments()
+     public function responsibles()
+    {
+        return $this->morphMany('App\Responsible', 'entity');
+    }
+
+    public function comments()
     {
         return $this->morphMany('App\Comment', 'entity');
     }

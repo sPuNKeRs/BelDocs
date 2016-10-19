@@ -16,7 +16,7 @@ class RecipientDsp extends Model
         $options = array();
 
         foreach ($recipients_dsp as $recipient_dsp) {
-            $options[$recipient_dsp->recipient_dsp] = $recipient_dsp->recipient_dsp;
+            $options[$recipient_dsp->id] = $recipient_dsp->recipient_dsp;
         }
 
         return $options;

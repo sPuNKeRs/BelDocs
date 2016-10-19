@@ -58,7 +58,7 @@
                     @foreach($outbox_dsps as $dsp)
                         <tr class="dsps {{ isset($dsp->status) ? 'success' : '' }} {{ ($dsp->draft == 1)?'draft' : ''}}">
                             <td>{{ $dsp->dsp_num }}</td>
-                            <td>{{ (isset($dsp->item_number)) ? $dsp->item_number->item_number : '' }}</td>
+                            <td>{{ (isset($dsp->item_number)) ? $dsp->item_number->item_number_dsp : '' }}</td>
                             <td>{{ $dsp->title }}</td>
                             <td>{{ date('d.m.Y', strtotime($dsp->create_date)) }}</td>
                             <td>{{ date('d.m.Y', strtotime($dsp->execute_date)) }}</td>

@@ -37,10 +37,10 @@
             <a href="{{ route('dsp.index') }}">ДСП</a>
             <ul class='dropdown-menu'>              
               <li>
-                <a href='{{ route('dsp.inbox') }}'>Входящие</a>
+                <a href='{{ route('dsp.inbox', Request::session()->get('inboxDspParamSort')) }}'>Входящие</a>
               </li>
               <li>
-                <a href='{{ route('dsp.outbox') }}'>Исходящие</a>
+                <a href='{{ route('dsp.outbox', Request::session()->get('outboxDspParamSort')) }}'>Исходящие</a>
               </li>              
             </ul>
           </li>   

@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function outbox_dsps_responsible()
     {
-      return $this->belongsToMany('App\OutboxDsp', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxDsp');
+        return $this->belongsToMany('App\OutboxDsp', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxDsp');
     }
 
 
