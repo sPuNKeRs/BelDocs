@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class OutboxDocument extends Model
 {
+     public function responsibles()
+    {
+        return $this->morphMany('App\Responsible', 'entity');
+    }
+
     public function comments()
     {
         return $this->morphMany('App\Comment', 'entity');

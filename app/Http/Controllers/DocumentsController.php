@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
 use InitialPreview;
 
+use App\User;
 use App\InboxDocument;
 use App\OutboxDocument;
 use App\ItemNumber;

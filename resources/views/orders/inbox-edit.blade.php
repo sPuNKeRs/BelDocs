@@ -85,7 +85,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @include('partials.responsibles')
+                            @include('partials.responsibles', ['is_view' => false])
                         </div>
                     </div>
                     <div class="row">

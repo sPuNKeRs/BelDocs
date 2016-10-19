@@ -42,9 +42,24 @@ class User extends Authenticatable
         return $this->hasMany('App\Responsible', 'user_id', 'id');
     }
 
+    public function orders_responsible()
+    {
+        return $this->belongsToMany('App\Order', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\Order');
+    }
+
+    public function outbox_orders_responsible()
+    {
+        return $this->belongsToMany('App\OutboxOrder', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxOrder');
+    }
+
     public function inbox_documents_responsible()
     {
         return $this->belongsToMany('App\InboxDocument', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\InboxDocument');
+    }
+
+     public function outbox_documents_responsible()
+    {
+        return $this->belongsToMany('App\OutboxDocument', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxDocument');
     }
 
     public function inbox_dsps_responsible()
@@ -55,23 +70,7 @@ class User extends Authenticatable
     public function outbox_dsps_responsible()
     {
         return $this->belongsToMany('App\OutboxDsp', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxDsp');
-    }
-
-
-    public function outbox_documents_responsible()
-    {
-        return $this->belongsToMany('App\OutboxDocument', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxDocument');
-    }
-
-    public function orders_responsible()
-    {
-        return $this->belongsToMany('App\Order', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\Order');
-    }
-
-    public function outbox_orders_responsible()
-    {
-        return $this->belongsToMany('App\OutboxOrder', 'responsibles', 'user_id', 'entity_id')->where('entity_type', '=', 'App\OutboxOrder');
-    }
+    }   
 
     // -------------------------------------------------
     // ------------------- Приказы ---------------------

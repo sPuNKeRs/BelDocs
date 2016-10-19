@@ -13,7 +13,7 @@ if (App::make('authentication_helper')->hasPermission(array("_superadmin")) || A
 }
 
 // Если это просто просмотр, то запретить вносить изменения
-if(isset($is_view))
+if(isset($is_view) && $is_view == 'true')
 {
    $is_view = true;
 }
@@ -42,13 +42,13 @@ else
                                                                                     ($access)?'':'disabled']) }}
         </div>
         <div class="col-md-3">
-            @include('widgets.form._formitem_text', ['name' => 'executed_at'.$countLi,
-                                                        'class' => ($is_view) ? ' form-control' : 'executed_at executed_at'.$countLi.' form-control',
+            @include('widgets.form._formitem_text', ['name' => 'executed_at'.$countLi,                                                        
+                                                        'class' => ($is_view) ? ' form-control executed_at_value' : 'executed_at_value executed_at executed_at'.$countLi.' form-control',
                                                         'value' => (isset($responsible->executed_at))? date('d.m.Y', strtotime($responsible->executed_at)) : date('d.m.Y'),
                                                         'data-count-li' => $countLi,
                                                         'placeholder' => '01.01.2016',
                                                         'describedby' => 'basic-addon1',
-                                                        ($access)?'':'readonly' => 'true'
+                                                        ($access)?'':'readonly' => 'true'                                                        
                                                         ])
 
         </div>

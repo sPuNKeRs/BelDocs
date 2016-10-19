@@ -15,6 +15,7 @@ use App\Http\Requests;
 use App\Http\Requests\InboxDspRequest;
 use App\Http\Requests\OutboxDspRequest;
 
+use App\User;
 use App\InboxDsp;
 use App\OutboxDsp;
 use App\ItemNumberDsp;

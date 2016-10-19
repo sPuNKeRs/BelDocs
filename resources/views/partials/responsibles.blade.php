@@ -1,5 +1,5 @@
 <?php
-if(isset($is_view))
+if(isset($is_view) && $is_view == 'true')
 {
    $is_view = true;
 }
@@ -103,7 +103,10 @@ else
             function storeResponsibleUser(self)
             {
                 var user_id = self.find('select').val();
-                var executed_at = self.find('.executed_at').val();
+                var executed_at = self.find('.executed_at_value').val();
+                console.log('--DEBUG--');
+
+                console.log('--DEBUG--');
                 var status = self.find('input.status_user').prop('checked');                
 
                 var url = ' {{route('responsible.store') }}';
