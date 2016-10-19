@@ -1,7 +1,9 @@
 <!-- Navbar -->
 <div class='navbar navbar-default' id='navbar'>
   <a class='navbar-brand' href='/'>
-    <i class='fa fa-book'></i>
+    {{-- <i class='fa fa-book'></i> --}}
+    <img src="{!! asset('images/logo_belarus.png') !!}" width="35px">
+
     {!!Config::get('acl_base.app_name')!!}
   </a>
   <ul class='nav navbar-nav pull-right'>    
