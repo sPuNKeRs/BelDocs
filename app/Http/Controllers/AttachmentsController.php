@@ -44,6 +44,12 @@ class AttachmentsController extends Controller
                 case 'App\OutboxDocument':
                     $entity_folder = 'outbox_documents';
                     break;   
+                case 'App\InboxDsp':
+                    $entity_folder = 'inbox_dsps';
+                    break; 
+                case 'App\OutboxDsp':
+                    $entity_folder = 'outbox_dsps';
+                    break; 
             }
 
             $files = $request->file('upload_files');

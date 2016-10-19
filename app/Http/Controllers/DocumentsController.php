@@ -565,7 +565,7 @@ class DocumentsController extends Controller
     */
    public function outboxCancel(Request $request)
    {
-    $outbox_document = OutboxDocument::findOrFail($request->id);
+      $outbox_document = OutboxDocument::findOrFail($request->id);
 
       if ($outbox_document->draft == '1') {
           //Удаляем комментарии

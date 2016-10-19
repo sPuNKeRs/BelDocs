@@ -16,7 +16,7 @@ class ItemNumberDsp extends Model
         $options = array();
 
         foreach ($item_numbers_dsp as $item_number_dsp) {
-            $options[$item_number_dsp->item_number_dsp] = $item_number_dsp->item_number_dsp;
+            $options[$item_number_dsp->id] = $item_number_dsp->item_number_dsp;
         }
 
         return $options;
