@@ -7416,8 +7416,9 @@ body.login .wrapper .brand h1 {
 
 body.login .wrapper .brand h1 .logo-icon {
    width: 100%;
-   height: auto;
-   background-image: url('../images/belarus-icon-main.png')
+   height: 200px;
+   margin: 20px;
+   background-image: url('../images/logo_belarus.png')
 }
 
 /*body.login .wrapper .brand h1 .logo-icon i[class*='fa-'] {

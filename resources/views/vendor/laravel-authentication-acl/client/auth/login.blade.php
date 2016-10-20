@@ -6,12 +6,11 @@
 <div class='wrapper'>
       <div class='row'>
         <div class='col-lg-12'>
-          <div class='brand text-center'>
-            <h1>
-              <div class='logo-icon'>                
-              </div>
+          <div class='brand text-center'>          
+            <img src="{!! asset('images/logo_belarus.png') !!}" width="125px" style="margin-top: 10px;">
+            <h5>               
               {!! Config::get('acl_base.app_name') !!}
-            </h1>
+            </h5>
           </div>
         </div>
       </div>
