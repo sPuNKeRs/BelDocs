@@ -35,7 +35,7 @@
               <tbody>
                 @foreach($inbox_orders as $inbox)
                 <tr>
-                  <td>{{ $inbox->order_num }}</td>
+                  <td>{{ $inbox->entity_num }}</td>
                   <td>{{ $inbox->title }}</td>
                   <td>{{ date('d.m.Y', strtotime($inbox->execute_date)) }}</td>
                   <td class="action">
@@ -84,7 +84,7 @@
                 
                 @foreach($outbox_orders as $outbox)
                 <tr>
-                  <td>{{ $outbox->outbox_order_num }}</td>
+                  <td>{{ $outbox->entity_num }}</td>
                   <td>{{ $outbox->title }}</td>
                   <td>{{ date('d.m.Y', strtotime($outbox->execute_date)) }}</td>
                   <td class="action">
@@ -134,7 +134,7 @@
               <tbody>
                 @foreach($inbox_documents as $inbox)
                 <tr>
-                  <td>{{ $inbox->doc_num }}</td>
+                  <td>{{ $inbox->entity_num }}</td>
                   <td>{{ $inbox->title }}</td>
                   <td>{{ date('d.m.Y', strtotime($inbox->execute_date)) }}</td>
                   <td class="action">
@@ -183,7 +183,7 @@
                 
                 @foreach($outbox_documents as $outbox)
                 <tr>
-                  <td>{{ $outbox->doc_num }}</td>
+                  <td>{{ $outbox->entity_num }}</td>
                   <td>{{ $outbox->title }}</td>
                   <td>{{ date('d.m.Y', strtotime($outbox->execute_date)) }}</td>
                   <td class="action">

@@ -41,7 +41,7 @@ class InboxDspRequest extends Request
     public function messages()
     {
         return [    
-            'entity_num' => 'Поле номер ДСП обязательно для заполнения',            
+            'entity_num.required' => 'Поле номер ДСП обязательно для заполнения',            
             'title.required' => 'Поле тема обязательно для заполения',
             'create_date.required' => 'Поле дата создания обязательно для заполнения',
             'execute_date.required' => 'Поле дата исполнения обязательно для заполнения'
