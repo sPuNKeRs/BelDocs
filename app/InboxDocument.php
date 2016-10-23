@@ -26,12 +26,18 @@ class InboxDocument extends Model
         return $this->hasOne('App\ItemNumber', 'id', 'item_number_id');
     }
 
+     public function sender()
+    {
+        return $this->hasOne('App\Sender', 'id', 'sender_id');
+    }
+
     // Заполняемые поля
     protected $fillable = [
         'doc_num',
         'entity_num',
         'item_number_id',
         'incoming_number',
+        'sender_id',
         'title',
         'create_date',
         'execute_date',

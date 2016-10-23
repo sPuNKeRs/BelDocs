@@ -14,6 +14,7 @@ use App\User;
 use App\InboxDocument;
 use App\OutboxDocument;
 use App\ItemNumber;
+use App\Sender;
 use App\Recipient;
 use App\Http\Requests\InboxDocumentRequest;
 use App\Http\Requests\OutboxDocumentRequest;
@@ -129,10 +130,12 @@ class DocumentsController extends Controller
     $entity = $inbox_document;
 
     $item_numbers_opt = ItemNumber::getArray();
+    $senders_opt = Sender::getArray();
 
     return view('documents.inbox-create', compact(
         'last_inbox_document_num',
         'item_numbers_opt',
+        'senders_opt',
         'id',
         'draft',
         'slug',
@@ -181,6 +184,8 @@ class DocumentsController extends Controller
 
       $entity_id = $inbox_document->id;
       $item_numbers_opt = ItemNumber::getArray();
+      $senders_opt = Sender::getArray();
+      
 
       // FILES
       if (count($inbox_document->attachments) > 0) {

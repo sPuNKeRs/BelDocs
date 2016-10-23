@@ -49,11 +49,11 @@
                             @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'item_number_id', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
                         </div>
                         <div class="col-md-3">
-                            @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' ])
+                            @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'sender_id', 'title' => 'Отправитель', 'options' => $senders_opt])
                         </div>
                         <div class="col-md-3">
-                        {{-- @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'sender_id', 'title' => 'Отправитель', 'options' => $senders_opt]) --}}
-                        </div>                        
+                            @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' ])
+                        </div>                                            
                         <div class="col-md-2 text-right">
                             @include('widgets.form._formitem_checkbox', ['name'=>'status',
                                                                           'title'=> 'Статус',

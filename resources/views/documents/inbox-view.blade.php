@@ -44,6 +44,9 @@
                             @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'disabled'=> 'true', 'name' => 'item_number', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
                         </div>
                         <div class="col-md-3">
+                            @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'sender_id', 'title' => 'Отправитель', 'disabled'=> 'true', 'options' => $senders_opt])
+                        </div>
+                        <div class="col-md-3">
                             @include('widgets.form._formitem_text', ['name' => 'incoming_number', 'title' => 'Входящий номер', 'placeholder' => 'Входящий номер' , 'disabled' => 'true', 'readonly' => 'true'])
                         </div>
                         <div class="col-md-3">
