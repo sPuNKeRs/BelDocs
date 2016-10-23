@@ -58,7 +58,7 @@
 
                     @foreach($orders as $order)
                         <tr class="orders {{ isset($order->status) ? 'success' : '' }} {{ ($order->draft == 1)?'draft' : ''}}">
-                            <td>{{$order->order_num}}</td>
+                            <td>{{$order->entity_num}}</td>
                             <td>{{ (isset($order->item_number)) ? $order->item_number->item_number : '' }}</td>
                             <td>{{$order->incoming_number}}</td>
                             <td>{{$order->title}}</td>

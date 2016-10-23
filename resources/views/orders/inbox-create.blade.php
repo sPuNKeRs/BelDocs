@@ -41,6 +41,7 @@
             {!! Form::open(['route' => 'orders.inbox.create' , 'files'=> 'true', 'id'=>'order_form', 'name'=>'order_form'])!!}
               {!! Form::hidden('id', $id, ['id'=>'entity_id']) !!}
               {!! Form::hidden('slug', $slug, ['id'=>'slug']) !!}
+              {!! Form::hidden('order_num', $last_order_num+1, ['id'=>'order_num']) !!}
               {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
 
               @if($draft)
@@ -49,7 +50,7 @@
 
               <div class="row">
                   <div class="col-md-2">
-                      @include('widgets.form._formitem_text', ['value' => $last_order_num+1,'name' => 'order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                      @include('widgets.form._formitem_text', ['value' => $last_order_num+1,'name' => 'entity_num', 'title' => 'Номер', 'placeholder' => 'Номер'])
                   </div>
                   <div class="col-md-2">
                       @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'item_number_id', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])

@@ -25,6 +25,7 @@ class SaveOrderRequest extends Request
     {
         return [
             //'order_id' => 'required',
+            'entity_num' => 'required',
             'item_number_id' => 'required',
             'incoming_number' => 'required',
             'title' => 'required',
@@ -44,6 +45,7 @@ class SaveOrderRequest extends Request
     {
         return [
             //'order_id.required' => 'Поле порядковый номер обязательно для заполнения',
+            'entity_num' => 'Поле номер призака обязательно для заполнения',
             'item_number.required' => 'Поле номенклатурный номер обязательно для заполнения',
             'incoming_number.required' => 'Поле входящий номер обязательно для заполнения',
             'title.required' => 'Поле тема обязательно для заполения',
