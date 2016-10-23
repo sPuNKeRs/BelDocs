@@ -39,10 +39,11 @@
                     {!! Form::model($entity, ['route' => ['documents.outbox.save', $entity->id], 'id'=>'outbox_document_form'])!!}
                     {!! Form::hidden('id', $entity->id, ['id'=>'entity_id']) !!}
                     {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
+                    {!! Form::hidden('doc_num', $entity->doc_num, ['id'=>'doc_num']) !!}
 
                     <div class="row">
                         <div class="col-md-2">
-                            @include('widgets.form._formitem_text', ['name' => 'doc_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                            @include('widgets.form._formitem_text', ['name' => 'entity_num', 'title' => 'Номер', 'placeholder' => 'Номер'])
                         </div>
 
                         <div class="col-md-2">

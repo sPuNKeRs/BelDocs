@@ -7,7 +7,11 @@
 @section('pageClass', 'main page')
 
 @section('toolsbar')
-
+    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_documents-outbox-view")))        
+        <a class='btn btn-danger' data-toggle='toolbar-tooltip' href='{{ URL::previous() }}' title='Закрыть'>
+            <i class='fa fa-times'></i>
+        </a>
+    @endif
 @stop
 
 @include('partials.navbar')
@@ -30,10 +34,11 @@
                     {!! Form::model($entity, ['id'=>'outbox_document_form'])!!}
                     {!! Form::hidden('id', $entity->id, ['id'=>'entity_id']) !!}
                     {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
+                    {!! Form::hidden('doc_num', $entity->entity_num, ['id'=>'doc_num']) !!}
 
                     <div class="row">
                         <div class="col-md-2">
-                            @include('widgets.form._formitem_text', ['name' => 'doc_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                            @include('widgets.form._formitem_text', ['name' => 'entity_num', 'title' => 'Номер', 'placeholder' => 'Номер', 'readonly' => 'true'])
                         </div>
 
                         <div class="col-md-2">
