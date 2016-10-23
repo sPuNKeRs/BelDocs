@@ -36,7 +36,7 @@
 
               @foreach($inbox_dsps as $inbox)
                 <tr>
-                  <td>{{ $inbox->dsp_num }}</td>
+                  <td>{{ $inbox->entity_num }}</td>
                   <td>{{ $inbox->title }}</td>
                   <td>{{ date('d.m.Y', strtotime($inbox->execute_date)) }}</td>
                   <td class="action">
@@ -88,7 +88,7 @@
               
               @foreach($outbox_dsps as $outbox)
                 <tr>
-                  <td>{{ $outbox->dsp_num }}</td>
+                  <td>{{ $outbox->entity_num }}</td>
                   <td>{{ $outbox->title }}</td>
                   <td>{{ date('d.m.Y', strtotime($outbox->execute_date)) }}</td>
                   <td class="action">

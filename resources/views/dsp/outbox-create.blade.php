@@ -40,6 +40,7 @@
             {!! Form::open(['route' => 'dsp.outbox.create' , 'files'=> 'true', 'id'=>'outbox_dsp_form', 'name'=>'outbox_dsp_form'])!!}
               {!! Form::hidden('id', $id, ['id'=>'entity_id']) !!}
               {!! Form::hidden('slug', $slug, ['id'=>'slug']) !!}
+              {!! Form::hidden('dsp_num', $last_outbox_dsp_num+1, ['id'=>'dsp_num']) !!}
               {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
 
               @if($draft)
@@ -48,7 +49,7 @@
 
               <div class="row">
                   <div class="col-md-2">
-                      @include('widgets.form._formitem_text', ['value' => $last_outbox_dsp_num+1,'name' => 'dsp_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                      @include('widgets.form._formitem_text', ['value' => $last_outbox_dsp_num+1,'name' => 'entity_num', 'title' => 'Номер', 'placeholder' => 'Номер'])
                   </div>
                   <div class="col-md-2">
                       @include('widgets.form._formitem_select', ['class'=>'selectpicker', 'name' => 'item_number_id', 'title' => 'Номенклатурный номер', 'options' => $item_numbers_opt])
