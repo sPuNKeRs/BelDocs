@@ -39,13 +39,12 @@
                     {!! Form::model($entity, ['route' => ['orders.outbox.create', $entity->id], 'id'=>'outbox_order_form'])!!}
                     {!! Form::hidden('id', $entity->id, ['id'=>'entity_id']) !!}
                     {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
+                    {!! Form::hidden('outbox_order_num', $entity->outbox_order_num, ['id'=>'outbox_order_num']) !!}
 
                     <div class="row">
                         <div class="col-md-2">
-                            @include('widgets.form._formitem_text', ['name' => 'outbox_order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
-                        </div>
-
-                        
+                            @include('widgets.form._formitem_text', ['name' => 'entity_num', 'title' => 'Номер', 'placeholder' => 'Номер'])
+                        </div>                        
                         <div class="col-md-4">
                             @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа' ])
                         </div>

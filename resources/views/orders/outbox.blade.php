@@ -58,7 +58,7 @@
 
                     @foreach($outbox_orders as $outbox_order)
                         <tr class="orders {{ isset($outbox_order->status) ? 'success' : '' }} {{ ($outbox_order->draft == 1)?'draft' : ''}}">
-                            <td>{{$outbox_order->outbox_order_num}}</td>                           
+                            <td>{{$outbox_order->entity_num}}</td>                           
                             <td>{{$outbox_order->title}}</td>
                             <td>{{ date('d.m.Y', strtotime($outbox_order->create_date)) }}</td>
                             <td>{{ date('d.m.Y', strtotime($outbox_order->execute_date)) }}</td>

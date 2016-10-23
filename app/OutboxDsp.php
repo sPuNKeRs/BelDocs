@@ -30,6 +30,7 @@ class OutboxDsp extends Model
     // Заполняемые поля
     protected $fillable = [
         'dsp_num',
+        'entity_num',
         'item_number_id',
         'recipient_id',
         'title',

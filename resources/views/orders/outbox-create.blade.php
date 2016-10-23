@@ -41,6 +41,7 @@
             {!! Form::open(['route' => 'orders.outbox.create' , 'files'=> 'true', 'id'=>'outbox_order_form', 'name'=>'outbox_order_form'])!!}
               {!! Form::hidden('id', $id, ['id'=>'entity_id']) !!}
               {!! Form::hidden('slug', $slug, ['id'=>'slug']) !!}
+              {!! Form::hidden('outbox_order_num', $last_outbox_order_num+1, ['id'=>'outbox_order_num']) !!}
               {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
 
               @if($draft)
@@ -49,7 +50,7 @@
 
               <div class="row">
                   <div class="col-md-2">
-                      @include('widgets.form._formitem_text', ['value' => $last_outbox_order_num+1,'name' => 'outbox_order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                      @include('widgets.form._formitem_text', ['value' => $last_outbox_order_num+1,'name' => 'entity_num', 'title' => 'Номер', 'placeholder' => 'Номер'])
                   </div>              
                   <div class="col-md-4">
                       @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа' ])

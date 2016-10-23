@@ -7,7 +7,11 @@
 @section('pageClass', 'main page')
 
 @section('toolsbar')
-
+    @if(App::make('authentication_helper')->hasPermission(array("_superadmin", "_orders-outbox-view")))
+        <a class='btn btn-danger' data-toggle='toolbar-tooltip' href='{{ URL::previous() }}' title='Закрыть'>
+            <i class='fa fa-times'></i>
+        </a>
+    @endif
 @stop
 
 @include('partials.navbar')
@@ -30,10 +34,11 @@
                     {!! Form::model($entity, ['id'=>'outbox_order_form'])!!}
                     {!! Form::hidden('id', $entity->id, ['id'=>'entity_id']) !!}
                     {!! Form::hidden('entity_type', get_class($entity), ['id'=>'entity_type']) !!}
+                    {!! Form::hidden('outbox_order_num', $entity->outbox_order_num, ['id'=>'outbox_order_num']) !!}
 
                     <div class="row">
                         <div class="col-md-2">
-                            @include('widgets.form._formitem_text', ['name' => 'outbox_order_num', 'title' => 'Номер', 'placeholder' => 'Порядковый номер', 'readonly' => 'true'])
+                            @include('widgets.form._formitem_text', ['name' => 'entity_num', 'title' => 'Номер', 'placeholder' => 'Номер', 'readonly' => 'true'])
                         </div>                   
                         <div class="col-md-4">
                             @include('widgets.form._formitem_text', ['name' => 'title', 'title' => 'Тема', 'placeholder' => 'Тема приказа', 'readonly' => 'true' ])

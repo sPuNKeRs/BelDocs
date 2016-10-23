@@ -14,7 +14,7 @@ class CreateInboxDspsTable extends Migration
     {
         Schema::create('inbox_dsps', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('dsp_num')->nullable();
+            $table->integer('dsp_num')->nullable();
             $table->integer('item_number_id')->nullable();
             $table->string('incoming_number')->nullable();            
             $table->string('title')->nullable();

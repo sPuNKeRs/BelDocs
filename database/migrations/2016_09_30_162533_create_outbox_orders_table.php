@@ -14,7 +14,7 @@ class CreateOutboxOrdersTable extends Migration
     {
         Schema::create('outbox_orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('outbox_order_num')->nullable();            
+            $table->integer('outbox_order_num')->nullable();            
             $table->string('title')->nullable();
             $table->date('create_date')->nullable();
             $table->date('execute_date')->nullable();

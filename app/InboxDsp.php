@@ -30,6 +30,7 @@ class InboxDsp extends Model
     // Заполняемые поля
     protected $fillable = [
         'dsp_num',
+        'entity_num',
         'item_number_id',
         'incoming_number',
         'title',

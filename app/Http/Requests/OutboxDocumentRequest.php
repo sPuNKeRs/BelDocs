@@ -24,7 +24,8 @@ class OutboxDocumentRequest extends Request
     public function rules()
     {
         return [
-            //'order_id' => 'required',            
+            //'order_id' => 'required',  
+            'entity_num' => 'required',              
             'title' => 'required',
             'create_date' => 'required',
             'execute_date' => 'required',
@@ -39,7 +40,8 @@ class OutboxDocumentRequest extends Request
      */
     public function messages()
     {
-        return [            
+        return [        
+            'entity_num' => 'Поле номер документа обязательно для заполнения',        
             'title.required' => 'Поле тема обязательно для заполения',
             'create_date.required' => 'Поле дата создания обязательно для заполнения',
             'execute_date.required' => 'Поле дата исполнения обязательно для заполнения'

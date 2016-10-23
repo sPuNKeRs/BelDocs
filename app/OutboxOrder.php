@@ -24,7 +24,8 @@ class OutboxOrder extends Model
 
   // Заполняемые поля
     protected $fillable = [
-      'outbox_order_num',      
+      'outbox_order_num',  
+      'entity_num',    
       'title',
       'create_date',
       'execute_date',

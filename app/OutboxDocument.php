@@ -30,6 +30,7 @@ class OutboxDocument extends Model
     // Заполняемые поля
     protected $fillable = [
         'doc_num',
+        'entity_num',
         'item_number_id',
         'recipient_id',
         'title',

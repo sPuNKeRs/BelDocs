@@ -29,6 +29,7 @@ class InboxDocument extends Model
     // Заполняемые поля
     protected $fillable = [
         'doc_num',
+        'entity_num',
         'item_number_id',
         'incoming_number',
         'title',

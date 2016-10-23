@@ -14,7 +14,7 @@ class CreateOutboxDocumentsTable extends Migration
     {
         Schema::create('outbox_documents', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('doc_num')->nullable();
+            $table->integer('doc_num')->nullable();
             $table->integer('item_number_id')->nullable();
             $table->integer('recipient_id')->nullable();
             $table->string('title')->nullable();
