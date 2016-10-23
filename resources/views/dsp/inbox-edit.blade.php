@@ -129,6 +129,7 @@
             // Функция отправки формы ДСП
             function saveInboxDsp(close)
             {
+                tinyMCE.triggerSave(true,true);
                 setStateInfo('save');
                 $('#draft').val('');
                 var token = $('input[name=_token]').val();

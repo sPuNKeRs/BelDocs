@@ -131,6 +131,7 @@
             // Функция отправки формы приказа
             function saveOrder(close)
             {
+                tinyMCE.triggerSave(true,true);
                 setStateInfo('save');
                 $('#draft').val('');
                 var token = $('input[name=_token]').val();

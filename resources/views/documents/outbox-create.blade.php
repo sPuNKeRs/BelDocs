@@ -140,6 +140,7 @@
             // Функция отправки формы документа
             function saveOutboxDocument(close)
             {
+                tinyMCE.triggerSave(true,true);
                 setStateInfo('save');
                 $('#draft').val('');
                 var token = $('input[name=_token]').val();

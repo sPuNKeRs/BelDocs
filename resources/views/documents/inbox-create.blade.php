@@ -120,6 +120,8 @@
 @section('custom_js')
     <script type="text/javascript">
         $(document).ready(function(){
+             
+
             // Сохранить приказ
             $('.save_inbox_document').on('click',function(e){
                 saveInboxDocument();
@@ -136,11 +138,12 @@
             // Функция отправки формы приказа
             function saveInboxDocument(close)
             {
+                tinyMCE.triggerSave(true,true);
                 setStateInfo('save');
                 $('#draft').val('');
                 var token = $('input[name=_token]').val();
-                var form = $('#inbox_document_form')[0];
-                var formData = new FormData(form);
+                var form = $('#inbox_document_form')[0];                
+                var formData = new FormData(form);                
 
                 $.ajax({
                     url: '{{ route('documents.inbox.save') }}',

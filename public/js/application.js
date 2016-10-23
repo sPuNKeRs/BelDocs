@@ -12,12 +12,11 @@ $(document).ready(function() {
         }), $(".knob").knob();
 });
 
-$(document).ready(function(){
-    // tinymce.init({
-    //     selector: '#description'
-    // });
-
-
+$(document).ready(function(){   
+    // Подключаем редактор
+     var editor = tinymce.init({
+         selector: '#description'
+    });
 
 
     window.downloadFile = function (sUrl) {

@@ -130,6 +130,8 @@
             // Функция отправки формы приказа
             function saveInboxDocument(close)
             {
+                tinyMCE.triggerSave(true,true);
+                
                 setStateInfo('save');
                 $('#draft').val('');
                 var token = $('input[name=_token]').val();
