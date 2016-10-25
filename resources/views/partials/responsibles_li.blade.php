@@ -34,7 +34,7 @@ else
                                                                                     (isset($responsible->user_id)) ? $responsible->user_id : null,
                                                                                     ['class' => 'selectpicker responsible_user',
                                                                                     'data-live-search' => true,
-                                                                                    'data-size'=> 4,
+                                                                                    'data-size'=> 5,
                                                                                     'data-width'=>'90%',
                                                                                     'data-title'=>'Выберите из списка',
                                                                                     'data-count-li'=>$countLi,

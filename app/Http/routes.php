@@ -408,6 +408,11 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'reports.index',
             'uses' => 'ReportsController@index'
         ]);
+
+        Route::post('/reports/generate', [
+            'as' => 'reports.generate',
+            'uses' => 'ReportsController@generate'
+        ]);
     });
 
     // --------------------------------------------------------
