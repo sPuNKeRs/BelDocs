@@ -222,6 +222,7 @@ return [
 
         'InitialPreview' => App\Helpers\InitialPreview::class,
         'SortHelper' => App\Helpers\SortHelper::class,
+        'ReportsHelper' => App\Helpers\ReportsHelper::class,
     ],
 
 ];

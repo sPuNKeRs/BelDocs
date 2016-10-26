@@ -25,7 +25,7 @@
                 <legend>Параметры отчета</legend>
                 <div class="row">
                   <div class="col-md-4">
-                    @include('widgets.form._formitem_select', ['live_search' => true, 'data_size' => 5, 'class'=>'selectpicker', 'name' => 'entity_type_id', 'title' => 'Тип отчета', 'options' => $entity_type])
+                    @include('widgets.form._formitem_select', ['live_search' => true, 'data_size' => 8, 'class'=>'selectpicker', 'name' => 'entity_type_id', 'title' => 'Тип отчета', 'options' => $entity_type])
                   </div>
                   <div class="col-md-4">
                     @include('widgets.form._formitem_text', ['name' => 'from_date', 'title' => 'Дата начала периода', 'placeholder' => '01.01.2016', 'describedby' => 'basic-addon1', 'value' => date('d.m.Y') ])

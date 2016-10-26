@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
+
+use App\Helpers\ReportsHelper;
 
 use App\Order;
 use App\OutboxOrder;
@@ -23,17 +26,7 @@ class ReportsController extends Controller
    public function index()
    {
         // Массив с типами документов
-        $entity_type = array(
-            'io_orders' => 'Приказы',
-            'i_orders' => 'Входящие приказы',
-            'o_orders' => 'Исходящие приказы',
-            'io_documents' => 'Документы',
-            'i_documents' => 'Входящие документы',
-            'o_documents' => 'Исходящие документы',
-            'io_dsp' => 'ДСП',
-            'i_dsp' => 'Входящие ДСП',
-            'o_dsp' => 'Исходящие ДСП'
-        );
+        $entity_type = ReportsHelper::getEntityType();
 
 
         // Вывод страницы отчетов
@@ -47,15 +40,14 @@ class ReportsController extends Controller
    {
        // Инициализация переменных
        $entity_type = $request->entity_type_id;
-       $from_date = $request->from_date;
-       $by_date = $request->by_date;
-
+       $from_date = Carbon::createFromFormat('d.m.Y', $request->from_date);
+       $by_date = Carbon::createFromFormat('d.m.Y', $request->by_date);
 
        switch ($entity_type) {
            case 'io_orders':
 
-               $inbox_orders = Order::all();
-               $outbox_orders = OutboxOrder::all();
+               $inbox_orders = Order::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
+               $outbox_orders = OutboxOrder::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
 
                $collection = new Collection();
                $all = $collection->merge($inbox_orders)->merge($outbox_orders);
@@ -65,17 +57,17 @@ class ReportsController extends Controller
 
            case 'i_orders':
                 $entity_type = 'Входящие приказы';
-                $entitys = Order::all();
+                $entitys = Order::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
            break;
 
            case 'o_orders':
                 $entity_type = 'Исходящие приказы';
-                $entitys = OutboxOrder::all();
+                $entitys = OutboxOrder::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
            break;
 
            case 'io_documents':
-                $inbox_documents = InboxDocument::all();
-                $outbox_documents = OutboxDocument::all();
+                $inbox_documents = InboxDocument::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
+                $outbox_documents = OutboxDocument::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
 
                 $collection = new Collection();
                 $all = $collection->merge($inbox_documents)->merge($outbox_documents);
@@ -85,22 +77,22 @@ class ReportsController extends Controller
            break;
 
            case 'i_documents':
-                $inbox_documents = InboxDocument::all();
+                $inbox_documents = InboxDocument::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
 
                 $entity_type = 'Входящие документы';
                 $entitys = $inbox_documents;
            break;
 
            case 'o_documents':
-                $outbox_documents = OutboxDocument::all();
+                $outbox_documents = OutboxDocument::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
 
                 $entity_type = 'Исходящие документы';
                 $entitys = $outbox_documents;
            break;
 
            case 'io_dsp':
-                $inbox_dsp = InboxDsp::all();
-                $outbox_dsp = OutboxDsp::all();
+                $inbox_dsp = InboxDsp::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
+                $outbox_dsp = OutboxDsp::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
 
                 $collection = new Collection();
                 $all = $collection->merge($inbox_dsp)->merge($outbox_dsp);
@@ -110,14 +102,14 @@ class ReportsController extends Controller
            break;
 
            case 'i_dsp':
-                $inbox_dsp = InboxDsp::all();
+                $inbox_dsp = InboxDsp::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
 
                 $entity_type = 'Входящие ДСП';
                 $entitys = $inbox_dsp;
            break;
 
            case 'o_dsp':
-                $outbox_dsp = OutboxDsp::all();
+                $outbox_dsp = OutboxDsp::where('create_date', '>=', $from_date->toDateString())->where('create_date','<=',$by_date->toDateString())->get();
 
                 $entity_type = 'Исходящие ДСП';
                 $entitys = $outbox_dsp;
