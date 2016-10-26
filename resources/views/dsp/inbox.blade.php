@@ -17,7 +17,9 @@
     @endif
 @stop
 
-@include('partials.navbar')
+@section('nav_bar')
+  @include('partials.navbar')
+@stop
 
 @section('content')
 

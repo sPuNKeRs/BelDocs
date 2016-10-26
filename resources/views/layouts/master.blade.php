@@ -14,8 +14,10 @@
     <link rel="stylesheet" href="{!! asset('bower_components/bootstrap-fileinput/css/fileinput.min.css') !!}">
 
     <link rel="stylesheet" href="{!! asset('css/custom.css') !!}">
+    @yield('css_block')
   </head>
   <body class="@yield('pageClass')">
+    @yield('nav_bar')
     <div class="container">
       @yield('content')
     </div>

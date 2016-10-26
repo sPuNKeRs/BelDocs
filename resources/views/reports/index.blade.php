@@ -4,9 +4,45 @@
 @section('description', '')
 @section('keywords', '')
 
+@section('css_block')
+  <style type="text/css">
+    @media print {
+      #sidebar {
+        display: none;
+      }
+      .report_param {
+        display: none;
+      }
+
+      #wrapper{
+        position: inherit;
+        overflow: visible;
+      }
+      #tools, #navbar{
+        display:none;
+      }
+      #content{
+        left: 0;
+        margin: 0;
+        overflow: visible;
+      }
+      .btn.pull-right
+      {
+        display: none;
+      }
+    }
+  </style>
+@stop
+
+
 @section('pageClass', 'main page')
-@include('partials.navbar')
+
+@section('nav_bar')
+  @include('partials.navbar')
+@stop
+
 @section('content')
+
 
     <div id='wrapper'>
       @include('partials.sidebar')
@@ -14,7 +50,7 @@
       <!-- Content -->
       <div id='content'>
         <!--Параметры отчета-->
-        <div class='panel panel-default'>
+        <div class='panel panel-default report_param'>
           <div class='panel-heading'>
             <i class='fa fa-wpforms fa-lg'></i>
             Отчеты

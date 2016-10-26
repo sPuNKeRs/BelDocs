@@ -3,7 +3,9 @@
 @section('description', '')
 @section('keywords', '')
 @section('pageClass', 'main page')
-@include('partials.navbar')
+@section('nav_bar')
+  @include('partials.navbar')
+@stop
 @section('content')
 <div id='wrapper'>
   @include('partials.sidebar')

@@ -2,7 +2,7 @@
   <div class="panel-heading">
     <i class='fa fa-table fa-lg'></i> Результат
     <div class="panel-tools">
-      <a class="btn pull-right" data-toggle="toolbar-tooltip" href="#" title="" data-original-title="Печать отчета">
+      <a class="btn pull-right" data-toggle="toolbar-tooltip" href="#" title="" data-original-title="Печать отчета"  onclick="print()">
                   <i class="fa fa-print fa-lg" aria-hidden="true"></i>
       </a>
       <div class="badge"><b>Кол-во:</b> {{count($entitys)}}</div>
