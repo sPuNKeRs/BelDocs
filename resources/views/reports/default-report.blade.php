@@ -1,7 +1,3 @@
-<?php
-  if(!isset($count)) $count = 0;
-  if(!isset($report_param)) $report_param = array('entite_type'=>'Приказы');
-?>
 <div class="panel panel-default grid">
   <div class="panel-heading">
     <i class='fa fa-table fa-lg'></i> Результат
@@ -9,9 +5,9 @@
       <a class="btn pull-right" data-toggle="toolbar-tooltip" href="#" title="" data-original-title="Печать отчета">
                   <i class="fa fa-print fa-lg" aria-hidden="true"></i>
       </a>
-      <div class="badge"><b>Кол-во:</b> {{$count}}</div>
-      <div class="badge"><b>За период:</b> с <b>10.10.2016</b> по <b>20.10.2016</b></div>
-      <div class="badge"><b>Тип:</b> {{$report_param['entite_type']}}</div>
+      <div class="badge"><b>Кол-во:</b> {{count($entitys)}}</div>
+      <div class="badge"><b>За период:</b> с <b>{{$from_date}}</b> по <b>{{$by_date}}</b></div>
+      <div class="badge"><b>Тип:</b> {{$entity_type}}</div>
 
 
     </div>
@@ -19,31 +15,25 @@
   <table class="table table-condensed">
     <thead>
       <tr>
-        <th>#</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Username</th>
+        <th width="5%">№</th>
+        <th width="10%">Н. н.</th>
+        <th width="20%">Тема</th>
+        <th width="45%">Резолюция</th>
+        <th width="10%">Исполнить до</th>
+        <th width="10%">Статус</th>
       </tr>
     </thead>
     <tbody>
+    @foreach($entitys as $entity)
       <tr>
-        <td>1</td>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
+        <td>{{$entity->entity_num}}</td>
+        <td>{{$entity->entity_num}}</td>
+        <td>{{$entity->title}}</td>
+        <td>{{$entity->resolution}}</td>
+        <td>{{$entity->execute_date}}</td>
+        <td>{{(($entity->status == 1)) ? 'Выполнено' : 'Не выполено' }}</td>
       </tr>
-      <tr>
-        <td>2</td>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Larry</td>
-        <td>the Bird</td>
-        <td>@twitter</td>
-      </tr>
+    @endforeach
     </tbody>
   </table>
 </div>
