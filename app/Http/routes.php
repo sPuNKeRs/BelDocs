@@ -41,7 +41,7 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'orders.inbox.create',
             'uses' => 'OrdersController@inboxCreate',
             'middleware' => 'has_perm:_superadmin,_orders-inbox-create'
-        ]);     
+        ]);
 
         // Сохранение входящего приказа AJAX
         Route::post('/orders/inbox/create', [
@@ -99,7 +99,7 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'orders.outbox.create',
             'uses' => 'OrdersController@outboxCreate',
             'middleware' => 'has_perm:_superadmin,_orders-outbox-create'
-        ]);     
+        ]);
 
         // Сохранение входящего приказа AJAX
         Route::post('/orders/outbox/create', [
@@ -111,7 +111,7 @@ Route::group(['middleware' => ['logged']], function () {
         // Отмена создания приказа
         Route::get('/orders/outbox/cancel', [
             'as' => 'orders.outbox.cancel',
-            'uses' => 'OrdersController@outboxOrderCancel', 
+            'uses' => 'OrdersController@outboxOrderCancel',
             'middleware' => 'has_perm:_superadmin,_orders-outbox-create'
         ]);
 
@@ -186,42 +186,42 @@ Route::group(['middleware' => ['logged']], function () {
 
         // Страница создания входящего документа
         Route::get('/documents/inbox/create', [
-            'as' => 'documents.inbox.create', 
-            'uses' => 'DocumentsController@inboxCreate', 
+            'as' => 'documents.inbox.create',
+            'uses' => 'DocumentsController@inboxCreate',
             'middleware' => 'has_perm:_superadmin,_documents-inbox-create'
         ]);
 
         // Сохранение входящего документа
         Route::post('/documents/inbox/save', [
-            'as' => 'documents.inbox.save', 
+            'as' => 'documents.inbox.save',
             'uses' => 'DocumentsController@inboxSave',
             'middleware' => 'has_perm:_superadmin,_documents-inbox-create'
         ]);
 
         // Отмена создания входящего документа
         Route::get('/documents/inbox/cancel', [
-            'as' => 'documents.inbox.cancel', 
-            'uses' => 'DocumentsController@inboxCancel', 
+            'as' => 'documents.inbox.cancel',
+            'uses' => 'DocumentsController@inboxCancel',
             'middleware' => 'has_perm:_superadmin,_documents-inbox-create'
         ]);
 
         // Страница редактирования входящего документа
         Route::get('/documents/inbox/edit/{id?}', [
-            'as' => 'documents.inbox.edit', 
-            'uses' => 'DocumentsController@inboxEdit', 
+            'as' => 'documents.inbox.edit',
+            'uses' => 'DocumentsController@inboxEdit',
             'middleware' => 'has_perm:_superadmin,_documents-inbox-edit'
         ]);
 
         // Страница просмотра входящего документа
         Route::get('/documents/inbox/view/{id?}', [
-            'as' => 'documents.inbox.view', 
-            'uses' => 'DocumentsController@inboxView', 
+            'as' => 'documents.inbox.view',
+            'uses' => 'DocumentsController@inboxView',
             'middleware' => 'has_perm:_superadmin,_documents-inbox-view'
         ]);
 
         // Удаление входящего документа
         Route::get('/documents/inbox/delete/{id?}', [
-            'as' => 'documents.inbox.delete', 
+            'as' => 'documents.inbox.delete',
             'uses' => 'DocumentsController@inboxDelete',
             'middleware' => 'has_perm:_superadmin,_documents-inbox-delete'
         ]);
@@ -238,42 +238,42 @@ Route::group(['middleware' => ['logged']], function () {
 
         // Страница создания исходящего документа
         Route::get('/documents/outbox/create', [
-            'as' => 'documents.outbox.create', 
-            'uses' => 'DocumentsController@outboxCreate', 
+            'as' => 'documents.outbox.create',
+            'uses' => 'DocumentsController@outboxCreate',
             'middleware' => 'has_perm:_superadmin,_documents-outbox-create'
         ]);
 
         // Сохранение исходящего документа
         Route::post('/documents/outbox/save', [
-            'as' => 'documents.outbox.save', 
+            'as' => 'documents.outbox.save',
             'uses' => 'DocumentsController@outboxSave',
             'middleware' => 'has_perm:_superadmin,_documents-outbox-create'
         ]);
 
         // Отмена создания исходящего документа
         Route::get('/documents/outbox/cancel', [
-            'as' => 'documents.outbox.cancel', 
-            'uses' => 'DocumentsController@outboxCancel', 
+            'as' => 'documents.outbox.cancel',
+            'uses' => 'DocumentsController@outboxCancel',
             'middleware' => 'has_perm:_superadmin,_documents-outbox-create'
         ]);
 
         // Страница редактирования исходящего документа
         Route::get('/documents/outbox/edit/{id?}', [
-            'as' => 'documents.outbox.edit', 
-            'uses' => 'DocumentsController@outboxEdit', 
+            'as' => 'documents.outbox.edit',
+            'uses' => 'DocumentsController@outboxEdit',
             'middleware' => 'has_perm:_superadmin,_documents-outbox-edit'
         ]);
 
         // Страница просмотра исходящего документа
         Route::get('/documents/outbox/view/{id?}', [
-            'as' => 'documents.outbox.view', 
-            'uses' => 'DocumentsController@outboxView', 
+            'as' => 'documents.outbox.view',
+            'uses' => 'DocumentsController@outboxView',
             'middleware' => 'has_perm:_superadmin,_documents-outbox-view'
         ]);
 
         // Удаление исходящего документа
         Route::get('/documents/outbox/delete/{id?}', [
-            'as' => 'documents.outbox.delete', 
+            'as' => 'documents.outbox.delete',
             'uses' => 'DocumentsController@outboxDelete',
             'middleware' => 'has_perm:_superadmin,_documents-outbox-delete'
         ]);
@@ -287,7 +287,7 @@ Route::group(['middleware' => ['logged']], function () {
     Route::group(['middleware' => []], function () {
         // Страница с ДСП
         Route::get('/dsp', [
-            'as' => 'dsp.index',            
+            'as' => 'dsp.index',
             'uses' => 'DspsController@index',
             'middleware' => 'has_perm:_superadmin,has_perm:_dsp.index'
         ]);
@@ -304,42 +304,42 @@ Route::group(['middleware' => ['logged']], function () {
 
         // Страница создания входящего ДСП
         Route::get('/dsp/inbox/create', [
-            'as' => 'dsp.inbox.create', 
-            'uses' => 'DspsController@inboxCreate', 
+            'as' => 'dsp.inbox.create',
+            'uses' => 'DspsController@inboxCreate',
             'middleware' => 'has_perm:_superadmin,_dsp-inbox-create'
         ]);
 
         // Сохранение входящего ДСП
         Route::post('/dsp/inbox/save', [
-            'as' => 'dsp.inbox.save', 
+            'as' => 'dsp.inbox.save',
             'uses' => 'DspsController@inboxSave',
             'middleware' => 'has_perm:_superadmin,_dsp-inbox-create'
         ]);
 
         // Отмена создания входящего ДСП
         Route::get('/dsp/inbox/cancel', [
-            'as' => 'dsp.inbox.cancel', 
-            'uses' => 'DspsController@inboxCancel', 
+            'as' => 'dsp.inbox.cancel',
+            'uses' => 'DspsController@inboxCancel',
             'middleware' => 'has_perm:_superadmin,_dsp-inbox-create'
         ]);
 
         // Страница редактирования входящего ДСП
         Route::get('/dsp/inbox/edit/{id?}', [
-            'as' => 'dsp.inbox.edit', 
-            'uses' => 'DspsController@inboxEdit', 
+            'as' => 'dsp.inbox.edit',
+            'uses' => 'DspsController@inboxEdit',
             'middleware' => 'has_perm:_superadmin,_dsp-inbox-edit'
         ]);
 
         // Страница просмотра входящего ДСП
         Route::get('/dsp/inbox/view/{id?}', [
-            'as' => 'dsp.inbox.view', 
-            'uses' => 'DspsController@inboxView', 
+            'as' => 'dsp.inbox.view',
+            'uses' => 'DspsController@inboxView',
             'middleware' => 'has_perm:_superadmin,_dsp-inbox-view'
         ]);
 
         // Удаление входящего ДСП
         Route::get('/dsp/inbox/delete/{id?}', [
-            'as' => 'dsp.inbox.delete', 
+            'as' => 'dsp.inbox.delete',
             'uses' => 'DspsController@inboxDelete',
             'middleware' => 'has_perm:_superadmin,_dsp-inbox-delete'
         ]);
@@ -356,42 +356,42 @@ Route::group(['middleware' => ['logged']], function () {
 
         // Страница создания исходящего ДСП
         Route::get('/dsp/outbox/create', [
-            'as' => 'dsp.outbox.create', 
-            'uses' => 'DspsController@outboxCreate', 
+            'as' => 'dsp.outbox.create',
+            'uses' => 'DspsController@outboxCreate',
             'middleware' => 'has_perm:_superadmin,_dsp-outbox-create'
         ]);
 
         // Сохранение исходящего ДСП
         Route::post('/dsp/outbox/save', [
-            'as' => 'dsp.outbox.save', 
+            'as' => 'dsp.outbox.save',
             'uses' => 'DspsController@outboxSave',
             'middleware' => 'has_perm:_superadmin,_dsp-outbox-create'
         ]);
 
         // Отмена создания исходящего ДСП
         Route::get('/dsp/outbox/cancel', [
-            'as' => 'dsp.outbox.cancel', 
-            'uses' => 'DspsController@outboxCancel', 
+            'as' => 'dsp.outbox.cancel',
+            'uses' => 'DspsController@outboxCancel',
             'middleware' => 'has_perm:_superadmin,_dsp-outbox-create'
         ]);
 
         // Страница редактирования исходящего ДСП
         Route::get('/dsp/outbox/edit/{id?}', [
-            'as' => 'dsp.outbox.edit', 
-            'uses' => 'DspsController@outboxEdit', 
+            'as' => 'dsp.outbox.edit',
+            'uses' => 'DspsController@outboxEdit',
             'middleware' => 'has_perm:_superadmin,_dsp-outbox-edit'
         ]);
 
         // Страница просмотра исходящего ДСП
         Route::get('/dsp/outbox/view/{id?}', [
-            'as' => 'dsp.outbox.view', 
-            'uses' => 'DspsController@outboxView', 
+            'as' => 'dsp.outbox.view',
+            'uses' => 'DspsController@outboxView',
             'middleware' => 'has_perm:_superadmin,_dsp-outbox-view'
         ]);
 
         // Удаление исходящего ДСП
         Route::get('/dsp/outbox/delete/{id?}', [
-            'as' => 'dsp.outbox.delete', 
+            'as' => 'dsp.outbox.delete',
             'uses' => 'DspsController@outboxDelete',
             'middleware' => 'has_perm:_superadmin,_dsp-outbox-delete'
         ]);
@@ -418,13 +418,19 @@ Route::group(['middleware' => ['logged']], function () {
     // --------------------------------------------------------
     // ------------------------- ПОИСК ------------------------
     // --------------------------------------------------------
-        
+
     // Группа для работы с поиском
     Route::group(['middleware' => []], function () {
         // Страница с отчетами
         Route::get('/search', [
             'as' => 'search.index',
             'uses' => 'SearchController@index'
+        ]);
+
+        // Начать поиск
+        Route::post('/search/go', [
+            'as' => 'search.go',
+            'uses' => 'SearchController@go'
         ]);
     });
 
@@ -467,7 +473,7 @@ Route::group(['middleware' => ['logged']], function () {
             'as' => 'responsible.getResponsibleTpl',
             'uses' => 'ResponsibleController@getResponsibleTpl'
         ]);
-        
+
         Route::post('/responsible/destroy', [
             'as' => 'responsible.destroy',
             'uses' => 'ResponsibleController@destroy'
@@ -603,7 +609,7 @@ Route::group(['middleware' => ['logged']], function () {
 
         // Справочник "Отправители"
         Route::get('/admin/references/sender', [
-            'as' => 'references.sender', 
+            'as' => 'references.sender',
             'uses' => 'ReferencesController@sendersIndex'
         ]);
 
@@ -631,7 +637,7 @@ Route::group(['middleware' => ['logged']], function () {
 
         // Справочник "Заявители"
         Route::get('/admin/references/declarer', [
-            'as' => 'references.declarer', 
+            'as' => 'references.declarer',
             'uses' => 'ReferencesController@declarersIndex'
         ]);
 

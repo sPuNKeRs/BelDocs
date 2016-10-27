@@ -4,9 +4,23 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Sofa\Eloquence\Eloquence;
 
 class Order extends Model
 {
+    use Eloquence;
+
+    protected $searchableColumns = [
+        'order_num',
+        'entity_num',
+        'incoming_number',
+        'item_number.item_number',
+        'sender.sender',
+        'title',
+        'description',
+        'resolution'
+    ];
+
     public function responsibles()
     {
         return $this->morphMany('App\Responsible', 'entity');
@@ -32,7 +46,10 @@ class Order extends Model
         return $this->hasOne('App\ItemNumber', 'id', 'item_number_id');
     }
 
-
+    public function author()
+    {
+         return $this->belongsTo('App\User');
+    }
 
     // Заполняемые поля
     protected $fillable = [

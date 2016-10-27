@@ -169,6 +169,7 @@ return [
          DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
          Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
          'Laravelrus\LocalizedCarbon\LocalizedCarbonServiceProvider',
+         'Sofa\Eloquence\ServiceProvider',
 
     ],
 

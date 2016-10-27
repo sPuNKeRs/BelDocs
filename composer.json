@@ -12,7 +12,8 @@
         "davejamesmiller/laravel-breadcrumbs": "^3.0",
         "laravelrus/localized-carbon": "dev-master",
         "barryvdh/laravel-ide-helper": "^2.2",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "sofa/eloquence": "~5.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
