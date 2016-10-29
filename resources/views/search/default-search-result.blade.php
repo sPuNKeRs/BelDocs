@@ -15,10 +15,14 @@
     <div class="row">
       <div class="col-md-2 text-center">
         <i class='fa fa-pencil-square-o fa-4x'></i><br>
-        <b>Тип:</b> ВП</div>
+        <b>Тип:</b> {{ReportsHelper::typeToName($item)}}<hr>
+        <b>Дата создания</b> {{date('d.m.Y', strtotime($item->create_date))}}<br><br>
+        <b>Выполнить до</b> {{date('d.m.Y', strtotime($item->execute_date))}}
+      </div>
+
       <div class="col-md-10">
          <div class="row">
-          <div class="col-md-3"><h5>№{{$item->entity_num}}</h5></div>
+          <div class="col-md-3"><h5>№{{$item->entity_num}} {{ (isset($item->item_number)) ? '('.$item->item_number->item_number.')' : '' }}</h5></div>
           <div class="col-md-9 text-justify"><h4>{{$item->title}}</h4></div>
         </div>
         <hr>

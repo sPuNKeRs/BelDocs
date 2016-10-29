@@ -4,9 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Sofa\Eloquence\Eloquence;
 
 class OutboxOrder extends Model
 {
+   use Eloquence;
+
+   protected $searchableColumns = [
+        'entity_num',
+        'title',
+        'description',
+        'resolution'
+    ];
+
    public function responsibles()
     {
         return $this->morphMany('App\Responsible', 'entity');
@@ -24,8 +34,8 @@ class OutboxOrder extends Model
 
   // Заполняемые поля
     protected $fillable = [
-      'outbox_order_num',  
-      'entity_num',    
+      'outbox_order_num',
+      'entity_num',
       'title',
       'create_date',
       'execute_date',

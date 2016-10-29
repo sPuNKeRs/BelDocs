@@ -4,10 +4,23 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Sofa\Eloquence\Eloquence;
 
 class OutboxDsp extends Model
 {
-     public function responsibles()
+    use Eloquence;
+
+    protected $searchableColumns = [
+        'entity_num',
+        'incoming_number',
+        'item_number.item_number',
+        'recipient.recipient',
+        'title',
+        'description',
+        'resolution'
+    ];
+
+    public function responsibles()
     {
         return $this->morphMany('App\Responsible', 'entity');
     }
@@ -25,6 +38,11 @@ class OutboxDsp extends Model
     public function item_number()
     {
         return $this->hasOne('App\ItemNumberDsp', 'id', 'item_number_id');
+    }
+
+     public function recipient()
+    {
+        return $this->hasOne('App\Recipient', 'id', 'recipient_id');
     }
 
     // Заполняемые поля

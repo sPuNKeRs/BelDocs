@@ -4,9 +4,21 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Sofa\Eloquence\Eloquence;
 
 class InboxDsp extends Model
 {
+  use Eloquence;
+
+  protected $searchableColumns = [
+        'entity_num',
+        'incoming_number',
+        'item_number.item_number',
+        'title',
+        'description',
+        'resolution'
+    ];
+
   public function responsibles()
     {
         return $this->morphMany('App\Responsible', 'entity');

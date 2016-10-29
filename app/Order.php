@@ -11,7 +11,6 @@ class Order extends Model
     use Eloquence;
 
     protected $searchableColumns = [
-        'order_num',
         'entity_num',
         'incoming_number',
         'item_number.item_number',
